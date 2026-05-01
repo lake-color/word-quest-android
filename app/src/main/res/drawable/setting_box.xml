@@ -1,12 +1,13 @@
 <!-- res/drawable/setting_box.xml -->
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 안쪽 색상 -->
+    <solid android:color="#C9A673"/>
 
-    <solid android:color="#E0C08E"/>
-
+    <!-- 테두리 -->
     <stroke
-        android:width="2dp"
-        android:color="#6B3F1D"/>
+        android:width="1.5dp"
+        android:color="#8B5E34"/>
 
-    <corners android:radius="10dp"/>
-
+    <!-- 모서리 -->
+    <corners android:radius="15dp"/>
 </shape>
