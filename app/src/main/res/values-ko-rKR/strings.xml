@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">기말 과제</string>
+    <string name="game_title">게임으로 배우는 영어 단어</string>
+
+    <string name="start">시작</string>
+    <string name="settings">설정</string>
+    <string name="close">닫기</string>
+
+    <string name="master_volume">전체 볼륨</string>
+    <string name="bgm_volume">배경 음악 볼륨</string>
+    <string name="sfx_volume">효과음 볼륨</string>
+    <string name="vibration">진동</string>
+    <string name="fps">FPS</string>
+    <string name="fps_60">60FPS</string>
+    <string name="fps_120">120FPS</string>
+    <string name="fps_180">180FPS</string>
+</resources>

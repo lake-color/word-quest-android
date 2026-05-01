@@ -1,0 +1,18 @@
+<resources>
+    <string name="app_name">Final Project</string>
+    <string name="game_title">Learn English Words with a Game</string>
+
+    <string name="start">Start</string>
+    <string name="settings">Settings</string>
+    <string name="close">Close</string>
+
+    <string name="master_volume">Master Volume</string>
+    <string name="bgm_volume">BGM Volume</string>
+    <string name="sfx_volume">SFX Volume</string>
+    <string name="vibration">Vibration</string>
+    <string name="fps">FPS</string>
+    <string name="fps_60">60FPS</string>
+    <string name="fps_120">120FPS</string>
+    <string name="fps_180">180FPS</string>
+
+</resources>

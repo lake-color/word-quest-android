@@ -1,0 +1,27 @@
+# 1. 빌드 결과물 (용량만 차지하고 공유할 필요 없음)
+/build
+/*/build
+bin/
+gen/
+out/
+
+# 2. 안드로이드 스튜디오 & IDE 설정 (개인 설정이라 올리면 안 됨)
+.idea/
+.gradle/
+*.iml
+*.iws
+*.ipr
+.navigation/
+captures/
+
+# 3. 로컬 환경 설정 (내 컴퓨터의 SDK 경로 등이 적혀있어서 필수 제외!)
+local.properties
+
+# 4. OS 관련 쓰레기 파일
+.DS_Store
+Thumbs.db
+
+# 5. 보안 및 인증 파일 (나중에 API 키나 JKS 만들면 유출 방지용)
+*.jks
+*.keystore
+google-services.json

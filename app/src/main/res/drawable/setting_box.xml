@@ -1,0 +1,12 @@
+<!-- res/drawable/setting_box.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <solid android:color="#E0C08E"/>
+
+    <stroke
+        android:width="2dp"
+        android:color="#6B3F1D"/>
+
+    <corners android:radius="10dp"/>
+
+</shape>
