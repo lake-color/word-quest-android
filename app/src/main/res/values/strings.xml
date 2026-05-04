@@ -5,7 +5,6 @@
     <!-- Main Navigation / Fragments -->
     <string name="nav_start">Start</string>
     <string name="nav_learn">Learn</string>
-    <string name="nav_equip">Equip</string>
     <string name="nav_review">Review</string>
     <string name="nav_battle">Battle</string>
 
@@ -13,11 +12,8 @@
     <string name="nickname">Nickname</string>
     <string name="consecutive_days">Consecutive Days: %1$d</string>
     <string name="stage_format">Stage %1$d</string>
-    <string name="inventory">Inventory</string>
-    <string name="item_merge">Merge Items</string>
     <string name="wrong_answer_note">Wrong Answer Note</string>
-    <string name="boss_battle">Boss Battle</string>
-    <string name="farming">Farming</string>
+    <string name="mini_game">Mini Game</string>
 
     <!-- Buttons & Actions -->
     <string name="start">Start</string>

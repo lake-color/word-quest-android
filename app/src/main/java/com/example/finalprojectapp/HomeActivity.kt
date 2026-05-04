@@ -23,7 +23,6 @@ class HomeActivity : AppCompatActivity() {
 
     private fun initNavigation() {
         binding.btnNavLearn.setOnClickListener { replaceFragment(LearnFragment()) }
-        binding.btnNavEquip.setOnClickListener { replaceFragment(EquipFragment()) }
         binding.btnNavReview.setOnClickListener { replaceFragment(ReviewFragment()) }
         binding.btnNavBattle.setOnClickListener { replaceFragment(BattleFragment()) }
     }

@@ -5,7 +5,6 @@
     <!-- 메인 네비게이션 / 프래그먼트 -->
     <string name="nav_start">시작</string>
     <string name="nav_learn">학습</string>
-    <string name="nav_equip">장비</string>
     <string name="nav_review">복습</string>
     <string name="nav_battle">전투</string>
 
@@ -13,11 +12,8 @@
     <string name="nickname">닉네임</string>
     <string name="consecutive_days">연속 학습일: %1$d일</string>
     <string name="stage_format">스테이지 %1$d</string>
-    <string name="inventory">가방</string>
-    <string name="item_merge">아이템 합성</string>
     <string name="wrong_answer_note">오답 노트</string>
-    <string name="boss_battle">보스전</string>
-    <string name="farming">파밍</string>
+    <string name="mini_game">미니게임</string>
 
     <!-- 버튼 및 액션 -->
     <string name="start">시작하기</string>
