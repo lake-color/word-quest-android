@@ -1,11 +1,31 @@
 <resources>
-    <string name="app_name">Final Project</string>
+    <string name="app_name">Word Quest</string>
     <string name="game_title">Learn English Words with a Game</string>
 
+    <!-- Main Navigation / Fragments -->
+    <string name="nav_start">Start</string>
+    <string name="nav_learn">Learn</string>
+    <string name="nav_equip">Equip</string>
+    <string name="nav_review">Review</string>
+    <string name="nav_battle">Battle</string>
+
+    <!-- UI Labels -->
+    <string name="nickname">Nickname</string>
+    <string name="consecutive_days">Consecutive Days: %1$d</string>
+    <string name="stage_format">Stage %1$d</string>
+    <string name="inventory">Inventory</string>
+    <string name="item_merge">Merge Items</string>
+    <string name="wrong_answer_note">Wrong Answer Note</string>
+    <string name="boss_battle">Boss Battle</string>
+    <string name="farming">Farming</string>
+
+    <!-- Buttons & Actions -->
     <string name="start">Start</string>
     <string name="settings">Settings</string>
     <string name="close">Close</string>
+    <string name="test_start">Start Test</string>
 
+    <!-- Settings Dialog -->
     <string name="master_volume">Master Volume</string>
     <string name="bgm_volume">BGM Volume</string>
     <string name="sfx_volume">SFX Volume</string>
@@ -14,5 +34,4 @@
     <string name="fps_60">60FPS</string>
     <string name="fps_120">120FPS</string>
     <string name="fps_180">180FPS</string>
-
 </resources>
