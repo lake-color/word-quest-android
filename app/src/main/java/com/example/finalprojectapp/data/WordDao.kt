@@ -1,0 +1,22 @@
+package com.example.finalprojectapp.data
+
+import androidx.room.Dao
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+
+@Dao
+interface WordDao {
+    @Query("SELECT * FROM word_table ORDER BY id ASC")
+    fun getAllWords(): List<Word>
+
+    @Query("SELECT * FROM word_table WHERE wrongCount > 0 ORDER BY wrongCount DESC")
+    fun getReviewWords(): List<Word>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWords(words: List<Word>)
+
+    @Update
+    suspend fun updateWord(word: Word)
+}
