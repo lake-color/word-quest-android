@@ -1,43 +1,43 @@
 # 🎮 Word Quest - 프로젝트 진행 현황 (Final Project)
 
+## 📅 2025-05-22-2 업데이트 로그
+
+### 🛠 현재까지 완료된 작업 (Status: 🟢 협업 규칙 및 UI 기틀 마련)
+- **AI 협업 규칙 최적화:** `AGENTS.md`에 세션 및 맥락 관리(Incremental Logging) 규칙을 최종 확정함. 
+    - `!로그` 명령어를 통한 자동 업데이트 및 날짜별 순번(`-번호`) 기록 방식 도입.
+- **UI 리소스 최종 점검:** `HomeActivity`의 상/하단 바와 나무 테마 Drawable 리소스의 정합성 확인 완료.
+- **프로젝트 무결성 확인:** Room DB 관련 컴파일 에러 및 경고 사항 분석 완료 (실사용 시 해결될 Unused Warning 위주).
+
+### 🚀 향후 작업 계획 (Next Steps)
+1. **DB 시드 데이터:** 앱 기동 시 `Room` DB에 기초 단어 데이터를 주입하는 초기화 로직 구현.
+2. **UI 바인딩:** `LearnFragment`와 `WordDao`를 연결하여 실제 데이터를 화면에 렌더링.
+
+---
+
+## 📅 2025-05-22-1 업데이트 로그
+
+### 🛠 현재까지 완료된 작업 (Status: 🟢 UI/DB 기초 공사 완료)
+- **아키텍처 최적화:** 졸업과제 규모에 맞게 프로젝트를 [Review / Learn / Battle] 3개 핵심 화면으로 단순화하고, `Equip` 관련 파일 및 로직을 모두 제거함.
+- **데이터베이스 구축:** 
+    - `Word` 엔티티(id, english, korean, wrongCount, isMemorized) 및 DAO, Database 클래스 구현 완료.
+    - Room 2.6.1 및 KSP 플러그인 설정(`build.gradle.kts`) 및 빌드 안정화 완료.
+    - 잘못 임포트된 `privacysandbox` 참조 제거 및 데이터 레이어 버그 수정.
+- **UI 및 리소스 고도화:**
+    - `HomeActivity`: 상단 바(닉네임, 설정 버튼)와 하단 네비게이션(3버튼) 레이아웃 완성.
+    - 테마 적용: 나무 질감의 배경(`bg_top_bar_wood`, `bg_bottom_nav_wood`) 및 클릭 피드백을 위한 `btn_nav_selector` 제작 및 적용.
+    - 텍스트 컬러: 전체 테마에 어울리는 다크 브라운(`#5A341A`)으로 가독성 개선.
+- **AI 협업 규칙 수립:** `AGENTS.md`를 수정하여 세션 간 맥락 보존을 위한 `!update_context` 프로세스 확립.
+
+### 🚀 향후 작업 계획 (Next Steps)
+1. **샘플 데이터 삽입:** 앱 최초 실행 시 기초 영단어(20~30개)를 DB에 자동 생성하는 로직 구현.
+2. **학습(Learn) 리스트:** `LearnFragment`에서 DB 단어들을 `RecyclerView`로 시각화.
+3. **미니게임(Battle) 로직:** 영단어 퀴즈를 풀며 정답 문을 통과하는 '워드 러너' 프로토타입 개발.
+
+---
+
 ## 📌 프로젝트 개요
 - **정체성:** 영단어 학습과 런게임(선택형)이 결합된 하이퍼 캐주얼 앱
 - **핵심 목표:** 학습(Learn) -> 게임(Battle/Game) -> 복습(Review)의 선순환 구조
-
-## 🛠 현재까지 완료된 작업 (Status: 🟢 기초 공사 완료)
-
-### 1. 아키텍처 및 데이터베이스
-- **구조 최적화:** 졸업과제 규모에 맞춰 '장비/파밍' 시스템을 제거하고 [학습/복습/게임] 3단계로 슬림화.
-- **Room DB 설정:** `Word` 엔티티, `WordDao`, `WordDatabase` 구현 완료.
-    - 필드: `id`, `english`, `korean`, `wrongCount`, `isMemorized`
-- **Dependency:** Room 2.6.1 및 KSP 플러그인 설정 및 빌드 안정화 완료.
-
-### 2. UI 및 리소스
-- **Main UI:** `HomeActivity` 내에 상단 바(닉네임/설정) 및 하단 네비게이션(3버튼) 레이아웃 완성.
-- **테마:** 나무(Wood) 질감의 전용 Drawable 리소스(`bg_wood`, `btn_selector` 등) 일괄 적용.
-- **화면 전환:** FragmentManager를 이용한 [Review, Learn, Battle] 프래그먼트 교체 로직 구현.
-
-### 3. 주요 수정 사항
-- `WordDatabase` 내 잘못 임포트된 `privacysandbox` 라이브러리 제거 및 빌드 에러 해결.
-- `EquipFragment` 제거 및 관련 하단 바 가중치(weightSum=3) 조정.
-
----
-
-## 🚀 향후 작업 계획 (Next Steps)
-
-### 1단계: 데이터 생명력 불어넣기 (Data Layer)
-- **DB 초기화:** 앱 최초 실행 시 기본 영단어(20~30개) 자동 `Insert` 로직 구현.
-- **LearnFragment:** DB 데이터를 불러와 `RecyclerView` 리스트로 출력.
-
-### 2단계: 게임 로직 구현 (Game Layer)
-- **BattleRunner:** 영단어 퀴즈를 풀며 정답 문을 통과하는 미니게임 개발.
-- **오답 피드백:** 게임에서 틀린 단어는 자동으로 DB의 `wrongCount` 증가.
-
-### 3단계: 마무리 (Polishing)
-- **ReviewFragment:** 오답 횟수가 높은 단어들을 우선적으로 보여주는 복습 화면.
-- **Settings:** 상단 설정 버튼 클릭 시 닉네임 변경 및 간단한 설정 다이얼로그 연동.
-
----
 
 ## 💡 다음 세션 가이드 (AI 전달용)
 "현재 Word Quest 프로젝트의 UI 뼈대와 Room DB 설정이 완료된 상태입니다. `HomeActivity` 레이아웃과 `data` 패키지가 구성되어 있으니, 다음에는 **DB에 샘플 데이터를 삽입하고 LearnFragment에서 리스트를 보여주는 기능**부터 시작해 주세요."
