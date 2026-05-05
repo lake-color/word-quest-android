@@ -14,6 +14,9 @@ interface WordDao {
     @Query("SELECT * FROM word_table WHERE wrongCount > 0 ORDER BY wrongCount DESC")
     fun getReviewWords(): List<Word>
 
+    @Query("SELECT * FROM word_table WHERE stage = :stageNum")
+    suspend fun getWordsByStage(stageNum: Int): List<Word>
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertWords(words: List<Word>)
 

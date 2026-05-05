@@ -1,8 +1,12 @@
-package com.example.finalprojectapp
+package com.example.finalprojectapp.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.example.finalprojectapp.ui.BattleFragment
+import com.example.finalprojectapp.ui.LearnFragment
+import com.example.finalprojectapp.R
+import com.example.finalprojectapp.ui.ReviewFragment
 import com.example.finalprojectapp.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {

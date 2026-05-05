@@ -9,7 +9,7 @@
         android:id="@+id/top_bar_layout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@drawable/top_bar_wood"
+        android:background="@drawable/bg_top_bar_wood"
         android:paddingHorizontal="16dp"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -29,7 +29,7 @@
             android:id="@+id/btnHomeSettings"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:background="@drawable/btn_nav_selector"
+            android:background="@drawable/sl_nav_button"
             android:contentDescription="@string/settings"
             android:scaleType="fitCenter"
             android:src="@android:drawable/ic_menu_manage"
@@ -55,7 +55,7 @@
         android:layout_width="match_parent"
         android:layout_height="70dp"
         android:orientation="horizontal"
-        android:background="@drawable/bottom_nav_wood"
+        android:background="@drawable/bg_bottom_nav_wood"
         android:weightSum="3"
         app:layout_constraintBottom_toBottomOf="parent">
 
@@ -66,7 +66,7 @@
             android:layout_weight="1"
             android:text="@string/nav_review"
             android:textColor="#5A341A"
-            android:background="@drawable/btn_nav_selector"
+            android:background="@drawable/sl_nav_button"
             style="?android:attr/borderlessButtonStyle" />
 
         <Button
@@ -76,7 +76,7 @@
             android:layout_weight="1"
             android:text="@string/nav_learn"
             android:textColor="#5A341A"
-            android:background="@drawable/btn_nav_selector"
+            android:background="@drawable/sl_nav_button"
             style="?android:attr/borderlessButtonStyle" />
 
         <Button
@@ -86,7 +86,7 @@
             android:layout_weight="1"
             android:text="@string/nav_battle"
             android:textColor="#5A341A"
-            android:background="@drawable/btn_nav_selector"
+            android:background="@drawable/sl_nav_button"
             style="?android:attr/borderlessButtonStyle" />
     </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -5,13 +5,13 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".ui.MainActivity">
 
     <ImageView
         android:id="@+id/imgTitle"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:src="@drawable/title_image"
+        android:src="@drawable/img_title"
         android:contentDescription="@string/game_title"
 
         app:layout_constraintTop_toTopOf="parent"
