@@ -1,5 +1,19 @@
 # 🎮 Word Quest - 프로젝트 진행 현황 (Final Project)
 
+## 📅 2025-05-22-4 업데이트 로그
+
+### 🛠 현재까지 완료된 작업 (Status: ✅ 빌드 환경 최적화 및 에러 해결 완료)
+- **KSP 및 Room 호환성 해결:**
+    - Kotlin 2.x 및 KSP2 엔진 환경에서 발생하던 `unexpected jvm signature V` 에러 해결을 위해 Room 버전을 `2.7.0-alpha13`으로 업그레이드함.
+    - `gradle.properties`에 `android.disallowKotlinSourceSets=false` 설정을 추가하여 AGP 9.x 환경에서의 소스 세트 충돌 오류 해결.
+- **빌드 안정화:** 의존성 및 플러그인 설정 변경 후 Gradle Sync 및 빌드 무결성 재검증 완료.
+
+### 🚀 향후 작업 계획 (Next Steps)
+1. **미니게임(Battle) 프로토타입:** 양갈래 문을 통과하며 정답을 맞히는 '워드 러너' 기본 UI 및 로직 설계.
+2. **복습(Review) 기능:** 오답 기록(`wrongCount`)을 기반으로 틀린 단어들만 모아보는 리스트 구현.
+
+---
+
 ## 📅 2025-05-22-3 업데이트 로그
 
 ### 🛠 현재까지 완료된 작업 (Status: 🔵 핵심 학습 로직 및 구조 표준화 완료)
