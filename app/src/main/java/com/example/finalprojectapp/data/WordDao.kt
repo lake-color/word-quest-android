@@ -5,14 +5,15 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface WordDao {
     @Query("SELECT * FROM word_table ORDER BY id ASC")
-    fun getAllWords(): List<Word>
+    fun getAllWords(): Flow<List<Word>>
 
     @Query("SELECT * FROM word_table WHERE wrongCount > 0 ORDER BY wrongCount DESC")
-    fun getReviewWords(): List<Word>
+    fun getReviewWords(): Flow<List<Word>>
 
     @Query("SELECT * FROM word_table WHERE stage = :stageNum")
     suspend fun getWordsByStage(stageNum: Int): List<Word>
