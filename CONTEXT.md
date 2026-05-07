@@ -1,5 +1,26 @@
 # 🎮 Word Quest - 프로젝트 진행 현황 (Final Project)
 
+## 📅 2026-05-07-1 업데이트 로그
+
+### 🛠 현재까지 완료된 작업 (Status: ✅ 네비게이션 표준화 및 Review 기능 실전 투입 준비 완료)
+- **UI 구조 현대화 (Material TabLayout 도입):**
+    - `activity_home.xml`: 기존의 커스텀 버튼 기반 하단 바를 `com.google.android.material.tabs.TabLayout`으로 교체.
+    - 테마 연동: 나무 질감 배경(`bg_bottom_nav_wood`)과 조화되도록 인디케이터 및 텍스트 컬러를 최적화하여 시각적 완성도 향상.
+- **네비게이션 로직 고도화:**
+    - `HomeActivity.kt`: `TabLayout.OnTabSelectedListener`를 적용하여 탭 전환에 따른 프래그먼트(`Learn`, `Review`, `Battle`) 교체 로직을 표준 방식으로 변경.
+- **Review 기능 실질적 연결:**
+    - `ReviewFragment.kt`: 임시 레이아웃(`fragment_simple`)을 제거하고 실제 오답 리스트 레이아웃(`fragment_review`)으로 교체.
+    - 데이터 바인딩: `ReviewViewModel`과 `ReviewAdapter`를 연동하여 DB에 저장된 오답 데이터를 실시간으로 리스트에 출력하도록 구현.
+    - 예외 처리: 오답 데이터 유무에 따라 "완벽해요!" 안내 문구가 노출되도록 동적 UI 제어 로직 추가.
+- **문서 관리 및 가이드:**
+    - 프로젝트 내 주요 파일(Activity, Fragment, Layout 등)의 역할을 재정의하고 사용자에게 가이드 제공.
+
+### 🚀 향후 작업 계획 (Next Steps)
+1. **Battle(미니게임) 설계:** 양갈래 문을 통과하는 '워드 러너' 퀴즈 게임 프로토타입 개발.
+2. **Review 항목 상호작용:** 오답 리스트에서 특정 단어를 클릭했을 때 상세 정보를 보거나 학습 상태를 변경하는 기능 추가.
+
+---
+
 ## 📅 2026-05-06-1 업데이트 로그
 
 ### 🛠 현재까지 완료된 작업 (Status: 🔵 협업 규칙 정립 및 Review 기능 레이아웃 완성)
@@ -97,4 +118,4 @@
 - **핵심 목표:** 학습(Learn) -> 게임(Battle/Game) -> 복습(Review)의 선순환 구조
 
 ## 💡 다음 세션 가이드 (AI 전달용)
-"현재 Word Quest 프로젝트의 UI 뼈대와 Room DB 설정이 완료된 상태입니다. `HomeActivity` 레이아웃과 `data` 패키지가 구성되어 있으니, 다음에는 **DB에 샘플 데이터를 삽입하고 LearnFragment에서 리스트를 보여주는 기능**부터 시작해 주세요."
+"현재 Word Quest 프로젝트의 하단 네비게이션이 TabLayout으로 개편되었고, Review(오답 노트) 기능이 DB와 실시간으로 연동되어 작동합니다. 다음 단계는 **Battle(미니게임)의 구체적인 UI 설계와 게임 로직 프로토타입 개발**을 시작할 차례입니다."
