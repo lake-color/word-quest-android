@@ -32,6 +32,12 @@ class HomeActivity : AppCompatActivity() {
             override fun onTabReselected(tab: TabLayout.Tab?) {}
         })
 
+        // 상단 바 설정 버튼 클릭
+        binding.btnHomeSettings.setOnClickListener {
+            val dialog = SettingsDialog()
+            dialog.show(supportFragmentManager, "SettingsDialog")
+        }
+
         // 초기 탭 설정 (LearnFragment가 자동으로 선택 및 로드됨)
         binding.bottomTabLayout.getTabAt(0)?.select()
     }

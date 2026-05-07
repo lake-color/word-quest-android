@@ -35,9 +35,10 @@ class MainActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        // 설정 버튼: 다이얼로그 표시 (추후 구현)
+        // 설정 버튼: 다이얼로그 표시
         binding.btnSet.setOnClickListener {
-            // showSettingsDialog()
+            val dialog = SettingsDialog()
+            dialog.show(supportFragmentManager, "SettingsDialog")
         }
     }
 }
