@@ -44,49 +44,38 @@
         android:id="@+id/home_container"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/top_bar_layout"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_nav_layout"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_tab_layout"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/top_bar_layout" />
 
-    <!-- 하단 커스텀 네비게이션 바 -->
-    <LinearLayout
-        android:id="@+id/bottom_nav_layout"
+    <!-- Material TabLayout 적용 -->
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/bottom_tab_layout"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:orientation="horizontal"
         android:background="@drawable/bg_bottom_nav_wood"
-        android:weightSum="3"
+        app:tabIndicatorGravity="top"
+        app:tabIndicatorColor="#5A341A"
+        app:tabTextColor="#8B4513"
+        app:tabSelectedTextColor="#5A341A"
+        app:tabRippleColor="@null"
+        app:tabMode="fixed"
         app:layout_constraintBottom_toBottomOf="parent">
 
-        <Button
-            android:id="@+id/btnNavReview"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/nav_review"
-            android:textColor="#5A341A"
-            android:background="@drawable/sl_nav_button"
-            style="?android:attr/borderlessButtonStyle" />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_learn" />
 
-        <Button
-            android:id="@+id/btnNavLearn"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/nav_learn"
-            android:textColor="#5A341A"
-            android:background="@drawable/sl_nav_button"
-            style="?android:attr/borderlessButtonStyle" />
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_review" />
 
-        <Button
-            android:id="@+id/btnNavBattle"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:text="@string/nav_battle"
-            android:textColor="#5A341A"
-            android:background="@drawable/sl_nav_button"
-            style="?android:attr/borderlessButtonStyle" />
-    </LinearLayout>
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/nav_battle" />
+    </com.google.android.material.tabs.TabLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

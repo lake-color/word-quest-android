@@ -3,11 +3,9 @@ package com.example.finalprojectapp.ui
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
-import com.example.finalprojectapp.ui.BattleFragment
-import com.example.finalprojectapp.ui.LearnFragment
 import com.example.finalprojectapp.R
-import com.example.finalprojectapp.ui.ReviewFragment
 import com.example.finalprojectapp.databinding.ActivityHomeBinding
+import com.google.android.material.tabs.TabLayout
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -17,18 +15,24 @@ class HomeActivity : AppCompatActivity() {
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        // 초기 화면: 학습(Learn) 설정
-        if (savedInstanceState == null) {
-            replaceFragment(LearnFragment())
-        }
-
         initNavigation()
     }
 
     private fun initNavigation() {
-        binding.btnNavLearn.setOnClickListener { replaceFragment(LearnFragment()) }
-        binding.btnNavReview.setOnClickListener { replaceFragment(ReviewFragment()) }
-        binding.btnNavBattle.setOnClickListener { replaceFragment(BattleFragment()) }
+        binding.bottomTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                when (tab?.position) {
+                    0 -> replaceFragment(LearnFragment())
+                    1 -> replaceFragment(ReviewFragment())
+                    2 -> replaceFragment(BattleFragment())
+                }
+            }
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+        })
+
+        // 초기 탭 설정 (LearnFragment가 자동으로 선택 및 로드됨)
+        binding.bottomTabLayout.getTabAt(0)?.select()
     }
 
     private fun replaceFragment(fragment: Fragment) {
