@@ -82,7 +82,14 @@ class StudyActivity : AppCompatActivity() {
 
     private fun updateUI() {
         val currentWord = wordList[currentIndex]
-        binding.txtWord.text = if (isShowingEnglish) currentWord.english else currentWord.korean
+        
+        // 영어 단어는 크게 상단에 유지
+        binding.txtWord.text = currentWord.english
+        
+        // 뜻(한국어)은 클릭 시에만 보이거나 혹은 항상 보이게 설정 가능
+        // 현재는 클릭 시 토글되는 로직에 맞춰 뜻의 가시성을 조절하는 방식으로 변경 제안
+        binding.txtMean.text = currentWord.korean
+        binding.txtMean.visibility = if (isShowingEnglish) View.INVISIBLE else View.VISIBLE
         
         // 버튼 활성화 상태 조절
         binding.btnPrev.isEnabled = currentIndex > 0

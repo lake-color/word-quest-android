@@ -173,6 +173,7 @@
                     android:id="@+id/radioFps120"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:checked="true"
                     android:text="@string/fps_120"
                     android:textColor="#2B1B12"
                     android:layout_marginStart="16dp" />
@@ -200,6 +201,7 @@
                 android:id="@+id/switchVibration"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:checked="true"
                 android:text="@string/vibration"
                 android:textColor="#2B1B12" />
         </LinearLayout>
@@ -209,7 +211,7 @@
             android:id="@+id/btnClose"
             android:layout_width="200dp"
             android:layout_height="60dp"
-            android:layout_gravity="end"
+            android:layout_gravity="center_horizontal"
             android:text="@string/close"
             android:textColor="#2B1B12"
             android:textSize="18sp"
