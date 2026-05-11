@@ -1,36 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="10dp">
+    android:paddingVertical="16dp">
 
-    <!-- 스테이지 버튼 -->
-    <Button
-        android:id="@+id/btnStage"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:background="@drawable/bg_button_wood"
-        android:textColor="#5A341A"
-        android:textSize="18sp"
-        android:textStyle="bold"
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardStage"
+        style="@style/Widget.Material3.CardView.Elevated"
+        android:layout_width="88dp"
+        android:layout_height="88dp"
+        app:cardCornerRadius="44dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="1" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <!-- 위쪽 스테이지와 연결되는 가상의 선 (간단하게 구현) -->
-    <View
-        android:id="@+id/linePath"
-        android:layout_width="4dp"
-        android:layout_height="40dp"
-        android:background="#8B5E34"
-        android:alpha="0.5"
-        app:layout_constraintBottom_toTopOf="@id/btnStage"
-        app:layout_constraintStart_toStartOf="@id/btnStage"
-        app:layout_constraintEnd_toEndOf="@id/btnStage" />
+        <TextView
+            android:id="@+id/txtStageNum"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="1"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold" />
+
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

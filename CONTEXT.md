@@ -1,5 +1,29 @@
 # 🎮 Word Quest - 프로젝트 진행 현황 (Final Project)
 
+## 📅 2026-05-11-1 업데이트 로그
+
+### 🛠 현재까지 완료된 작업 (Status: 🎨 Material 3 기반 UI/UX 전면 대개편 완료)
+- **Material 3(M3) 디자인 시스템 완전 도입:**
+    - 프로젝트 전반의 테마를 `Theme.Material3.DayNight.NoActionBar`로 전환.
+    - **'Modern Wood & Nature' 컬러 팔레트 구축:** 브라운(Primary), 그린(Secondary), 오렌지(Tertiary) 컬러를 M3 토큰 체계에 맞춰 재정의하여 세련된 자연 테마 구현.
+    - 전역 스타일(`Widget.WordQuest.Card`, `Button`) 정의를 통해 일관된 라운딩(24~32dp) 및 Elevation 적용.
+- **설정 시스템(SettingsDialog) 현대화:**
+    - 컴포넌트 업그레이드: 기존 SeekBar를 M3 `Slider`로, 일반 버튼을 `MaterialButtonToggleGroup` 및 `MaterialSwitch`로 교체.
+    - 레이아웃 정밀화: `MaterialDivider`와 `MaterialCardView`를 활용하여 가독성 및 심미성 대폭 향상.
+- **주요 화면 레이아웃 고도화:**
+    - **Main/Home:** `AppBarLayout` 및 `MaterialToolbar`를 활용한 상단 영역 표준화 및 시스템 배경색(`windowBackground`) 연동.
+    - **Study:** 단어 카드를 32dp의 큰 곡률과 56sp의 대담한 타이포그래피로 디자인하여 학습 몰입도 극대화.
+    - **Learn:** 스테이지 선택 아이템을 88dp 크기의 완전한 원형(Circular) 카드로 변경하여 게임적 느낌 부여.
+    - **Review:** 오답 횟수를 M3 `Chip`으로 시각화하고 카드 디자인을 정돈하여 리스트 가독성 개선.
+- **코드 및 로직 정합성 확보:**
+    - `SettingsDialog.kt` 내 M3 컴포넌트 이벤트 리스너(addOnChangeListener 등) 최신화 및 다이얼로그 너비 최적화 로직 적용.
+
+### 🚀 향후 작업 계획 (Next Steps)
+1. **Battle(미니게임) 개발 착수:** 개편된 M3 디자인 톤에 맞춰 '워드 러너' 게임 화면 UI 설계 및 엔진 프로토타이핑.
+2. **데이터 영속성 고도화:** `SharedPreferences`를 활용해 설정창의 볼륨 및 FPS 설정값이 실제 앱에 유지되도록 구현.
+
+---
+
 ## 📅 2026-05-07-2 업데이트 로그
 
 ### 🛠 현재까지 완료된 작업 (Status: ✅ UI 고도화 및 시스템 안정화 완료)

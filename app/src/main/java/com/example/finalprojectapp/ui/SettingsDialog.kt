@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.SeekBar
 import androidx.fragment.app.DialogFragment
 import com.example.finalprojectapp.databinding.SettingsDialogBinding
 
@@ -26,7 +25,7 @@ class SettingsDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         
-        // 다이얼로그 배경 투명 처리 (레이아웃의 배경인 bg_panel_wood를 살리기 위함)
+        // 다이얼로그 배경 투명 처리 (MaterialCardView의 둥근 모서리를 살리기 위함)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
         setupListeners()
@@ -38,35 +37,30 @@ class SettingsDialog : DialogFragment() {
             dismiss()
         }
 
-        // 볼륨 조절 시 텍스트 업데이트 예시
-        binding.seekSound.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                binding.txtSoundValue.text = progress.toString()
-            }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
+        // Material 3 Slider 리스너 설정
+        binding.seekSound.addOnChangeListener { _, value, _ ->
+            binding.txtSoundValue.text = value.toInt().toString()
+        }
 
-        binding.seekBgm.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                binding.txtBgmValue.text = progress.toString()
-            }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
+        binding.seekBgm.addOnChangeListener { _, value, _ ->
+            binding.txtBgmValue.text = value.toInt().toString()
+        }
 
-        binding.seekSfx.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
-            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                binding.txtSfxValue.text = progress.toString()
+        binding.seekSfx.addOnChangeListener { _, value, _ ->
+            binding.txtSfxValue.text = value.toInt().toString()
+        }
+        
+        // FPS 토글 버튼 그룹 리스너 (필요 시 구현)
+        binding.toggleGroupFps.addOnButtonCheckedListener { _, checkedId, isChecked ->
+            if (isChecked) {
+                // 선택된 FPS에 따른 로직 처리
             }
-            override fun onStartTrackingTouch(seekBar: SeekBar?) {}
-            override fun onStopTrackingTouch(seekBar: SeekBar?) {}
-        })
+        }
     }
 
     override fun onStart() {
         super.onStart()
-        // 다이얼로그 너비를 화면의 90%로 설정하여 전체화면보다 살짝 작게 만듦
+        // 다이얼로그 너비를 화면의 90%로 설정
         dialog?.window?.setLayout(
             (resources.displayMetrics.widthPixels * 0.9).toInt(),
             ViewGroup.LayoutParams.WRAP_CONTENT

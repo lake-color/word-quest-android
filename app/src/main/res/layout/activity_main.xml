@@ -1,51 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.MainActivity">
+    android:background="?android:attr/windowBackground"
+    android:padding="32dp">
 
-    <ImageView
-        android:id="@+id/imgTitle"
-        android:layout_width="250dp"
+    <!-- App Logo / Title Section -->
+    <LinearLayout
+        android:id="@+id/titleSection"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/img_title"
-        android:contentDescription="@string/game_title"
-
+        android:gravity="center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/buttonSection"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@+id/btnStart"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.3"/>
+        app:layout_vertical_chainStyle="packed">
 
-    <Button
-        android:id="@+id/btnStart"
-        android:layout_width="220dp"
-        android:layout_height="60dp"
-        android:text="@string/start"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="@color/standard_ui_green"
+        <ImageView
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:src="@mipmap/ic_launcher"
+            android:layout_marginBottom="24dp" />
 
-        app:layout_constraintTop_toTopOf="parent"
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textAppearance="?attr/textAppearanceHeadlineLarge"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/game_title"
+            android:textAppearance="?attr/textAppearanceBodyLarge"
+            android:textColor="?attr/colorSecondary"
+            android:alpha="0.8" />
+    </LinearLayout>
+
+    <!-- Action Buttons -->
+    <LinearLayout
+        android:id="@+id/buttonSection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="48dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.75"/>
+        app:layout_constraintTop_toBottomOf="@id/titleSection">
 
-    <Button
-        android:id="@+id/btnSet"
-        android:layout_width="220dp"
-        android:layout_height="60dp"
-        android:text="@string/settings"
-        android:textColor="#FFFFFF"
-        android:backgroundTint="@color/standard_ui_green"
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnStart"
+            style="@style/Widget.Material3.Button"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:layout_marginBottom="16dp"
+            android:text="@string/start"
+            android:textSize="18sp"
+            app:cornerRadius="20dp" />
 
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintVertical_bias="0.85"/>
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnSet"
+            style="@style/Widget.Material3.Button.OutlinedButton"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:text="@string/settings"
+            android:textSize="18sp"
+            app:cornerRadius="20dp" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
