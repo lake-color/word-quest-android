@@ -35,18 +35,21 @@
         android:id="@+id/cardWord"
         style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginVertical="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginVertical="32dp"
+        android:minHeight="320dp"
         app:cardCornerRadius="32dp"
         app:layout_constraintBottom_toTopOf="@+id/layoutButtons"
         app:layout_constraintTop_toBottomOf="@id/txtStudyTitle">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="32dp">
+            android:padding="24dp">
 
             <TextView
                 android:id="@+id/txtWord"
@@ -55,14 +58,14 @@
                 android:text="@string/default_english_meaning"
                 android:textAppearance="?attr/textAppearanceHeadlineLarge"
                 android:textColor="?attr/colorPrimary"
-                android:textSize="56sp"
+                android:textSize="44sp"
                 android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txtMean"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="28dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/default_korean_meaning"
                 android:textAppearance="?attr/textAppearanceHeadlineSmall"
                 android:textColor="?attr/colorSecondary"

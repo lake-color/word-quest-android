@@ -1,5 +1,28 @@
 # 🎮 Word Quest - 프로젝트 진행 현황 (Final Project)
 
+## 📅 2026-05-11-2 업데이트 로그
+
+### 🛠 현재까지 완료된 작업 (Status: ⚡ 빌드 안정화 및 네비게이션 성능 최적화 완료)
+- **빌드 시스템 및 XML 오류 수정:**
+    - `activity_main.xml` 내 잘못된 속성명(`layout_vertical_chainStyle`)을 ConstraintLayout 표준 속성(`layout_constraintVertical_chainStyle`)으로 수정.
+    - `StageAdapter.kt`에서 개편된 레이아웃 ID(`cardStage`, `txtStageNum`)를 참조하도록 동기화하여 컴파일 에러 해결.
+- **네비게이션 구조 및 성능 고도화:**
+    - **탭 순서 변경:** 하단 탭을 `Review | Learn | Battle` 순으로 재배치하여 사용성 개선.
+    - **초기 화면 설정:** 앱 실행 시 중앙의 `Learn` 탭이 기본으로 선택되도록 로직 변경.
+    - **성능 최적화 (Fragment Caching):** 프래그먼트 교체(`replace`) 방식에서 캐싱 기반 `show/hide` 방식으로 변경하여 전환 반응성 및 상태 유지 대폭 개선.
+- **UI 디테일 조정:**
+    - **StudyActivity:** 단어 카드가 화면을 과도하게 채우던 문제를 해결하기 위해 카드 크기 축소(wrap_content + minHeight), 텍스트 크기 조정(56sp -> 44sp) 및 여백 최적화 적용.
+- **레거시 리소스 청소 (Project Cleanup):**
+    - Material 3 개편으로 더 이상 사용하지 않는 나무 테마 드로어블(`bg_wood_...` 시리즈 등 7종) 일괄 삭제.
+    - 미사용 레이아웃(`fragment_simple.xml`) 삭제 및 `BattleFragment` 전용 레이아웃(`fragment_battle.xml`)으로 대체.
+    - 코드 내 미사용 Import 및 컬러 리소스 정리.
+
+### 🚀 향후 작업 계획 (Next Steps)
+1. **Battle(미니게임) 로직 구현:** '워드 러너' 게임의 핵심 퀴즈 알고리즘 및 캐릭터 이동 로직 개발.
+2. **데이터 영속성:** `SharedPreferences` 연동을 통한 설정값(볼륨, 진동 등) 실제 적용.
+
+---
+
 ## 📅 2026-05-11-1 업데이트 로그
 
 ### 🛠 현재까지 완료된 작업 (Status: 🎨 Material 3 기반 UI/UX 전면 대개편 완료)

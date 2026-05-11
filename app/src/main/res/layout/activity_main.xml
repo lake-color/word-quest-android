@@ -16,7 +16,7 @@
         android:orientation="vertical"
         app:layout_constraintBottom_toTopOf="@+id/buttonSection"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_vertical_chainStyle="packed">
+        app:layout_constraintVertical_chainStyle="packed">
 
         <ImageView
             android:layout_width="120dp"

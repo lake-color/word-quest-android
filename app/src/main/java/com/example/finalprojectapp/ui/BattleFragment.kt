@@ -5,16 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.example.finalprojectapp.R
-import com.example.finalprojectapp.databinding.FragmentSimpleBinding
+import com.example.finalprojectapp.databinding.FragmentBattleBinding
 
 class BattleFragment : Fragment() {
-    private var _binding: FragmentSimpleBinding? = null
+    private var _binding: FragmentBattleBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        _binding = FragmentSimpleBinding.inflate(inflater, container, false)
-        binding.txtTitle.text = getString(R.string.nav_battle)
+        _binding = FragmentBattleBinding.inflate(inflater, container, false)
         return binding.root
     }
 

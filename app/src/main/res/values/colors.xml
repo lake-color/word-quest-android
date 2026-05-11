@@ -29,9 +29,5 @@
     <color name="outline">#85736F</color>
 
     <!-- Legacy / Utility Colors -->
-    <color name="standard_ui_green">#32CD32</color>
-    <color name="soft_wood">#D8B98A</color>
-    <color name="dark_wood">#5A341A</color>
-    <color name="leaf_green">#81C784</color>
     <color name="error_red">#B00020</color>
 </resources>
