@@ -14,12 +14,26 @@
     <string name="stage_format">Stage %1$d</string>
     <string name="wrong_answer_note">Wrong Answer Note</string>
     <string name="mini_game">Mini Game</string>
+    <string name="review_empty">틀린 단어가 없습니다.\n완벽해요!</string>
+    <string name="wrong_count_format">%1$d회 틀림</string>
+    <string name="no_words_found">No words found\nin Stage %1$d</string>
+
+    <!-- Base value -->
+    <string name="default_stage_number">Empty Stage Number</string>
+    <string name="default_english_meaning">Empty English</string>
+    <string name="default_korean_meaning">Empty Korean</string>
+    <string name="default_wrong_count">0회 틀림</string>
 
     <!-- Buttons & Actions -->
     <string name="start">Start</string>
     <string name="settings">Settings</string>
     <string name="close">Close</string>
     <string name="test_start">Start Test</string>
+
+    <string name="prev">Prev</string>
+    <string name="next">Next</string>
+    <string name="back">Back</string>
+
 
     <!-- Settings Dialog -->
     <string name="master_volume">Master Volume</string>

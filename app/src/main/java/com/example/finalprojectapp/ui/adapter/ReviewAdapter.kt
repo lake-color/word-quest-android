@@ -14,7 +14,7 @@ class ReviewAdapter : ListAdapter<Word, ReviewAdapter.ViewHolder>(DiffCallback) 
         fun bind(word: Word) {
             binding.tvEnglish.text = word.english
             binding.tvKorean.text = word.korean
-            binding.tvWrongCount.text = "${word.wrongCount}회 틀림"
+            binding.tvWrongCount.text = binding.root.context.getString(com.example.finalprojectapp.R.string.wrong_count_format, word.wrongCount)
         }
     }
 

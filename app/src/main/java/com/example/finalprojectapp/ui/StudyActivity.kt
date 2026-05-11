@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.lifecycleScope
+import com.example.finalprojectapp.R
 import com.example.finalprojectapp.data.Word
 import com.example.finalprojectapp.data.WordDatabase
 import com.example.finalprojectapp.databinding.ActivityStudyBinding
@@ -24,7 +25,7 @@ class StudyActivity : AppCompatActivity() {
 
         // 1. 스테이지 번호 가져오기
         val stageNum = intent.getIntExtra("STAGE_NUM", 1)
-        binding.txtStudyTitle.text = "Stage $stageNum"
+        binding.txtStudyTitle.text = getString(R.string.stage_format, stageNum)
 
         // 2. DB에서 해당 스테이지 단어 불러오기
         loadWords(stageNum)
@@ -74,7 +75,7 @@ class StudyActivity : AppCompatActivity() {
                 isShowingEnglish = true
                 updateUI()
             } else {
-                binding.txtWord.text = "No words found\nin Stage $stageNum"
+                binding.txtWord.text = getString(R.string.no_words_found, stageNum)
                 binding.layoutButtons.visibility = View.GONE
             }
         }

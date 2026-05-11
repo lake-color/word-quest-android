@@ -22,7 +22,7 @@
         android:id="@+id/tvEmpty"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="틀린 단어가 없습니다.\n완벽해요!"
+        android:text="@string/review_empty"
         android:textAlignment="center"
         android:textColor="#8B5A2B"
         android:textSize="16sp"
