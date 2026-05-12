@@ -12,6 +12,9 @@ interface WordDao {
     @Query("SELECT * FROM word_table ORDER BY id ASC")
     fun getAllWords(): Flow<List<Word>>
 
+    @Query("SELECT * FROM word_table ORDER BY id ASC")
+    suspend fun getAllWordsList(): List<Word>
+
     @Query("SELECT * FROM word_table WHERE wrongCount > 0 ORDER BY wrongCount DESC")
     fun getReviewWords(): Flow<List<Word>>
 

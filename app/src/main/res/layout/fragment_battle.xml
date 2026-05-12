@@ -1,37 +1,154 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground">
+    android:background="@drawable/bg_panel_wood">
 
+    <!-- HUD (Score & HP) -->
     <LinearLayout
+        android:id="@+id/layoutHUD"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txtScore"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Score: 0"
+            android:textColor="#5A341A"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtHP"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="HP: 3"
+            android:textColor="#FF0000"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+    <!-- Question Word -->
+    <TextView
+        android:id="@+id/txtCurrentWord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
+        android:text="QUESTION"
+        android:textColor="#5A341A"
+        android:textSize="32sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/layoutHUD"
+        android:layout_marginTop="20dp"/>
+
+    <!-- Track Area -->
+    <View
+        android:id="@+id/viewTrack"
+        android:layout_width="200dp"
+        android:layout_height="0dp"
+        android:background="#33000000"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@id/txtCurrentWord"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="100dp"/>
 
-        <ImageView
-            android:layout_width="120dp"
-            android:layout_height="120dp"
-            android:alpha="0.3"
-            android:src="@android:drawable/ic_menu_compass"
-            app:tint="?attr/colorPrimary" />
+    <!-- Left Gate -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/gateLeft"
+        android:layout_width="90dp"
+        android:layout_height="120dp"
+        app:cardBackgroundColor="#8000FF00"
+        app:cardCornerRadius="12dp"
+        app:strokeColor="#FFFFFF"
+        app:strokeWidth="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/viewTrack"
+        app:layout_constraintEnd_toStartOf="@id/viewTrack"
+        app:layout_constraintTop_toTopOf="@id/viewTrack"
+        app:layout_constraintVertical_bias="0.3">
 
         <TextView
-            android:id="@+id/txtBattleStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="Battle Mode Coming Soon"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
-            android:textColor="?attr/colorPrimary"
-            android:alpha="0.5" />
+            android:id="@+id/txtGateLeft"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Choice A"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+    </com.google.android.material.card.MaterialCardView>
 
-    </LinearLayout>
+    <!-- Right Gate -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/gateRight"
+        android:layout_width="90dp"
+        android:layout_height="120dp"
+        app:cardBackgroundColor="#80FF0000"
+        app:cardCornerRadius="12dp"
+        app:strokeColor="#FFFFFF"
+        app:strokeWidth="2dp"
+        app:layout_constraintBottom_toBottomOf="@id/viewTrack"
+        app:layout_constraintStart_toEndOf="@id/viewTrack"
+        app:layout_constraintTop_toTopOf="@id/viewTrack"
+        app:layout_constraintVertical_bias="0.3">
+
+        <TextView
+            android:id="@+id/txtGateRight"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="8dp"
+            android:text="Choice B"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Player Character (Simulated with an Icon) -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/playerCharacter"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        app:cardBackgroundColor="#FFD700"
+        app:cardCornerRadius="25dp"
+        app:layout_constraintBottom_toBottomOf="@id/viewTrack"
+        app:layout_constraintEnd_toEndOf="@id/viewTrack"
+        app:layout_constraintStart_toStartOf="@id/viewTrack"
+        android:layout_marginBottom="20dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@android:drawable/ic_menu_myplaces"
+            android:padding="8dp"
+            app:tint="#5A341A"/>
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Control Areas (Invisible click zones) -->
+    <View
+        android:id="@+id/clickLeft"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/viewTrack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/clickRight"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/viewTrack"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
