@@ -2,153 +2,175 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/battleRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground">
+    android:background="?android:attr/windowBackground"
+    android:clipChildren="false"
+    android:clipToPadding="false">
 
-    <!-- HUD (Score & HP) -->
-    <LinearLayout
-        android:id="@+id/layoutHUD"
+    <!-- 도로 및 원근감 가이드라인 -->
+    <View
+        android:id="@+id/roadBase"
         android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:alpha="0.3"
+        android:background="@drawable/bg_battle_road" />
+
+    <!-- 실시간 게임 요소 컨테이너 -->
+    <FrameLayout
+        android:id="@+id/gameContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:clipChildren="false"
+        android:clipToPadding="false" />
+
+    <!-- 문제 표시 카드 -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardQuestion"
+        style="@style/Widget.Material3.CardView.Elevated"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:padding="16dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <TextView
-            android:id="@+id/txtScore"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Score: 0"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
-            android:textColor="?attr/colorPrimary"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/txtHP"
+            android:id="@+id/txtCurrentWord"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="HP: 3"
-            android:textAppearance="?attr/textAppearanceTitleMedium"
-            android:textColor="?attr/colorTertiary"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-    <!-- Question Word -->
-    <TextView
-        android:id="@+id/txtCurrentWord"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:text="QUESTION"
-        android:textAppearance="?attr/textAppearanceHeadlineLarge"
-        android:textColor="?attr/colorPrimary"
-        android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/layoutHUD" />
-
-    <!-- Track Area -->
-    <View
-        android:id="@+id/viewTrack"
-        android:layout_width="200dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="100dp"
-        android:background="?attr/colorSurfaceVariant"
-        android:alpha="0.3"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtCurrentWord" />
-
-    <!-- Left Gate -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/gateLeft"
-        style="@style/Widget.Material3.CardView.Elevated"
-        android:layout_width="90dp"
-        android:layout_height="120dp"
-        app:cardBackgroundColor="?attr/colorSecondaryContainer"
-        app:cardCornerRadius="12dp"
-        app:layout_constraintBottom_toBottomOf="@id/viewTrack"
-        app:layout_constraintEnd_toStartOf="@id/viewTrack"
-        app:layout_constraintTop_toTopOf="@id/viewTrack"
-        app:layout_constraintVertical_bias="0.3">
-
-        <TextView
-            android:id="@+id/txtGateLeft"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="Choice A"
-            android:textColor="?attr/colorOnSecondaryContainer"
+            android:paddingHorizontal="24dp"
+            android:paddingVertical="12dp"
+            android:text="---"
+            android:textAppearance="?attr/textAppearanceHeadlineMedium"
+            android:textColor="?attr/colorPrimary"
             android:textStyle="bold" />
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Right Gate -->
-    <com.google.android.material.card.MaterialCardView
-        android:id="@+id/gateRight"
-        style="@style/Widget.Material3.CardView.Elevated"
-        android:layout_width="90dp"
-        android:layout_height="120dp"
-        app:cardBackgroundColor="?attr/colorTertiaryContainer"
-        app:cardCornerRadius="12dp"
-        app:layout_constraintBottom_toBottomOf="@id/viewTrack"
-        app:layout_constraintStart_toEndOf="@id/viewTrack"
-        app:layout_constraintTop_toTopOf="@id/viewTrack"
-        app:layout_constraintVertical_bias="0.3">
-
-        <TextView
-            android:id="@+id/txtGateRight"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:padding="8dp"
-            android:text="Choice B"
-            android:textColor="?attr/colorOnTertiaryContainer"
-            android:textStyle="bold" />
-    </com.google.android.material.card.MaterialCardView>
-
-    <!-- Player Character (Simulated with an Icon) -->
+    <!-- 플레이어 캐릭터 -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/playerCharacter"
-        style="@style/Widget.Material3.CardView.Filled"
-        android:layout_width="56dp"
-        android:layout_height="56dp"
-        android:layout_marginBottom="20dp"
+        android:layout_width="64dp"
+        android:layout_height="84dp"
+        android:layout_marginBottom="120dp"
         app:cardBackgroundColor="?attr/colorPrimary"
-        app:cardCornerRadius="28dp"
-        app:layout_constraintBottom_toBottomOf="@id/viewTrack"
-        app:layout_constraintEnd_toEndOf="@id/viewTrack"
-        app:layout_constraintStart_toStartOf="@id/viewTrack">
-
+        app:cardCornerRadius="16dp"
+        app:cardElevation="12dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="12dp"
-            android:src="@android:drawable/ic_menu_myplaces"
+            android:padding="16dp"
+            android:src="@android:drawable/ic_menu_directions"
             app:tint="?attr/colorOnPrimary" />
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Control Areas (Invisible click zones) -->
-    <View
-        android:id="@+id/clickLeft"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@id/viewTrack"
+    <!-- HUD (Score & HP) -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="24dp"
+        android:orientation="vertical"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent">
+        <TextView
+            android:id="@+id/txtScore"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="SCORE: 0"
+            android:textAppearance="?attr/textAppearanceTitleLarge"
+            android:textColor="?attr/colorPrimary"
+            android:textStyle="bold" />
+        <ProgressBar
+            android:id="@+id/hpBar"
+            style="@style/Widget.AppCompat.ProgressBar.Horizontal"
+            android:layout_width="120dp"
+            android:layout_height="8dp"
+            android:layout_marginTop="8dp"
+            android:max="3"
+            android:progress="3"
+            android:progressTint="@color/error_red" />
+    </LinearLayout>
 
-    <View
-        android:id="@+id/clickRight"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <!-- 1. 시작 전 카운트다운 오버레이 -->
+    <FrameLayout
+        android:id="@+id/layoutCountdown"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#80000000"
+        android:visibility="gone"
+        tools:visibility="visible">
+        <TextView
+            android:id="@+id/txtCountdown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="3"
+            android:textColor="@android:color/white"
+            android:textSize="120sp"
+            android:textStyle="bold" />
+    </FrameLayout>
+
+    <!-- 2. 게임오버 결과창 오버레이 -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/layoutGameOver"
+        style="@style/Widget.Material3.CardView.Elevated"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:cardCornerRadius="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@id/viewTrack"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:visibility="visible">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GAME OVER"
+                android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                android:textColor="@color/error_red"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/txtFinalScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="Score: 120"
+                android:textAppearance="?attr/textAppearanceTitleLarge" />
+            <TextView
+                android:id="@+id/txtBestScore"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Best: 250"
+                android:alpha="0.6"
+                android:textAppearance="?attr/textAppearanceTitleMedium" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnRestart"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="32dp"
+                android:text="다시하기"
+                app:cornerRadius="16dp" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnExit"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="12dp"
+                android:text="그만두기"
+                app:cornerRadius="16dp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
