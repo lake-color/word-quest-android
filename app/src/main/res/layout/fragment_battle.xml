@@ -9,13 +9,28 @@
     android:clipChildren="false"
     android:clipToPadding="false">
 
-    <!-- 도로 및 원근감 가이드라인 -->
-    <View
-        android:id="@+id/roadBase"
+    <!-- 무한 스크롤 도로 배경 레이어 -->
+    <FrameLayout
+        android:id="@+id/roadContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:alpha="0.3"
-        android:background="@drawable/bg_battle_road" />
+        android:alpha="0.9">
+
+        <ImageView
+            android:id="@+id/road1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_battle_road" />
+
+        <ImageView
+            android:id="@+id/road2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg_battle_road2" />
+
+    </FrameLayout>
 
     <!-- 실시간 게임 요소 컨테이너 -->
     <FrameLayout
@@ -101,7 +116,7 @@
         android:id="@+id/layoutCountdown"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#80000000"
+        android:background="#A0211A18"
         android:visibility="gone"
         tools:visibility="visible">
         <TextView
@@ -110,7 +125,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="3"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/colorSurface"
             android:textSize="120sp"
             android:textStyle="bold" />
     </FrameLayout>

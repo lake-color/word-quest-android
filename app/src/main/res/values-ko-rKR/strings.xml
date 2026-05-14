@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">단어 퀘스트 (Word Quest)</string>
+    <string name="app_name">단어 퀘스트</string>
     <string name="game_title">게임으로 배우는 영어 단어</string>
 
     <!-- 메인 네비게이션 / 프래그먼트 -->

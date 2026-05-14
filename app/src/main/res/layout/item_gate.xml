@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_marginEnd="1dp"
-        app:cardBackgroundColor="#802196F3"
+        app:cardBackgroundColor="?attr/colorSecondaryContainer"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp">
 
@@ -22,7 +22,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/colorOnSecondaryContainer"
             android:textSize="18sp"
             android:textStyle="bold" />
     </com.google.android.material.card.MaterialCardView>
@@ -34,7 +34,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_marginStart="1dp"
-        app:cardBackgroundColor="#80F44336"
+        app:cardBackgroundColor="?attr/colorTertiaryContainer"
         app:cardCornerRadius="0dp"
         app:cardElevation="0dp">
 
@@ -43,7 +43,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="@android:color/white"
+            android:textColor="?attr/colorOnTertiaryContainer"
             android:textSize="18sp"
             android:textStyle="bold" />
     </com.google.android.material.card.MaterialCardView>

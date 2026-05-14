@@ -1,33 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
 
-    <!-- Material 3 Modern Wood/Nature Palette -->
-    <color name="primary">#5D4037</color>
-    <color name="on_primary">#FFFFFF</color>
-    <color name="primary_container">#D7CCC8</color>
-    <color name="on_primary_container">#211210</color>
+    <!-- Basic -->
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
 
-    <color name="secondary">#388E3C</color>
-    <color name="on_secondary">#FFFFFF</color>
-    <color name="secondary_container">#C8E6C9</color>
-    <color name="on_secondary_container">#002105</color>
+    <!-- Browns -->
+    <color name="wood_brown">#5D4037</color>
+    <color name="light_wood">#D7CCC8</color>
+    <color name="dark_brown">#211210</color>
 
-    <color name="tertiary">#F4511E</color>
-    <color name="on_tertiary">#FFFFFF</color>
-    <color name="tertiary_container">#FFCCBC</color>
-    <color name="on_tertiary_container">#320B00</color>
+    <!-- Greens -->
+    <color name="leaf_green">#388E3C</color>
+    <color name="light_green">#C8E6C9</color>
+    <color name="dark_green">#002105</color>
 
-    <color name="background">#FFFBFA</color>
-    <color name="on_background">#211A18</color>
-    <color name="surface">#FFF8F6</color>
-    <color name="on_surface">#211A18</color>
-    <color name="surface_variant">#F4E0DB</color>
-    <color name="on_surface_variant">#524340</color>
+    <!-- Oranges -->
+    <color name="deep_orange">#F4511E</color>
+    <color name="light_orange">#FFCCBC</color>
+    <color name="dark_orange">#320B00</color>
 
+    <!-- Backgrounds -->
+    <color name="cream_background">#FFFBFA</color>
+    <color name="soft_cream">#FFF8F6</color>
+    <color name="light_beige">#F4E0DB</color>
+
+    <!-- Text -->
+    <color name="primary_text">#211A18</color>
+    <color name="secondary_text">#524340</color>
+
+    <!-- Border -->
     <color name="outline">#85736F</color>
 
-    <!-- Legacy / Utility Colors -->
+    <!-- Error -->
     <color name="error_red">#B00020</color>
+
 </resources>
