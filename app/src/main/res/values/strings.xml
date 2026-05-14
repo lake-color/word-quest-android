@@ -17,6 +17,7 @@
     <string name="review_empty">틀린 단어가 없습니다.\n완벽해요!</string>
     <string name="wrong_count_format">%1$d회 틀림</string>
     <string name="no_words_found">No words found\nin Stage %1$d</string>
+    <string name="study_progress_format">%1$d/%2$d</string>
 
     <!-- Base value -->
     <string name="default_stage_number">Empty Stage Number</string>

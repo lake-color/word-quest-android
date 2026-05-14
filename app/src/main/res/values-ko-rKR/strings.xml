@@ -17,6 +17,7 @@
     <string name="review_empty">틀린 단어가 없습니다.\n완벽해요!</string>
     <string name="wrong_count_format">%1$d회 틀림</string>
     <string name="no_words_found">스테이지 %1$d에 단어가 없습니다.</string>
+    <string name="study_progress_format">%1$d/%2$d</string>
     <string name="default_wrong_count">0회 틀림</string>
 
     <!-- 버튼 및 액션 -->

@@ -59,6 +59,25 @@ class StudyActivity : AppCompatActivity() {
         binding.btnBack.setOnClickListener {
             finish()
         }
+
+        // 6. 별(즐겨찾기/암기) 버튼 설정
+        binding.btnStar.setOnClickListener {
+            if (wordList.isNotEmpty()) {
+                toggleMemorized()
+            }
+        }
+    }
+
+    private fun toggleMemorized() {
+        val currentWord = wordList[currentIndex]
+        currentWord.isMemorized = !currentWord.isMemorized
+        
+        lifecycleScope.launch(Dispatchers.IO) {
+            WordDatabase.getDatabase(this@StudyActivity).wordDao().updateWord(currentWord)
+            withContext(Dispatchers.Main) {
+                updateStarIcon(currentWord.isMemorized)
+            }
+        }
     }
 
     private fun loadWords(stageNum: Int) {
@@ -73,10 +92,16 @@ class StudyActivity : AppCompatActivity() {
             if (wordList.isNotEmpty()) {
                 currentIndex = 0
                 isShowingEnglish = true
+                
+                // 프로그레스 바 초기화
+                binding.progressStudy.max = wordList.size
+                
                 updateUI()
             } else {
                 binding.txtWord.text = getString(R.string.no_words_found, stageNum)
                 binding.layoutButtons.visibility = View.GONE
+                binding.layoutProgress.visibility = View.GONE
+                binding.btnStar.visibility = View.GONE
             }
         }
     }
@@ -87,13 +112,28 @@ class StudyActivity : AppCompatActivity() {
         // 영어 단어는 크게 상단에 유지
         binding.txtWord.text = currentWord.english
         
-        // 뜻(한국어)은 클릭 시에만 보이거나 혹은 항상 보이게 설정 가능
-        // 현재는 클릭 시 토글되는 로직에 맞춰 뜻의 가시성을 조절하는 방식으로 변경 제안
+        // 뜻(한국어) 가시성 조절
         binding.txtMean.text = currentWord.korean
         binding.txtMean.visibility = if (isShowingEnglish) View.INVISIBLE else View.VISIBLE
         
+        // 프로그레스 업데이트
+        binding.txtProgress.text = getString(R.string.study_progress_format, currentIndex + 1, wordList.size)
+        binding.progressStudy.progress = currentIndex + 1
+        
+        // 별 아이콘 업데이트
+        updateStarIcon(currentWord.isMemorized)
+
         // 버튼 활성화 상태 조절
         binding.btnPrev.isEnabled = currentIndex > 0
         binding.btnNext.isEnabled = currentIndex < wordList.size - 1
+    }
+
+    private fun updateStarIcon(isMemorized: Boolean) {
+        val iconRes = if (isMemorized) {
+            android.R.drawable.btn_star_big_on
+        } else {
+            android.R.drawable.btn_star_big_off
+        }
+        binding.btnStar.setIconResource(iconRes)
     }
 }

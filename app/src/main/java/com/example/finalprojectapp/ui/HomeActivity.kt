@@ -29,7 +29,8 @@ class HomeActivity : AppCompatActivity() {
         supportFragmentManager.beginTransaction().apply {
             add(R.id.home_container, battleFragment, "battle").hide(battleFragment)
             add(R.id.home_container, reviewFragment, "review").hide(reviewFragment)
-            add(R.id.home_container, learnFragment, "learn") // Learn을 마지막에 추가하여 위로 올림
+            add(R.id.home_container, learnFragment, "learn")
+            // Learn을 마지막에 추가하여 위로 올림
         }.commit()
 
         binding.bottomTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
