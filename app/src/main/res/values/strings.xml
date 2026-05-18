@@ -6,7 +6,7 @@
     <string name="nav_start">Start</string>
     <string name="nav_learn">Learn</string>
     <string name="nav_review">Review</string>
-    <string name="nav_battle">Battle</string>
+    <string name="nav_game">Game</string>
 
     <!-- UI Labels -->
     <string name="nickname">Nickname</string>

@@ -20,15 +20,15 @@ import androidx.lifecycle.lifecycleScope
 import com.example.finalprojectapp.R
 import com.example.finalprojectapp.data.Word
 import com.example.finalprojectapp.data.WordDatabase
-import com.example.finalprojectapp.databinding.FragmentBattleBinding
+import com.example.finalprojectapp.databinding.FragmentGameBinding
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
-class BattleFragment : Fragment() {
-    private var _binding: FragmentBattleBinding? = null
+class GameFragment : Fragment() {
+    private var _binding: FragmentGameBinding? = null
     private val binding get() = _binding!!
 
     private var allWords = listOf<Word>()
@@ -45,7 +45,7 @@ class BattleFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentBattleBinding.inflate(inflater, container, false)
+        _binding = FragmentGameBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -112,12 +112,12 @@ class BattleFragment : Fragment() {
                             .setDuration(800)
                             .start()
                         count--
-                        binding.battleRoot.postDelayed(this, 1000)
+                        binding.gameRoot.postDelayed(this, 1000)
                     }
                     count == 0 -> {
                         binding.txtCountdown.text = "START!"
                         count--
-                        binding.battleRoot.postDelayed(this, 800)
+                        binding.gameRoot.postDelayed(this, 800)
                     }
                     else -> {
                         binding.layoutCountdown.isVisible = false
@@ -126,7 +126,7 @@ class BattleFragment : Fragment() {
                 }
             }
         }
-        binding.battleRoot.post(runnable)
+        binding.gameRoot.post(runnable)
     }
 
     private fun resetGameState() {
@@ -207,7 +207,7 @@ class BattleFragment : Fragment() {
         spawnGates()
         spawnRoadLines()
 
-        binding.battleRoot.postDelayed({
+        binding.gameRoot.postDelayed({
             if (isPlaying && _binding != null && isAdded) {
                 spawnLoop()
             }
@@ -236,7 +236,7 @@ class BattleFragment : Fragment() {
             }
 
             val progress = anim.animatedValue as Float
-            line.translationY = binding.battleRoot.height * progress
+            line.translationY = binding.gameRoot.height * progress
             line.scaleY = 1f + progress * 2f
             line.alpha = 0.5f * (1f - progress)
         }
@@ -257,12 +257,12 @@ class BattleFragment : Fragment() {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupDragControl() {
-        binding.battleRoot.setOnTouchListener { _, event ->
+        binding.gameRoot.setOnTouchListener { _, event ->
             if (!isPlaying || _binding == null) return@setOnTouchListener false
 
             when (event.action) {
                 MotionEvent.ACTION_MOVE, MotionEvent.ACTION_DOWN -> {
-                    val screenWidth = binding.battleRoot.width.toFloat()
+                    val screenWidth = binding.gameRoot.width.toFloat()
                     if (screenWidth > 0) {
                         val targetX = event.x - (binding.playerCharacter.width / 2f)
                         val minX = 0f
@@ -322,7 +322,7 @@ class BattleFragment : Fragment() {
 
             val progress = animation.animatedValue as Float
 
-            gateView.translationY = binding.battleRoot.height * progress
+            gateView.translationY = binding.gameRoot.height * progress
 
             val scale = 0.1f + (progress * 1.4f)
             gateView.scaleX = scale
@@ -358,7 +358,7 @@ class BattleFragment : Fragment() {
         if (_binding == null) return
 
         val playerX = binding.playerCharacter.x + (binding.playerCharacter.width / 2f)
-        val centerX = binding.battleRoot.width / 2f
+        val centerX = binding.gameRoot.width / 2f
 
         val isPlayerLeft = playerX < centerX
         val isCorrect = if (isPlayerLeft) isCorrectLeft else !isCorrectLeft
