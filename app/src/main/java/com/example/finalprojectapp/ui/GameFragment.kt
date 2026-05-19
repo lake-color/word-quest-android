@@ -57,6 +57,10 @@ class GameFragment : Fragment() {
     }
 
     private fun setupButtons() {
+        binding.btnStartGame.setOnClickListener {
+            binding.layoutStart.isVisible = false
+            startCountdown()
+        }
         binding.btnRestart.setOnClickListener {
             binding.layoutGameOver.isVisible = false
             startCountdown()
@@ -64,6 +68,7 @@ class GameFragment : Fragment() {
         binding.btnExit.setOnClickListener {
             binding.layoutGameOver.isVisible = false
             resetGameState()
+            binding.layoutStart.isVisible = true
         }
     }
 
@@ -75,11 +80,10 @@ class GameFragment : Fragment() {
                     db.wordDao().getAllWordsList()
                 }
 
-                if (allWords.isNotEmpty()) {
-                    startCountdown()
-                } else {
+                if (allWords.isEmpty()) {
                     if (_binding != null) {
                         binding.txtCurrentWord.text = "No words available."
+                        binding.btnStartGame.isEnabled = false
                     }
                 }
             } catch (e: Exception) {
@@ -303,11 +307,13 @@ class GameFragment : Fragment() {
             if (isCorrectLeft) 0x80F44336.toInt() else 0x802196F3.toInt()
         )
 
-        gateView.scaleX = 0.1f
-        gateView.scaleY = 0.1f
+        // 초기 상태 설정: 뒤에서 나타날 때 너무 작지 않게 (0.1 -> 0.4)
+        gateView.scaleX = 0.4f
+        gateView.scaleY = 0.4f
         gateView.alpha = 0f
         binding.gameContainer.addView(gateView)
 
+        // 애니메이션: 뒤(위쪽)에서 앞(아래쪽)으로 다가오는 느낌
         val animator = ValueAnimator.ofFloat(0f, 1f)
         animator.duration = 4000
         animator.interpolator = LinearInterpolator()
@@ -322,15 +328,21 @@ class GameFragment : Fragment() {
 
             val progress = animation.animatedValue as Float
 
-            gateView.translationY = binding.gameRoot.height * progress
+            // Y축 이동: 화면 아주 위쪽(지평선 끝)에서 아래쪽으로
+            val horizonY = binding.gameRoot.height * 0.05f // 거의 맨 위에서 시작
+            val totalDistance = binding.gameRoot.height * 0.95f
+            gateView.translationY = horizonY + (totalDistance * progress)
 
-            val scale = 0.1f + (progress * 1.4f)
+            // 스케일 변화: 아주 멀리서(0.1) 다가올수록 아주 커짐(2.0)
+            val scale = 0.1f + (progress * 1.9f)
             gateView.scaleX = scale
             gateView.scaleY = scale
-            gateView.alpha = (progress * 2f).coerceAtMost(1f)
+            
+            // 투명도: 나타날 때 아주 서서히 페이드 인
+            gateView.alpha = (progress * 3f).coerceAtMost(1f)
 
-            // 충돌 체크 (한 번만)
-            if (!collisionChecked && progress > 0.80f && progress < 0.95f) {
+            // 충돌 체크 (플레이어 위치 근처인 progress 0.85 ~ 0.95 구간에서 체크)
+            if (!collisionChecked && progress > 0.85f && progress < 0.95f) {
                 collisionChecked = true
                 checkCollision(gateView, isCorrectLeft)
             }

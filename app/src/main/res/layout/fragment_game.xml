@@ -111,6 +111,47 @@
             android:progressTint="@color/error_red" />
     </LinearLayout>
 
+    <!-- 0. 게임 시작 대기 오버레이 -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/layoutStart"
+        style="@style/Widget.Material3.CardView.Elevated"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="32dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="WORD RUNNER"
+                android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:text="정답 문을 통과하세요!"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:alpha="0.7" />
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnStartGame"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="32dp"
+                android:text="게임 시작"
+                app:cornerRadius="16dp" />
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
     <!-- 1. 시작 전 카운트다운 오버레이 -->
     <FrameLayout
         android:id="@+id/layoutCountdown"
