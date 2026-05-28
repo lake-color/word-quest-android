@@ -76,14 +76,28 @@ class GameFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val db = WordDatabase.getDatabase(requireContext())
-                allWords = withContext(Dispatchers.IO) {
-                    db.wordDao().getAllWordsList()
+                
+                // 데이터 로드 시도
+                var words = withContext(Dispatchers.IO) { db.wordDao().getAllWordsList() }
+                
+                // 최초 실행 시 데이터 주입 시간을 고려하여 데이터가 없다면 잠시 대기 후 재시도
+                if (words.isEmpty()) {
+                    kotlinx.coroutines.delay(1000)
+                    words = withContext(Dispatchers.IO) { db.wordDao().getAllWordsList() }
                 }
+
+                allWords = words
 
                 if (allWords.isEmpty()) {
                     if (_binding != null) {
-                        binding.txtCurrentWord.text = "No words available."
+                        binding.txtCurrentWord.text = "No words available.\nPlease restart app."
                         binding.btnStartGame.isEnabled = false
+                    }
+                } else {
+                    // 데이터가 있으면 시작 화면 표시
+                    if (_binding != null) {
+                        binding.layoutStart.isVisible = true
+                        binding.btnStartGame.isEnabled = true
                     }
                 }
             } catch (e: Exception) {
@@ -120,6 +134,9 @@ class GameFragment : Fragment() {
                     }
                     count == 0 -> {
                         binding.txtCountdown.text = "START!"
+                        // 문구가 길어지므로 스케일을 줄여 화면 안으로 넣음
+                        binding.txtCountdown.scaleX = 0.8f
+                        binding.txtCountdown.scaleY = 0.8f
                         count--
                         binding.gameRoot.postDelayed(this, 800)
                     }
@@ -182,7 +199,7 @@ class GameFragment : Fragment() {
 
             animator.addUpdateListener { anim ->
                 if (_binding == null || !isPlaying) {
-                    anim.cancel()
+                    anim.cancel()   
                     return@addUpdateListener
                 }
 
@@ -333,8 +350,8 @@ class GameFragment : Fragment() {
             val totalDistance = binding.gameRoot.height * 0.95f
             gateView.translationY = horizonY + (totalDistance * progress)
 
-            // 스케일 변화: 아주 멀리서(0.1) 다가올수록 아주 커짐(2.0)
-            val scale = 0.1f + (progress * 1.9f)
+            // 스케일 변화: 아주 멀리서(0.4) 다가올수록 아주 커짐(2.0)
+            val scale = 0.4f + (progress * 1.6f)
             gateView.scaleX = scale
             gateView.scaleY = scale
             
@@ -430,7 +447,21 @@ class GameFragment : Fragment() {
         if (_binding == null) return
 
         binding.txtScore.text = "SCORE: $score"
-        binding.hpBar.progress = hp
+        
+        // 하트(HP) 업데이트
+        val hearts = listOf(binding.ivHeart1, binding.ivHeart2, binding.ivHeart3)
+        for (i in hearts.indices) {
+            if (i < hp) {
+                hearts[i].setImageResource(android.R.drawable.btn_star_big_on)
+                hearts[i].alpha = 1.0f
+                hearts[i].scaleX = 1.0f
+                hearts[i].scaleY = 1.0f
+            } else {
+                // 하트가 깨진(회색/투명) 상태 연출
+                hearts[i].alpha = 0.3f
+                hearts[i].animate().scaleX(0.8f).scaleY(0.8f).setDuration(300).start()
+            }
+        }
     }
 
     override fun onPause() {
