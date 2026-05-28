@@ -5,7 +5,7 @@
     <!-- Main Navigation / Fragments -->
     <string name="nav_start">Start</string>
     <string name="nav_learn">Learn</string>
-    <string name="nav_review">Review</string>
+    <string name="nav_review">Wordbook</string>
     <string name="nav_game">Game</string>
 
     <!-- UI Labels -->

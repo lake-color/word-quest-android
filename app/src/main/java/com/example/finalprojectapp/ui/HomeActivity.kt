@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import com.example.finalprojectapp.R
 import com.example.finalprojectapp.databinding.ActivityHomeBinding
+import com.example.finalprojectapp.ui.WordbookFragment
 import com.google.android.material.tabs.TabLayout
 
 class HomeActivity : AppCompatActivity() {
@@ -12,7 +13,7 @@ class HomeActivity : AppCompatActivity() {
     
     // 프래그먼트 재사용을 위한 캐싱
     private val learnFragment by lazy { LearnFragment() }
-    private val reviewFragment by lazy { ReviewFragment() }
+    private val wordbookFragment by lazy { WordbookFragment() }
     private val gameFragment by lazy { GameFragment() }
     private var activeFragment: Fragment = learnFragment
 
@@ -28,7 +29,7 @@ class HomeActivity : AppCompatActivity() {
         // 모든 프래그먼트를 미리 추가하고 Learn만 보이게 설정
         supportFragmentManager.beginTransaction().apply {
             add(R.id.home_container, gameFragment, "game").hide(gameFragment)
-            add(R.id.home_container, reviewFragment, "review").hide(reviewFragment)
+            add(R.id.home_container, wordbookFragment, "wordbook").hide(wordbookFragment)
             add(R.id.home_container, learnFragment, "learn")
             // Learn을 마지막에 추가하여 위로 올림
         }.commit()
@@ -36,7 +37,7 @@ class HomeActivity : AppCompatActivity() {
         binding.bottomTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 when (tab?.position) {
-                    0 -> showFragment(reviewFragment)
+                    0 -> showFragment(wordbookFragment)
                     1 -> showFragment(learnFragment)
                     2 -> showFragment(gameFragment)
                 }
