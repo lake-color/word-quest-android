@@ -76,11 +76,8 @@ class GameFragment : Fragment() {
         lifecycleScope.launch {
             try {
                 val db = WordDatabase.getDatabase(requireContext())
-                
-                // 데이터 로드 시도
                 var words = withContext(Dispatchers.IO) { db.wordDao().getAllWordsList() }
                 
-                // 최초 실행 시 데이터 주입 시간을 고려하여 데이터가 없다면 잠시 대기 후 재시도
                 if (words.isEmpty()) {
                     kotlinx.coroutines.delay(1000)
                     words = withContext(Dispatchers.IO) { db.wordDao().getAllWordsList() }
@@ -88,23 +85,17 @@ class GameFragment : Fragment() {
 
                 allWords = words
 
-                if (allWords.isEmpty()) {
-                    if (_binding != null) {
-                        binding.txtCurrentWord.text = "No words available.\nPlease restart app."
+                if (_binding != null) {
+                    if (allWords.isEmpty()) {
+                        binding.txtCurrentWord.text = "No words available."
                         binding.btnStartGame.isEnabled = false
-                    }
-                } else {
-                    // 데이터가 있으면 시작 화면 표시
-                    if (_binding != null) {
+                    } else {
                         binding.layoutStart.isVisible = true
                         binding.btnStartGame.isEnabled = true
                     }
                 }
             } catch (e: Exception) {
                 e.printStackTrace()
-                if (_binding != null) {
-                    binding.txtCurrentWord.text = "Error loading words"
-                }
             }
         }
     }
@@ -125,18 +116,18 @@ class GameFragment : Fragment() {
                         binding.txtCountdown.scaleX = 0.5f
                         binding.txtCountdown.scaleY = 0.5f
                         binding.txtCountdown.animate()
-                            .scaleX(1.2f)
-                            .scaleY(1.2f)
-                            .setDuration(800)
+                            .scaleX(1.1f)
+                            .scaleY(1.1f)
+                            .setDuration(700)
                             .start()
                         count--
                         binding.gameRoot.postDelayed(this, 1000)
                     }
                     count == 0 -> {
                         binding.txtCountdown.text = "START!"
-                        // 문구가 길어지므로 스케일을 줄여 화면 안으로 넣음
-                        binding.txtCountdown.scaleX = 0.8f
-                        binding.txtCountdown.scaleY = 0.8f
+                        // START 문구가 길어지므로 확실하게 작게 조정
+                        binding.txtCountdown.scaleX = 0.6f
+                        binding.txtCountdown.scaleY = 0.6f
                         count--
                         binding.gameRoot.postDelayed(this, 800)
                     }
@@ -150,6 +141,14 @@ class GameFragment : Fragment() {
         binding.gameRoot.post(runnable)
     }
 
+    private fun startGame() {
+        resetGameState()
+        isPlaying = true
+        updateHUD()
+        startBackgroundAnimation()
+        spawnLoop()
+    }
+
     private fun resetGameState() {
         if (_binding == null) return
 
@@ -160,11 +159,9 @@ class GameFragment : Fragment() {
         binding.txtCurrentWord.text = "READY?"
         binding.gameContainer.removeAllViews()
 
-        // 배경 위치 초기화
         binding.road1.translationY = 0f
         binding.road2.translationY = 0f
 
-        // 모든 애니메이터 정리
         activeAnimators.forEach { it.cancel() }
         activeAnimators.clear()
 
@@ -172,58 +169,33 @@ class GameFragment : Fragment() {
         backgroundAnimator = null
     }
 
-    private fun startGame() {
-        resetGameState()
-        isPlaying = true
-        updateHUD()
-        startBackgroundAnimation()
-        spawnLoop()
-    }
-
     private fun startBackgroundAnimation() {
-        // 기존 배경 애니메이션 취소
         backgroundAnimator?.cancel()
-
         binding.road1.post {
             if (_binding == null) return@post
-
             val roadHeight = binding.road1.height.toFloat()
             if (roadHeight <= 0) return@post
 
-            binding.road2.translationY = -roadHeight
-
-            val animator = ValueAnimator.ofFloat(0f, roadHeight)
-            animator.duration = 10000L
-            animator.repeatCount = ValueAnimator.INFINITE
-            animator.interpolator = LinearInterpolator()
-
-            animator.addUpdateListener { anim ->
-                if (_binding == null || !isPlaying) {
-                    anim.cancel()   
-                    return@addUpdateListener
+            backgroundAnimator = ValueAnimator.ofFloat(0f, roadHeight).apply {
+                duration = 10000L
+                repeatCount = ValueAnimator.INFINITE
+                interpolator = LinearInterpolator()
+                addUpdateListener { anim ->
+                    if (_binding == null || !isPlaying) {
+                        anim.cancel()
+                        return@addUpdateListener
+                    }
+                    val offset = anim.animatedValue as Float
+                    binding.road1.translationY = offset
+                    binding.road2.translationY = offset - roadHeight
                 }
-
-                val offset = anim.animatedValue as Float
-
-                binding.road1.translationY = offset
-                binding.road2.translationY = offset - roadHeight
-
-                // 순환 처리
-                if (binding.road1.translationY >= roadHeight) {
-                    binding.road1.translationY -= roadHeight * 2
-                }
-                if (binding.road2.translationY >= roadHeight) {
-                    binding.road2.translationY -= roadHeight * 2
-                }
+                start()
             }
-
-            backgroundAnimator = animator
-            animator.start()
         }
     }
 
     private fun spawnLoop() {
-        if (!isPlaying || hp <= 0 || !isAdded) return
+        if (!isPlaying || hp <= 0 || !isAdded || _binding == null) return
 
         spawnGates()
         spawnRoadLines()
@@ -232,64 +204,45 @@ class GameFragment : Fragment() {
             if (isPlaying && _binding != null && isAdded) {
                 spawnLoop()
             }
-        }, 2000)
+        }, 2200)
     }
 
     private fun spawnRoadLines() {
-        if (!isAdded || _binding == null) return
-
-        val line = View(requireContext())
-        line.layoutParams = FrameLayout.LayoutParams(10, 60).apply {
-            gravity = Gravity.CENTER_HORIZONTAL
+        if (_binding == null || !isAdded) return
+        val line = View(requireContext()).apply {
+            layoutParams = FrameLayout.LayoutParams(10, 60).apply { gravity = Gravity.CENTER_HORIZONTAL }
+            setBackgroundColor(Color.WHITE)
+            alpha = 0.4f
         }
-        line.setBackgroundColor(Color.WHITE)
-        line.alpha = 0.5f
         binding.gameContainer.addView(line, 0)
 
-        val animator = ValueAnimator.ofFloat(0f, 1f)
-        animator.duration = 2000
-        animator.interpolator = LinearInterpolator()
-
-        animator.addUpdateListener { anim ->
-            if (_binding == null || !isAdded) {
-                anim.cancel()
-                return@addUpdateListener
+        ValueAnimator.ofFloat(0f, 1.1f).apply {
+            duration = 1800
+            interpolator = LinearInterpolator()
+            addUpdateListener { anim ->
+                if (_binding == null) { anim.cancel(); return@addUpdateListener }
+                val p = anim.animatedValue as Float
+                line.translationY = binding.gameRoot.height * p
             }
-
-            val progress = anim.animatedValue as Float
-            line.translationY = binding.gameRoot.height * progress
-            line.scaleY = 1f + progress * 2f
-            line.alpha = 0.5f * (1f - progress)
+            addListener(object : Animator.AnimatorListener {
+                override fun onAnimationEnd(a: Animator) { if (_binding != null) binding.gameContainer.removeView(line) }
+                override fun onAnimationStart(a: Animator) {}
+                override fun onAnimationRepeat(a: Animator) {}
+                override fun onAnimationCancel(a: Animator) {}
+            })
+            start()
         }
-
-        animator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator) {}
-            override fun onAnimationRepeat(animation: Animator) {}
-            override fun onAnimationCancel(animation: Animator) {}
-            override fun onAnimationEnd(animation: Animator) {
-                if (_binding != null && isAdded) {
-                    binding.gameContainer.removeView(line)
-                }
-            }
-        })
-
-        animator.start()
     }
 
     @SuppressLint("ClickableViewAccessibility")
     private fun setupDragControl() {
         binding.gameRoot.setOnTouchListener { _, event ->
             if (!isPlaying || _binding == null) return@setOnTouchListener false
-
-            when (event.action) {
-                MotionEvent.ACTION_MOVE, MotionEvent.ACTION_DOWN -> {
-                    val screenWidth = binding.gameRoot.width.toFloat()
-                    if (screenWidth > 0) {
-                        val targetX = event.x - (binding.playerCharacter.width / 2f)
-                        val minX = 0f
-                        val maxX = screenWidth - binding.playerCharacter.width
-                        binding.playerCharacter.x = targetX.coerceIn(minX, maxX)
-                    }
+            if (event.action == MotionEvent.ACTION_MOVE || event.action == MotionEvent.ACTION_DOWN) {
+                val screenWidth = binding.gameRoot.width.toFloat()
+                if (screenWidth > 0) {
+                    val targetX = event.x - (binding.playerCharacter.width / 2f)
+                    binding.playerCharacter.x = targetX.coerceIn(0f, screenWidth - binding.playerCharacter.width)
                 }
             }
             true
@@ -307,9 +260,7 @@ class GameFragment : Fragment() {
             if (it.isNotEmpty()) it.random().korean else "???"
         }
 
-        val inflater = LayoutInflater.from(requireContext())
-        val gateView = inflater.inflate(R.layout.item_gate, binding.gameContainer, false)
-
+        val gateView = LayoutInflater.from(requireContext()).inflate(R.layout.item_gate, binding.gameContainer, false)
         val tvLeft = gateView.findViewById<TextView>(R.id.tvLeft)
         val tvRight = gateView.findViewById<TextView>(R.id.tvRight)
 
@@ -317,93 +268,63 @@ class GameFragment : Fragment() {
         tvLeft.text = if (isCorrectLeft) question.korean else wrongAnswer
         tvRight.text = if (isCorrectLeft) wrongAnswer else question.korean
 
-        gateView.findViewById<MaterialCardView>(R.id.cardLeft).setCardBackgroundColor(
-            if (isCorrectLeft) 0x802196F3.toInt() else 0x80F44336.toInt()
-        )
-        gateView.findViewById<MaterialCardView>(R.id.cardRight).setCardBackgroundColor(
-            if (isCorrectLeft) 0x80F44336.toInt() else 0x802196F3.toInt()
-        )
+        gateView.findViewById<MaterialCardView>(R.id.cardLeft).setCardBackgroundColor(if (isCorrectLeft) 0x802196F3.toInt() else 0x80F44336.toInt())
+        gateView.findViewById<MaterialCardView>(R.id.cardRight).setCardBackgroundColor(if (isCorrectLeft) 0x80F44336.toInt() else 0x802196F3.toInt())
 
-        // 초기 상태 설정: 뒤에서 나타날 때 너무 작지 않게 (0.1 -> 0.4)
-        gateView.scaleX = 0.4f
-        gateView.scaleY = 0.4f
-        gateView.alpha = 0f
+        // 원근감 제거: 상단 맨 위에서 정상 크기로 시작
+        gateView.scaleX = 1.0f
+        gateView.scaleY = 1.0f
+        gateView.alpha = 1.0f
         binding.gameContainer.addView(gateView)
 
-        // 애니메이션: 뒤(위쪽)에서 앞(아래쪽)으로 다가오는 느낌
-        val animator = ValueAnimator.ofFloat(0f, 1f)
-        animator.duration = 4000
-        animator.interpolator = LinearInterpolator()
+        val animator = ValueAnimator.ofFloat(-0.2f, 1.1f).apply {
+            duration = 3500
+            interpolator = LinearInterpolator()
+            var collisionChecked = false
 
-        var collisionChecked = false
+            addUpdateListener { anim ->
+                if (_binding == null || !isAdded) { anim.cancel(); return@addUpdateListener }
+                val progress = anim.animatedValue as Float
+                gateView.translationY = binding.gameRoot.height * progress
 
-        animator.addUpdateListener { animation ->
-            if (_binding == null || !isAdded) {
-                animation.cancel()
-                return@addUpdateListener
-            }
-
-            val progress = animation.animatedValue as Float
-
-            // Y축 이동: 화면 아주 위쪽(지평선 끝)에서 아래쪽으로
-            val horizonY = binding.gameRoot.height * 0.05f // 거의 맨 위에서 시작
-            val totalDistance = binding.gameRoot.height * 0.95f
-            gateView.translationY = horizonY + (totalDistance * progress)
-
-            // 스케일 변화: 아주 멀리서(0.4) 다가올수록 아주 커짐(2.0)
-            val scale = 0.4f + (progress * 1.6f)
-            gateView.scaleX = scale
-            gateView.scaleY = scale
-            
-            // 투명도: 나타날 때 아주 서서히 페이드 인
-            gateView.alpha = (progress * 3f).coerceAtMost(1f)
-
-            // 충돌 체크 (플레이어 위치 근처인 progress 0.85 ~ 0.95 구간에서 체크)
-            if (!collisionChecked && progress > 0.85f && progress < 0.95f) {
-                collisionChecked = true
-                checkCollision(gateView, isCorrectLeft)
-            }
-        }
-
-        animator.addListener(object : Animator.AnimatorListener {
-            override fun onAnimationStart(animation: Animator) {}
-            override fun onAnimationRepeat(animation: Animator) {}
-            override fun onAnimationCancel(animation: Animator) {
-                activeAnimators.remove(animator)
-            }
-            override fun onAnimationEnd(animation: Animator) {
-                if (_binding != null && isAdded) {
-                    binding.gameContainer.removeView(gateView)
+                // 플레이어 근처에서 판정
+                if (!collisionChecked && progress > 0.82f && progress < 0.90f) {
+                    collisionChecked = true
+                    checkCollision(isCorrectLeft)
                 }
-                activeAnimators.remove(animator)
             }
-        })
-
+            addListener(object : Animator.AnimatorListener {
+                override fun onAnimationEnd(a: Animator) { if (_binding != null) binding.gameContainer.removeView(gateView); activeAnimators.remove(this as? ValueAnimator) }
+                override fun onAnimationStart(a: Animator) {}
+                override fun onAnimationRepeat(a: Animator) {}
+                override fun onAnimationCancel(a: Animator) {}
+            })
+        }
         activeAnimators.add(animator)
         animator.start()
     }
 
-    private fun checkCollision(gateView: View, isCorrectLeft: Boolean) {
+    private fun checkCollision(isCorrectLeft: Boolean) {
         if (_binding == null) return
-
         val playerX = binding.playerCharacter.x + (binding.playerCharacter.width / 2f)
-        val centerX = binding.gameRoot.width / 2f
-
-        val isPlayerLeft = playerX < centerX
+        val isPlayerLeft = playerX < (binding.gameRoot.width / 2f)
         val isCorrect = if (isPlayerLeft) isCorrectLeft else !isCorrectLeft
 
-        if (isCorrect) {
-            score += 10
-        } else {
+        if (isCorrect) { score += 10 } 
+        else {
             hp -= 1
-            currentQuestion?.let { updateWrongCount(it) }
+            currentQuestion?.let { q ->
+                lifecycleScope.launch(Dispatchers.IO) {
+                    try {
+                        val db = WordDatabase.getDatabase(requireContext())
+                        q.wrongCount += 1
+                        db.wordDao().updateWord(q)
+                    } catch (e: Exception) {}
+                }
+            }
         }
-
         updateHUD()
-
-        if (hp <= 0) {
-            gameOver()
-        }
+        if (hp <= 0) gameOver()
     }
 
     private fun gameOver() {
@@ -412,87 +333,35 @@ class GameFragment : Fragment() {
         activeAnimators.clear()
         backgroundAnimator?.cancel()
         backgroundAnimator = null
-
-        saveAndShowResults()
-    }
-
-    private fun saveAndShowResults() {
-        if (!isAdded || _binding == null) return
-
-        val prefs = requireContext().getSharedPreferences("WordQuestGame", Context.MODE_PRIVATE)
-        val bestScore = prefs.getInt("best_score", 0)
-
-        if (score > bestScore) {
-            prefs.edit().putInt("best_score", score).apply()
-        }
-
-        binding.txtFinalScore.text = "Score: $score"
-        binding.txtBestScore.text = "Best: ${if (score > bestScore) score else bestScore}"
-        binding.layoutGameOver.isVisible = true
-    }
-
-    private fun updateWrongCount(word: Word) {
-        lifecycleScope.launch(Dispatchers.IO) {
-            try {
-                val db = WordDatabase.getDatabase(requireContext())
-                word.wrongCount += 1
-                db.wordDao().updateWord(word)
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
+        
+        if (_binding != null) {
+            val prefs = requireContext().getSharedPreferences("WordQuestGame", Context.MODE_PRIVATE)
+            val best = prefs.getInt("best_score", 0)
+            if (score > best) prefs.edit().putInt("best_score", score).apply()
+            
+            binding.txtFinalScore.text = "Score: $score"
+            binding.txtBestScore.text = "Best: ${maxOf(score, best)}"
+            binding.layoutGameOver.isVisible = true
         }
     }
 
     private fun updateHUD() {
         if (_binding == null) return
-
         binding.txtScore.text = "SCORE: $score"
-        
-        // 하트(HP) 업데이트
         val hearts = listOf(binding.ivHeart1, binding.ivHeart2, binding.ivHeart3)
-        for (i in hearts.indices) {
-            if (i < hp) {
-                hearts[i].setImageResource(android.R.drawable.btn_star_big_on)
-                hearts[i].alpha = 1.0f
-                hearts[i].scaleX = 1.0f
-                hearts[i].scaleY = 1.0f
-            } else {
-                // 하트가 깨진(회색/투명) 상태 연출
-                hearts[i].alpha = 0.3f
-                hearts[i].animate().scaleX(0.8f).scaleY(0.8f).setDuration(300).start()
-            }
-        }
-    }
-
-    override fun onPause() {
-        super.onPause()
-        if (isPlaying) {
-            // 일시 정지 처리
-            isPlaying = false
-            activeAnimators.forEach {
-                if (it.isRunning) {
-                    it.pause()
-                }
-            }
-            backgroundAnimator?.let {
-                if (it.isRunning) {
-                    it.pause()
-                }
-            }
+        hearts.forEachIndexed { i, iv ->
+            if (i < hp) { iv.alpha = 1f; iv.scaleX = 1f; iv.scaleY = 1f }
+            else { iv.alpha = 0.3f; iv.scaleX = 0.8f; iv.scaleY = 0.8f }
         }
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
         isPlaying = false
-
-        // 모든 애니메이션 정리
         activeAnimators.forEach { it.cancel() }
         activeAnimators.clear()
-
         backgroundAnimator?.cancel()
         backgroundAnimator = null
-
         _binding = null
+        super.onDestroyView()
     }
 }
