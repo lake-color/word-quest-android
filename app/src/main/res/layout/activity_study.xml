@@ -33,12 +33,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/btnBack" />
 
-    <!-- Progress (Moved down, thicker) -->
+    <!-- Progress (Moved up) -->
     <TextView
         android:id="@+id/txtProgress"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="60dp"
+        android:layout_marginTop="32dp"
         android:text="1/20"
         android:textAppearance="?attr/textAppearanceTitleMedium"
         android:textColor="?attr/colorSecondary"
@@ -65,7 +65,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="64dp"
+        android:layout_marginTop="40dp"
         app:cardCornerRadius="32dp"
         app:layout_constraintDimensionRatio="4:3"
         app:layout_constraintTop_toBottomOf="@id/progressStudy">
@@ -90,7 +90,7 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginHorizontal="32dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         app:cardCornerRadius="32dp"
         app:layout_constraintDimensionRatio="4:1.8"
         app:layout_constraintTop_toBottomOf="@id/cardWord">
@@ -113,14 +113,14 @@
         style="@style/Widget.Material3.Button.IconButton"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         app:icon="@android:drawable/btn_star_big_off"
         app:iconSize="56dp"
         app:layout_constraintTop_toBottomOf="@id/cardMean"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <!-- Navigation Buttons (Gap logic: [10%] [35%] [10%] [35%] [10%]) -->
+    <!-- Navigation Buttons -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnPrev"
         style="@style/Widget.Material3.Button.TonalButton"

@@ -46,7 +46,7 @@ abstract class WordDatabase : RoomDatabase() {
                 CoroutineScope(Dispatchers.IO).launch {
                     val dao = getDatabase(context).wordDao()
                     val existingCount = dao.getAllWordsList().size
-                    if (existingCount >= 400) return@launch // 이미 충분한 단어가 있으면 중단
+                    if (existingCount > 0) return@launch // 이미 데이터가 있으면 중단하여 중복 방지
 
                     val samples = mutableListOf<Word>()
                     

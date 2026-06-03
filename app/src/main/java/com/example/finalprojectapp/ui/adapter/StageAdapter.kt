@@ -29,24 +29,52 @@ class StageAdapter(private val stageCount: Int) : RecyclerView.Adapter<StageAdap
         params.horizontalBias = currentBias
         holder.binding.cardStage.layoutParams = params
 
-        // 연결선 로직 (다음 스테이지 방향으로 연결)
+        // --- 연결선 로직 전면 재작성 (Midpoint Translation 방식) ---
         if (position < stageCount - 1) {
             holder.binding.lineNext.visibility = View.VISIBLE
-            val nextBias = getBiasForPosition(position + 1)
-            
-            // 화면 너비를 대략 1080px로 가정했을 때의 Bias 차이 계산
-            val dx = (nextBias - currentBias) * 800f 
-            val dy = 160f // item 높이 + padding 대략값
-            
-            val angle = Math.toDegrees(atan2(dx.toDouble(), dy.toDouble())).toFloat()
-            val length = sqrt(dx * dx + dy * dy)
-            
-            holder.binding.lineNext.rotation = angle
-            holder.binding.lineNext.layoutParams.height = length.toInt()
-            
-            // Pivot 설정 (상단 중앙 기준으로 회전)
-            holder.binding.lineNext.pivotX = 2f // line width가 4dp이므로 절반
-            holder.binding.lineNext.pivotY = 0f
+            holder.itemView.post {
+                val line = holder.binding.lineNext
+                val card = holder.binding.cardStage
+                
+                val parentWidth = holder.itemView.width
+                val itemHeight = holder.itemView.height
+                val cardWidth = card.width
+                
+                if (parentWidth == 0 || itemHeight == 0) return@post
+
+                val currentBias = getBiasForPosition(position)
+                val nextBias = getBiasForPosition(position + 1)
+                
+                // 1. 각 노드의 중심점 좌표 (startX, startY는 현재 카드의 중심 = 0,0 기준)
+                // 현재 카드의 중심 (절대 좌표계 아님, itemView 기준)
+                val startX = currentBias * (parentWidth - cardWidth) + (cardWidth / 2f)
+                val startY = itemHeight / 2f
+                
+                // 다음 카드의 중심점 (itemView 하나 위(-Y)에 있다고 가정)
+                val endX = nextBias * (parentWidth - cardWidth) + (cardWidth / 2f)
+                val endY = -itemHeight / 2f
+                
+                // 2. 벡터 및 길이 계산
+                val dx = endX - startX
+                val dy = endY - startY
+                val length = sqrt(dx * dx + dy * dy)
+                val angle = Math.toDegrees(atan2(dx.toDouble(), -dy.toDouble())).toFloat()
+
+                // 3. 라인 속성 설정
+                val lp = line.layoutParams
+                lp.height = length.toInt()
+                line.layoutParams = lp
+                
+                // 중앙 기준으로 회전 (기본 Pivot은 Center)
+                line.pivotX = lp.width / 2f
+                line.pivotY = length / 2f
+                
+                // 현재 카드 중심(0,0)에서 두 카드 사이의 중점으로 이동
+                line.translationX = dx / 2f
+                line.translationY = dy / 2f
+                
+                line.rotation = angle
+            }
         } else {
             holder.binding.lineNext.visibility = View.GONE
         }
