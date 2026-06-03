@@ -15,7 +15,11 @@ import com.example.finalprojectapp.ui.viewmodel.WordListViewModel
 class WordListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityWordListBinding
     private lateinit var viewModel: WordListViewModel
-    private val adapter by lazy { WordListAdapter() }
+    private val adapter by lazy { 
+        WordListAdapter { word ->
+            viewModel.toggleMemorized(word)
+        } 
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

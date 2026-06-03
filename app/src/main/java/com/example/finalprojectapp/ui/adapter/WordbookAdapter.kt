@@ -8,12 +8,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.finalprojectapp.data.Word
 import com.example.finalprojectapp.databinding.ItemWordbookBinding
 
-class WordbookAdapter : ListAdapter<Word, WordbookAdapter.ViewHolder>(DiffCallback) {
+class WordbookAdapter(private val onStarClick: (Word) -> Unit) : ListAdapter<Word, WordbookAdapter.ViewHolder>(DiffCallback) {
 
-    class ViewHolder(private val binding: ItemWordbookBinding) : RecyclerView.ViewHolder(binding.root) {
+    inner class ViewHolder(private val binding: ItemWordbookBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(word: Word) {
             binding.tvEnglish.text = word.english
             binding.tvKorean.text = word.korean
+            
+            val starIcon = if (word.isMemorized) {
+                com.example.finalprojectapp.R.drawable.ic_star_filled
+            } else {
+                com.example.finalprojectapp.R.drawable.ic_star_hollow
+            }
+            binding.btnStar.setImageResource(starIcon)
+            
+            binding.btnStar.setOnClickListener {
+                onStarClick(word)
+            }
         }
     }
 

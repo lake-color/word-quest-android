@@ -153,15 +153,12 @@ class StudyActivity : AppCompatActivity() {
 
     private fun updateStarIcon(isMemorized: Boolean) {
         val iconRes = if (isMemorized) {
-            android.R.drawable.btn_star_big_on
+            R.drawable.ic_star_filled
         } else {
-            android.R.drawable.btn_star_big_off
+            R.drawable.ic_star_hollow
         }
         binding.btnStar.setIconResource(iconRes)
-        binding.btnStar.iconTint = if (isMemorized) {
-            getColorStateList(R.color.wood_brown)
-        } else {
-            getColorStateList(R.color.leaf_green)
-        }
+        // Tint 제거 (드로어블 자체 색상 사용)
+        binding.btnStar.iconTint = null
     }
 }

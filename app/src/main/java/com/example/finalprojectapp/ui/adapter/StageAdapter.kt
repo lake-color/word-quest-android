@@ -29,20 +29,24 @@ class StageAdapter(private val stageCount: Int) : RecyclerView.Adapter<StageAdap
         params.horizontalBias = currentBias
         holder.binding.cardStage.layoutParams = params
 
-        // 연결선 가시성 및 각도 처리
+        // 연결선 로직 (다음 스테이지 방향으로 연결)
         if (position < stageCount - 1) {
             holder.binding.lineNext.visibility = View.VISIBLE
             val nextBias = getBiasForPosition(position + 1)
             
-            // 단순 선 연결이 아닌 지그재그 방향을 나타내기 위해 회전 및 길이 조정
-            // 화면 너비를 대략 1000px로 가정했을 때의 계산 (정밀도는 떨어질 수 있음)
-            val dx = (nextBias - currentBias) * 300f 
-            val dy = 120f // item height 대략값
+            // 화면 너비를 대략 1080px로 가정했을 때의 Bias 차이 계산
+            val dx = (nextBias - currentBias) * 800f 
+            val dy = 160f // item 높이 + padding 대략값
+            
             val angle = Math.toDegrees(atan2(dx.toDouble(), dy.toDouble())).toFloat()
             val length = sqrt(dx * dx + dy * dy)
             
             holder.binding.lineNext.rotation = angle
             holder.binding.lineNext.layoutParams.height = length.toInt()
+            
+            // Pivot 설정 (상단 중앙 기준으로 회전)
+            holder.binding.lineNext.pivotX = 2f // line width가 4dp이므로 절반
+            holder.binding.lineNext.pivotY = 0f
         } else {
             holder.binding.lineNext.visibility = View.GONE
         }
@@ -58,10 +62,10 @@ class StageAdapter(private val stageCount: Int) : RecyclerView.Adapter<StageAdap
 
     private fun getBiasForPosition(position: Int): Float {
         return when (position % 4) {
-            0 -> 0.25f // 좌
-            1 -> 0.5f  // 중
-            2 -> 0.75f // 우
-            3 -> 0.5f  // 중
+            0 -> 0.2f // 좌
+            1 -> 0.5f // 중
+            2 -> 0.8f // 우
+            3 -> 0.5f // 중
             else -> 0.5f
         }
     }

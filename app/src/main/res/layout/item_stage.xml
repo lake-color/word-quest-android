@@ -4,27 +4,29 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingVertical="8dp">
+    android:paddingVertical="12dp">
 
-    <!-- Connecting Lines (Zigzag logic in adapter) -->
+    <!-- Connecting Line (Point to Next) -->
     <View
         android:id="@+id/lineNext"
         android:layout_width="4dp"
-        android:layout_height="120dp"
-        android:background="?attr/colorOutlineVariant"
-        android:alpha="0.2"
-        android:rotation="0"
+        android:layout_height="140dp"
+        android:background="?attr/colorPrimary"
+        android:alpha="0.4"
+        android:visibility="gone"
         app:layout_constraintTop_toBottomOf="@id/cardStage"
         app:layout_constraintStart_toStartOf="@id/cardStage"
-        app:layout_constraintEnd_toEndOf="@id/cardStage" />
+        app:layout_constraintEnd_toEndOf="@id/cardStage"
+        android:translationY="-10dp"
+        tools:visibility="visible"/>
 
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardStage"
         style="@style/Widget.Material3.CardView.Elevated"
-        android:layout_width="110dp"
-        android:layout_height="110dp"
-        app:cardCornerRadius="55dp"
-        app:cardElevation="6dp"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        app:cardCornerRadius="60dp"
+        app:cardElevation="8dp"
         app:strokeWidth="4dp"
         app:strokeColor="?attr/colorPrimaryContainer"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/day_label"
-                android:textAppearance="?attr/textAppearanceLabelMedium"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
                 android:textColor="?attr/colorOutline" />
 
             <TextView

@@ -1,38 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <!-- Basic -->
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
 
-    <!-- Browns -->
-    <color name="wood_brown">#5D4037</color>
-    <color name="light_wood">#D7CCC8</color>
-    <color name="dark_brown">#211210</color>
+    <!-- Navy / Cool Tones (Main Theme) -->
+    <color name="navy_primary">#1A237E</color>
+    <color name="navy_dark">#0D1240</color>
+    <color name="navy_light">#534BAE</color>
 
-    <!-- Greens -->
-    <color name="leaf_green">#388E3C</color>
-    <color name="light_green">#C8E6C9</color>
-    <color name="dark_green">#002105</color>
+    <color name="cool_blue">#0277BD</color>
+    <color name="cool_gray">#ECEFF1</color>
+    <color name="cool_background">#F5F7FA</color>
 
-    <!-- Oranges -->
-    <color name="deep_orange">#F4511E</color>
-    <color name="light_orange">#FFCCBC</color>
-    <color name="dark_orange">#320B00</color>
+    <!-- UI Elements -->
+    <color name="star_yellow">#FFD600</color>
+    <color name="star_border">#212121</color>
 
-    <!-- Backgrounds -->
-    <color name="cream_background">#FFFBFA</color>
-    <color name="soft_cream">#FFF8F6</color>
-    <color name="light_beige">#F4E0DB</color>
+    <!-- Status -->
+    <color name="success_blue">#2979FF</color>
+    <color name="error_red">#D32F2F</color>
 
-    <!-- Text -->
-    <color name="primary_text">#211A18</color>
-    <color name="secondary_text">#524340</color>
-
-    <!-- Border -->
-    <color name="outline">#85736F</color>
-
-    <!-- Error -->
-    <color name="error_red">#B00020</color>
-
+    <!-- Legacy / Compatibility (Mapped to Cool Tones) -->
+    <color name="wood_brown">#1A237E</color> <!-- Replaced with Navy -->
+    <color name="leaf_green">#0277BD</color> <!-- Replaced with Blue -->
+    <color name="cream_background">#F5F7FA</color>
 </resources>

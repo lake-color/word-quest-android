@@ -25,4 +25,16 @@ class WordListViewModel(application: Application) : AndroidViewModel(application
             _words.postValue(wordList)
         }
     }
+
+    fun toggleMemorized(word: Word) {
+        viewModelScope.launch(Dispatchers.IO) {
+            val updatedWord = word.copy(isMemorized = !word.isMemorized)
+            db.wordDao().updateWord(updatedWord)
+            
+            // Refresh list
+            val day = word.stage
+            val wordList = db.wordDao().getWordsByStage(day)
+            _words.postValue(wordList)
+        }
+    }
 }
