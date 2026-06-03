@@ -27,13 +27,13 @@
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/txtUserNickname"
+                    android:id="@+id/txtCurrentDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/nickname"
                     android:textAppearance="?attr/textAppearanceTitleLarge"
                     android:textColor="?attr/colorPrimary"
                     android:textStyle="bold"
+                    tools:text="2026년 06월 04일 목요일"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />

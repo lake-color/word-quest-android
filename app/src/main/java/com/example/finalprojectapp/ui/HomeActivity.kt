@@ -66,11 +66,13 @@ class HomeActivity : AppCompatActivity() {
 
     private fun updateDateDisplay() {
         val sdf = SimpleDateFormat(getString(R.string.date_format), Locale.KOREAN)
-        binding.txtUserNickname.text = sdf.format(Date())
+        sdf.timeZone = java.util.TimeZone.getTimeZone("Asia/Seoul") // 한국 표준시 강제 설정
+        binding.txtCurrentDate.text = sdf.format(Date())
     }
 
     override fun onResume() {
         super.onResume()
+        updateDateDisplay() // 화면에 보일 때마다 날짜 최신화
         // 학습창 등에서 돌아왔을 때 설정된 메인 BGM 재생
         val bgmName = when (settingsManager.mainBgmIndex) {
             1 -> "bgm_main"

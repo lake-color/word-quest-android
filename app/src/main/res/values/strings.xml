@@ -9,7 +9,6 @@
     <string name="nav_game">게임</string>
 
     <!-- UI 라벨 -->
-    <string name="nickname">닉네임</string>
     <string name="consecutive_days">연속 학습일: %1$d일</string>
     <string name="stage_format">스테이지 %1$d</string>
     <string name="wrong_answer_note">오답 노트</string>
