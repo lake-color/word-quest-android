@@ -177,6 +177,15 @@ class GameFragment : Fragment() {
         binding.btnExit.setOnClickListener {
             binding.layoutGameOver.isVisible = false
             resetGameState()
+            
+            // 메인 화면으로 돌아갈 때 메인 BGM 재생
+            val bgmName = when (settingsManager.mainBgmIndex) {
+                1 -> "bgm_main"
+                2 -> "bgm_main2"
+                else -> "bgm_main3"
+            }
+            soundManager.playBgm(bgmName)
+            
             binding.layoutStart.isVisible = true
         }
     }
@@ -187,6 +196,10 @@ class GameFragment : Fragment() {
 
     private fun startCountdown() {
         if (_binding == null) return
+
+        // 카운트다운 시작과 동시에 게임 BGM으로 전환
+        val bgmName = if (settingsManager.gameBgmIndex == 1) "bgm_game" else "bgm_game2"
+        soundManager.playBgm(bgmName)
 
         binding.layoutCountdown.isVisible = true
         var count = 3
@@ -229,8 +242,6 @@ class GameFragment : Fragment() {
         resetGameState()
         isPlaying = true
         binding.cardQuestion.isVisible = true
-        val bgmName = if (settingsManager.gameBgmIndex == 1) "bgm_game" else "bgm_game2"
-        soundManager.playBgm(bgmName)
         startBackgroundAnimation()
         spawnLoop()
     }
@@ -243,9 +254,6 @@ class GameFragment : Fragment() {
         binding.txtCurrentWord.text = ""
         binding.cardQuestion.isVisible = false
         binding.gameContainer.removeAllViews()
-
-        val bgmName = if (settingsManager.mainBgmIndex == 1) "bgm_main" else "bgm_main2"
-        soundManager.playBgm(bgmName)
 
         binding.road1.translationY = 0f
         binding.road2.translationY = 0f
@@ -288,11 +296,16 @@ class GameFragment : Fragment() {
         spawnGates()
         spawnRoadLines()
 
+        val score = viewModel.score.value ?: 0
+        val difficultyLevel = score / 100
+        // 더 촘촘한 간격: 2.0초에서 시작, 단계별 0.15초씩 단축 (최소 0.8초)
+        val interval = (2000 - (difficultyLevel * 150)).coerceAtLeast(800).toLong()
+
         binding.gameRoot.postDelayed({
             if (isPlaying && _binding != null && isAdded) {
                 spawnLoop()
             }
-        }, 2200)
+        }, interval)
     }
 
     private fun spawnRoadLines() {
@@ -304,8 +317,13 @@ class GameFragment : Fragment() {
         }
         binding.gameContainer.addView(line, 0)
 
+        val score = viewModel.score.value ?: 0
+        val difficultyLevel = score / 100
+        // 차선 속도 동기화: 1.6초에서 시작, 단계별 0.12초씩 단축
+        val lineDuration = (1600 - (difficultyLevel * 120)).coerceAtLeast(600).toLong()
+
         ValueAnimator.ofFloat(0f, 1.1f).apply {
-            duration = 1800
+            duration = lineDuration
             interpolator = LinearInterpolator()
             addUpdateListener { anim ->
                 if (_binding == null) { anim.cancel(); return@addUpdateListener }
@@ -364,8 +382,13 @@ class GameFragment : Fragment() {
         gateView.alpha = 1.0f
         binding.gameContainer.addView(gateView)
 
+        val score = viewModel.score.value ?: 0
+        val difficultyLevel = score / 100
+        // 더 빠른 하강: 3.2초에서 시작, 단계별 0.4초씩 대폭 단축 (최소 1.0초)
+        val gateDuration = (3200 - (difficultyLevel * 400)).coerceAtLeast(1000).toLong()
+
         val animator = ValueAnimator.ofFloat(-0.2f, 1.1f).apply {
-            duration = 3500
+            duration = gateDuration
             interpolator = LinearInterpolator()
             var collisionChecked = false
 

@@ -11,6 +11,9 @@ import com.example.finalprojectapp.R
 import com.example.finalprojectapp.data.SoundManager
 import com.example.finalprojectapp.databinding.ActivityHomeBinding
 import com.google.android.material.tabs.TabLayout
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
@@ -30,15 +33,25 @@ class HomeActivity : AppCompatActivity() {
 
         soundManager = SoundManager.getInstance(this)
 
+        updateDateDisplay()
         setupWindowInsets()
         initNavigation()
+    }
+
+    private fun updateDateDisplay() {
+        val sdf = SimpleDateFormat("yyyy년 MM월 dd일 E요일", Locale.KOREAN)
+        binding.txtUserNickname.text = sdf.format(Date())
     }
 
     override fun onResume() {
         super.onResume()
         // 학습창 등에서 돌아왔을 때 설정된 메인 BGM 재생
         val settings = com.example.finalprojectapp.data.SettingsManager(this)
-        val bgmName = if (settings.mainBgmIndex == 1) "bgm_main" else "bgm_main2"
+        val bgmName = when (settings.mainBgmIndex) {
+            1 -> "bgm_main"
+            2 -> "bgm_main2"
+            else -> "bgm_main3"
+        }
         soundManager.playBgm(bgmName)
     }
 
@@ -66,6 +79,7 @@ class HomeActivity : AppCompatActivity() {
 
         binding.bottomTabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab?) {
+                soundManager.playSfx("click")
                 when (tab?.position) {
                     0 -> showFragment(wordbookFragment)
                     1 -> showFragment(learnFragment)
@@ -77,6 +91,7 @@ class HomeActivity : AppCompatActivity() {
         })
 
         binding.btnHomeSettings.setOnClickListener {
+            soundManager.playSfx("click")
             SettingsDialog().show(supportFragmentManager, "SettingsDialog")
         }
 

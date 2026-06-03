@@ -27,7 +27,7 @@ class SettingsManager(context: Context) {
         set(value) = prefs.edit().putBoolean("vibration_enabled", value).apply()
 
     var mainBgmIndex: Int
-        get() = prefs.getInt("main_bgm_index", 1) // 1 or 2
+        get() = prefs.getInt("main_bgm_index", 1) // 1, 2 or 3
         set(value) = prefs.edit().putInt("main_bgm_index", value).apply()
 
     var gameBgmIndex: Int

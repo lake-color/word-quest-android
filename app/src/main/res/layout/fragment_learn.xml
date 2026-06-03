@@ -6,6 +6,15 @@
     android:layout_height="match_parent"
     android:background="?android:attr/windowBackground">
 
+    <ImageView
+        android:id="@+id/bgLearnMap"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/bg_learn_map"
+        android:alpha="1.0"
+        tools:ignore="ContentDescription" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvStageMap"
         android:layout_width="match_parent"

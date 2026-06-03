@@ -55,24 +55,29 @@ class StudyActivity : AppCompatActivity() {
     private fun setupListeners() {
         // 뜻 카드 클릭 시 토글
         binding.cardMean.setOnClickListener {
+            soundManager.playSfx("click")
             viewModel.toggleLanguage()
         }
 
         binding.btnPrev.setOnClickListener {
+            soundManager.playSfx("click")
             viewModel.prevWord()
             playCardAnimation()
         }
 
         binding.btnNext.setOnClickListener {
+            soundManager.playSfx("click")
             viewModel.nextWord()
             playCardAnimation()
         }
 
         binding.btnBack.setOnClickListener {
+            soundManager.playSfx("click")
             finish()
         }
 
         binding.btnStar.setOnClickListener {
+            soundManager.playSfx("click")
             viewModel.toggleMemorized()
             playStarAnimation()
         }

@@ -50,7 +50,11 @@ class SettingsDialog : DialogFragment() {
 
         binding.switchVibration.isChecked = settingsManager.isVibrationEnabled
 
-        val checkedMainBgmId = if (settingsManager.mainBgmIndex == 1) R.id.btnMainBgm1 else R.id.btnMainBgm2
+        val checkedMainBgmId = when (settingsManager.mainBgmIndex) {
+            1 -> R.id.btnMainBgm1
+            2 -> R.id.btnMainBgm2
+            else -> R.id.btnMainBgm3
+        }
         binding.toggleGroupMainBgm.check(checkedMainBgmId)
 
         val checkedGameBgmId = if (settingsManager.gameBgmIndex == 1) R.id.btnGameBgm1 else R.id.btnGameBgm2
@@ -66,6 +70,7 @@ class SettingsDialog : DialogFragment() {
 
     private fun setupListeners() {
         binding.btnClose.setOnClickListener {
+            soundManager.playSfx("click")
             dismiss()
         }
 
@@ -74,6 +79,7 @@ class SettingsDialog : DialogFragment() {
             binding.txtSoundValue.text = vol.toString()
             settingsManager.masterVolume = vol
             soundManager.updateVolumes()
+            if (fromUser) soundManager.playSfx("click")
         }
 
         binding.seekBgm.addOnChangeListener { _, value, fromUser ->
@@ -81,6 +87,7 @@ class SettingsDialog : DialogFragment() {
             binding.txtBgmValue.text = vol.toString()
             settingsManager.bgmVolume = vol
             soundManager.updateVolumes()
+            if (fromUser) soundManager.playSfx("click")
         }
 
         binding.seekSfx.addOnChangeListener { _, value, fromUser ->
@@ -88,10 +95,12 @@ class SettingsDialog : DialogFragment() {
             binding.txtSfxValue.text = vol.toString()
             settingsManager.sfxVolume = vol
             soundManager.updateVolumes()
+            if (fromUser) soundManager.playSfx("click")
         }
         
         binding.toggleGroupFps.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
+                soundManager.playSfx("click")
                 val fps = when (checkedId) {
                     R.id.radioFps60 -> 60
                     R.id.radioFps180 -> 180
@@ -102,16 +111,25 @@ class SettingsDialog : DialogFragment() {
         }
 
         binding.switchVibration.setOnCheckedChangeListener { _, isChecked ->
+            soundManager.playSfx("click")
             settingsManager.isVibrationEnabled = isChecked
         }
 
         binding.toggleGroupMainBgm.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
-                val index = if (checkedId == R.id.btnMainBgm1) 1 else 2
+                soundManager.playSfx("click")
+                val index = when (checkedId) {
+                    R.id.btnMainBgm1 -> 1
+                    R.id.btnMainBgm2 -> 2
+                    else -> 3
+                }
                 settingsManager.mainBgmIndex = index
-                // 현재 메인 화면이나 학습 화면일 경우 BGM 즉시 변경
                 if (activity is MainActivity || activity is HomeActivity || activity is StudyActivity) {
-                    val bgmName = if (index == 1) "bgm_main" else "bgm_main2"
+                    val bgmName = when (index) {
+                        1 -> "bgm_main"
+                        2 -> "bgm_main2"
+                        else -> "bgm_main3"
+                    }
                     soundManager.playBgm(bgmName)
                 }
             }
@@ -119,6 +137,7 @@ class SettingsDialog : DialogFragment() {
 
         binding.toggleGroupGameBgm.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
+                soundManager.playSfx("click")
                 val index = if (checkedId == R.id.btnGameBgm1) 1 else 2
                 settingsManager.gameBgmIndex = index
             }

@@ -28,6 +28,9 @@
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
+
+        <!-- UI Click Sound Control -->
+        <item name="android:soundEffectsEnabled">false</item>
     </style>
 
     <style name="Theme.FinalProjectApp" parent="Base.Theme.FinalProjectApp" />
