@@ -24,6 +24,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.finalprojectapp.R
 import com.example.finalprojectapp.data.SettingsManager
+import com.example.finalprojectapp.data.SoundManager
 import com.example.finalprojectapp.data.Word
 import com.example.finalprojectapp.databinding.FragmentGameBinding
 import com.example.finalprojectapp.ui.viewmodel.GameViewModel
@@ -45,6 +46,7 @@ class GameFragment : Fragment() {
 
     private val selectedDays = mutableSetOf<Int>()
     private lateinit var settingsManager: SettingsManager
+    private lateinit var soundManager: SoundManager
 
     private val activeAnimators = mutableListOf<ValueAnimator>()
     private var backgroundAnimator: ValueAnimator? = null
@@ -62,6 +64,7 @@ class GameFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this)[GameViewModel::class.java]
         settingsManager = SettingsManager(requireContext())
+        soundManager = SoundManager.getInstance(requireContext())
         
         setupDragControl()
         setupButtons()
@@ -98,6 +101,9 @@ class GameFragment : Fragment() {
         selectedDays.clear()
         selectedDays.add(1) 
 
+        val btnSize = dpToPx(50)
+        val margin = dpToPx(4)
+
         for (day in 1..20) {
             val btn = MaterialButton(requireContext(), null, com.google.android.material.R.attr.materialButtonOutlinedStyle).apply {
                 text = day.toString()
@@ -106,8 +112,8 @@ class GameFragment : Fragment() {
                 insetTop = 0
                 insetBottom = 0
                 setPadding(0, 0, 0, 0)
-                layoutParams = ViewGroup.MarginLayoutParams(110, 110).apply {
-                    setMargins(6, 6, 6, 6)
+                layoutParams = ViewGroup.MarginLayoutParams(btnSize, btnSize).apply {
+                    setMargins(margin, margin, margin, margin)
                 }
                 textSize = 12f
                 
@@ -131,6 +137,10 @@ class GameFragment : Fragment() {
             }
             binding.gridDaySelection.addView(btn)
         }
+    }
+
+    private fun dpToPx(dp: Int): Int {
+        return (dp * resources.displayMetrics.density).toInt()
     }
 
     private fun checkDayButton(btn: MaterialButton, isChecked: Boolean) {
@@ -371,9 +381,11 @@ class GameFragment : Fragment() {
 
         if (isCorrect) { 
             viewModel.addScore(10)
+            soundManager.playSfx("correct")
         } 
         else {
             viewModel.decreaseHp()
+            soundManager.playSfx("wrong")
             triggerVibration()
             currentQuestion?.let { viewModel.updateWrongCount(it) }
         }

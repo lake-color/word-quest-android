@@ -1,15 +1,20 @@
 package com.example.finalprojectapp.ui
 
 import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.updatePadding
 import androidx.fragment.app.Fragment
 import com.example.finalprojectapp.R
+import com.example.finalprojectapp.data.SoundManager
 import com.example.finalprojectapp.databinding.ActivityHomeBinding
-import com.example.finalprojectapp.ui.WordbookFragment
 import com.google.android.material.tabs.TabLayout
 
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
+    private lateinit var soundManager: SoundManager
     
     // 프래그먼트 재사용을 위한 캐싱
     private val learnFragment by lazy { LearnFragment() }
@@ -19,10 +24,27 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        soundManager = SoundManager.getInstance(this)
+
+        setupWindowInsets()
         initNavigation()
+    }
+
+    private fun setupWindowInsets() {
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
+            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
+            v.updatePadding(
+                left = systemBars.left,
+                top = systemBars.top,
+                right = systemBars.right,
+                bottom = systemBars.bottom
+            )
+            insets
+        }
     }
 
     private fun initNavigation() {

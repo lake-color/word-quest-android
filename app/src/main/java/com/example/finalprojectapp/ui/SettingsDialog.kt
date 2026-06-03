@@ -9,12 +9,14 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import com.example.finalprojectapp.R
 import com.example.finalprojectapp.data.SettingsManager
+import com.example.finalprojectapp.data.SoundManager
 import com.example.finalprojectapp.databinding.SettingsDialogBinding
 
 class SettingsDialog : DialogFragment() {
     private var _binding: SettingsDialogBinding? = null
     private val binding get() = _binding!!
     private lateinit var settingsManager: SettingsManager
+    private lateinit var soundManager: SoundManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,6 +30,7 @@ class SettingsDialog : DialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         settingsManager = SettingsManager(requireContext())
+        soundManager = SoundManager.getInstance(requireContext())
         
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
@@ -64,18 +67,21 @@ class SettingsDialog : DialogFragment() {
             val vol = value.toInt()
             binding.txtSoundValue.text = vol.toString()
             settingsManager.masterVolume = vol
+            soundManager.updateVolumes()
         }
 
         binding.seekBgm.addOnChangeListener { _, value, _ ->
             val vol = value.toInt()
             binding.txtBgmValue.text = vol.toString()
             settingsManager.bgmVolume = vol
+            soundManager.updateVolumes()
         }
 
         binding.seekSfx.addOnChangeListener { _, value, _ ->
             val vol = value.toInt()
             binding.txtSfxValue.text = vol.toString()
             settingsManager.sfxVolume = vol
+            soundManager.updateVolumes()
         }
         
         binding.toggleGroupFps.addOnButtonCheckedListener { _, checkedId, isChecked ->
