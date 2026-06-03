@@ -57,7 +57,8 @@ class StageAdapter(private val stageCount: Int) : RecyclerView.Adapter<StageAdap
                 // 2. 벡터 및 길이 계산
                 val dx = endX - startX
                 val dy = endY - startY
-                val length = sqrt(dx * dx + dy * dy)
+                // 길이를 1.1배로 늘려 다음 노드 안쪽으로 깊숙이 들어가게 함
+                val length = sqrt(dx * dx + dy * dy) * 1.1f
                 val angle = Math.toDegrees(atan2(dx.toDouble(), -dy.toDouble())).toFloat()
 
                 // 3. 라인 속성 설정

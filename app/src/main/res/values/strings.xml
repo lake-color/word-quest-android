@@ -19,6 +19,9 @@
     <string name="no_words_found">스테이지 %1$d에 단어가 없습니다.</string>
     <string name="study_progress_format">%1$d/%2$d</string>
     <string name="default_wrong_count">0회 틀림</string>
+    <string name="score_format">SCORE: %1$d</string>
+    <string name="final_score_format">Score: %1$d</string>
+    <string name="best_score_format">Best: %1$d</string>
 
     <!-- 버튼 및 액션 -->
     <string name="default_korean_meaning">뜻 값 비어있음</string>
@@ -48,4 +51,6 @@
     <string name="start_mission">게임 시작</string>
     <string name="day_label">DAY</string>
     <string name="click_to_see_meaning">누르면 뜻이 나옵니다</string>
+    <string name="no_words_available">학습 가능한 단어가 없습니다.</string>
+    <string name="countdown_start">START!</string>
 </resources>

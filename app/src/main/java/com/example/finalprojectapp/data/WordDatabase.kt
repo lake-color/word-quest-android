@@ -38,15 +38,20 @@ abstract class WordDatabase : RoomDatabase() {
 
             override fun onOpen(db: SupportSQLiteDatabase) {
                 super.onOpen(db)
-                // 앱 실행 시마다 비어있는지 확인하여 단어 주입 (사용자 요청 반영)
-                seedDatabase()
+                // 이미 데이터가 있는지 확인하고, 중복 주입을 방지
+                CoroutineScope(Dispatchers.IO).launch {
+                    val dao = getDatabase(context).wordDao()
+                    if (dao.getAllWordsList().isEmpty()) {
+                        seedDatabase()
+                    }
+                }
             }
 
             private fun seedDatabase() {
                 CoroutineScope(Dispatchers.IO).launch {
                     val dao = getDatabase(context).wordDao()
-                    val existingCount = dao.getAllWordsList().size
-                    if (existingCount > 0) return@launch // 이미 데이터가 있으면 중단하여 중복 방지
+                    // seedDatabase 내부에서도 다시 한 번 체크 (onOpen에서 호출될 때 안전장치)
+                    if (dao.getAllWordsList().isNotEmpty()) return@launch
 
                     val samples = mutableListOf<Word>()
                     

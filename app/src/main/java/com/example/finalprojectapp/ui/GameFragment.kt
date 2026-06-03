@@ -78,18 +78,18 @@ class GameFragment : Fragment() {
             if (allWords.isNotEmpty()) {
                 binding.layoutStart.isVisible = true
                 binding.btnStartGame.isEnabled = true
-                // 즉시 초기화 시도 (혹시 로딩이 늦었을 경우 대비)
+                // 즉시 초기화 시도 (혹시 로딩이늦었을 경우 대비)
                 if (binding.gridDaySelection.childCount == 0) {
                     initDaySelectionGrid()
                 }
             } else {
-                binding.txtCurrentWord.text = "No words available."
+                binding.txtCurrentWord.text = getString(R.string.no_words_available)
                 binding.btnStartGame.isEnabled = false
             }
         }
 
         viewModel.score.observe(viewLifecycleOwner) { score ->
-            binding.txtScore.text = "SCORE: $score"
+            binding.txtScore.text = getString(R.string.score_format, score)
         }
 
         viewModel.hp.observe(viewLifecycleOwner) { hp ->
@@ -209,7 +209,7 @@ class GameFragment : Fragment() {
                         binding.gameRoot.postDelayed(this, 1000)
                     }
                     count == 0 -> {
-                        binding.txtCountdown.text = "START!"
+                        binding.txtCountdown.text = getString(R.string.countdown_start)
                         binding.txtCountdown.scaleX = 0.6f
                         binding.txtCountdown.scaleY = 0.6f
                         count--
@@ -237,7 +237,7 @@ class GameFragment : Fragment() {
 
         isPlaying = false
         viewModel.resetGame()
-        binding.txtCurrentWord.text = "READY?"
+        binding.txtCurrentWord.text = ""
         binding.gameContainer.removeAllViews()
 
         binding.road1.translationY = 0f
@@ -433,8 +433,9 @@ class GameFragment : Fragment() {
             val best = prefs.getInt("best_score", 0)
             if (score > best) prefs.edit().putInt("best_score", score).apply()
             
-            binding.txtFinalScore.text = "Score: $score"
-            binding.txtBestScore.text = "Best: ${maxOf(score, best)}"
+            binding.txtFinalScore.text = getString(R.string.final_score_format, score)
+            binding.txtBestScore.text = getString(R.string.best_score_format, maxOf(score, best))
+            binding.txtCurrentWord.text = ""
             binding.layoutGameOver.isVisible = true
         }
     }

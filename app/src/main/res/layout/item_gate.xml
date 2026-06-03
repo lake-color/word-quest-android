@@ -6,47 +6,59 @@
     android:orientation="horizontal"
     android:weightSum="2">
 
-    <!-- Left Gate -->
+    <!-- Left Gate (Blue) -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardLeft"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_marginEnd="1dp"
-        app:cardBackgroundColor="?attr/colorSecondaryContainer"
+        app:cardBackgroundColor="#CC2196F3"
         app:cardCornerRadius="0dp"
-        app:cardElevation="0dp">
+        app:cardElevation="4dp"
+        app:strokeWidth="2dp"
+        app:strokeColor="#FFFFFF">
 
         <TextView
             android:id="@+id/tvLeft"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="?attr/colorOnSecondaryContainer"
+            android:textColor="#FFFFFF"
             android:textSize="28sp"
             android:padding="4dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4" />
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- Right Gate -->
+    <!-- Right Gate (Red) -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardRight"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:layout_marginStart="1dp"
-        app:cardBackgroundColor="?attr/colorTertiaryContainer"
+        app:cardBackgroundColor="#CCF44336"
         app:cardCornerRadius="0dp"
-        app:cardElevation="0dp">
+        app:cardElevation="4dp"
+        app:strokeWidth="2dp"
+        app:strokeColor="#FFFFFF">
 
         <TextView
             android:id="@+id/tvRight"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textColor="?attr/colorOnTertiaryContainer"
+            android:textColor="#FFFFFF"
             android:textSize="28sp"
             android:padding="4dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:shadowColor="#000000"
+            android:shadowDx="2"
+            android:shadowDy="2"
+            android:shadowRadius="4" />
     </com.google.android.material.card.MaterialCardView>
 </LinearLayout>
