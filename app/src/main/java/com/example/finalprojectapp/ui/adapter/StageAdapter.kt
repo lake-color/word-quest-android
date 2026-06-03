@@ -57,8 +57,8 @@ class StageAdapter(private val stageCount: Int) : RecyclerView.Adapter<StageAdap
                 // 2. 벡터 및 길이 계산
                 val dx = endX - startX
                 val dy = endY - startY
-                // 길이를 1.1배로 늘려 다음 노드 안쪽으로 깊숙이 들어가게 함
-                val length = sqrt(dx * dx + dy * dy) * 1.1f
+                // 길이를 1.5배로 대폭 늘려 노드 사이를 확실하게 관통하도록 함
+                val length = sqrt(dx * dx + dy * dy) * 1.5f
                 val angle = Math.toDegrees(atan2(dx.toDouble(), -dy.toDouble())).toFloat()
 
                 // 3. 라인 속성 설정
@@ -66,15 +66,16 @@ class StageAdapter(private val stageCount: Int) : RecyclerView.Adapter<StageAdap
                 lp.height = length.toInt()
                 line.layoutParams = lp
                 
-                // 중앙 기준으로 회전 (기본 Pivot은 Center)
+                // 중앙 기준으로 회전 및 배치 (Pivot을 중앙으로 설정)
                 line.pivotX = lp.width / 2f
                 line.pivotY = length / 2f
                 
-                // 현재 카드 중심(0,0)에서 두 카드 사이의 중점으로 이동
+                // 현재 카드 중심에서 두 카드 사이의 중점으로 이동 (절반 벡터만큼 이동)
                 line.translationX = dx / 2f
                 line.translationY = dy / 2f
                 
                 line.rotation = angle
+                line.alpha = 0.5f // 가시성 증대
             }
         } else {
             holder.binding.lineNext.visibility = View.GONE

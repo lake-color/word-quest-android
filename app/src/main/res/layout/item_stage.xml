@@ -9,10 +9,10 @@
     <!-- Connecting Line (Point to Next) -->
     <View
         android:id="@+id/lineNext"
-        android:layout_width="6dp"
+        android:layout_width="8dp"
         android:layout_height="200dp"
         android:background="?attr/colorPrimary"
-        android:alpha="0.3"
+        android:alpha="0.4"
         android:visibility="gone"
         app:layout_constraintTop_toTopOf="@id/cardStage"
         app:layout_constraintBottom_toBottomOf="@id/cardStage"
