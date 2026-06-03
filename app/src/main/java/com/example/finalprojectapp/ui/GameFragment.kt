@@ -5,7 +5,11 @@ import android.animation.ValueAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Color
+import android.os.Build
 import android.os.Bundle
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -16,26 +20,31 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.finalprojectapp.R
+import com.example.finalprojectapp.data.SettingsManager
 import com.example.finalprojectapp.data.Word
-import com.example.finalprojectapp.data.WordDatabase
 import com.example.finalprojectapp.databinding.FragmentGameBinding
+import com.example.finalprojectapp.ui.viewmodel.GameViewModel
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
 class GameFragment : Fragment() {
     private var _binding: FragmentGameBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var viewModel: GameViewModel
     private var allWords = listOf<Word>()
+    private var filteredWords = listOf<Word>()
     private var currentQuestion: Word? = null
-    private var score = 0
-    private var hp = 3
     private var isPlaying = false
+
+    private val selectedDays = mutableSetOf<Int>()
+    private lateinit var settingsManager: SettingsManager
 
     private val activeAnimators = mutableListOf<ValueAnimator>()
     private var backgroundAnimator: ValueAnimator? = null
@@ -51,13 +60,93 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel = ViewModelProvider(this)[GameViewModel::class.java]
+        settingsManager = SettingsManager(requireContext())
+        
         setupDragControl()
         setupButtons()
-        loadDataAndPrepare()
+        initDaySelectionGrid()
+        observeViewModel()
+    }
+
+    private fun observeViewModel() {
+        viewModel.allWords.observe(viewLifecycleOwner) { words ->
+            allWords = words
+            if (allWords.isNotEmpty()) {
+                binding.layoutStart.isVisible = true
+                binding.btnStartGame.isEnabled = true
+            } else {
+                binding.txtCurrentWord.text = "No words available."
+                binding.btnStartGame.isEnabled = false
+            }
+        }
+
+        viewModel.score.observe(viewLifecycleOwner) { score ->
+            binding.txtScore.text = "SCORE: $score"
+        }
+
+        viewModel.hp.observe(viewLifecycleOwner) { hp ->
+            updateHearts(hp)
+            if (hp <= 0 && isPlaying) {
+                gameOver()
+            }
+        }
+    }
+
+    private fun initDaySelectionGrid() {
+        binding.gridDaySelection.removeAllViews()
+        selectedDays.clear()
+        selectedDays.add(1) 
+
+        for (day in 1..20) {
+            val btn = MaterialButton(requireContext(), null, com.google.android.material.R.attr.materialButtonOutlinedStyle).apply {
+                text = day.toString()
+                minWidth = 0
+                minimumWidth = 0
+                insetTop = 0
+                insetBottom = 0
+                setPadding(0, 0, 0, 0)
+                layoutParams = ViewGroup.MarginLayoutParams(110, 110).apply {
+                    setMargins(6, 6, 6, 6)
+                }
+                textSize = 12f
+                
+                if (day == 1) {
+                    checkDayButton(this, true)
+                } else {
+                    checkDayButton(this, false)
+                }
+
+                setOnClickListener {
+                    if (selectedDays.contains(day)) {
+                        if (selectedDays.size > 1) {
+                            selectedDays.remove(day)
+                            checkDayButton(this, false)
+                        }
+                    } else {
+                        selectedDays.add(day)
+                        checkDayButton(this, true)
+                    }
+                }
+            }
+            binding.gridDaySelection.addView(btn)
+        }
+    }
+
+    private fun checkDayButton(btn: MaterialButton, isChecked: Boolean) {
+        if (isChecked) {
+            btn.setBackgroundColor(requireContext().getColor(R.color.wood_brown))
+            btn.setTextColor(Color.WHITE)
+        } else {
+            btn.setBackgroundColor(Color.TRANSPARENT)
+            btn.setTextColor(requireContext().getColor(R.color.wood_brown))
+        }
     }
 
     private fun setupButtons() {
         binding.btnStartGame.setOnClickListener {
+            prepareFilteredWords()
+            if (filteredWords.isEmpty()) return@setOnClickListener
             binding.layoutStart.isVisible = false
             startCountdown()
         }
@@ -72,32 +161,8 @@ class GameFragment : Fragment() {
         }
     }
 
-    private fun loadDataAndPrepare() {
-        lifecycleScope.launch {
-            try {
-                val db = WordDatabase.getDatabase(requireContext())
-                var words = withContext(Dispatchers.IO) { db.wordDao().getAllWordsList() }
-                
-                if (words.isEmpty()) {
-                    kotlinx.coroutines.delay(1000)
-                    words = withContext(Dispatchers.IO) { db.wordDao().getAllWordsList() }
-                }
-
-                allWords = words
-
-                if (_binding != null) {
-                    if (allWords.isEmpty()) {
-                        binding.txtCurrentWord.text = "No words available."
-                        binding.btnStartGame.isEnabled = false
-                    } else {
-                        binding.layoutStart.isVisible = true
-                        binding.btnStartGame.isEnabled = true
-                    }
-                }
-            } catch (e: Exception) {
-                e.printStackTrace()
-            }
-        }
+    private fun prepareFilteredWords() {
+        filteredWords = allWords.filter { it.stage in selectedDays }
     }
 
     private fun startCountdown() {
@@ -125,7 +190,6 @@ class GameFragment : Fragment() {
                     }
                     count == 0 -> {
                         binding.txtCountdown.text = "START!"
-                        // START 문구가 길어지므로 확실하게 작게 조정
                         binding.txtCountdown.scaleX = 0.6f
                         binding.txtCountdown.scaleY = 0.6f
                         count--
@@ -144,7 +208,6 @@ class GameFragment : Fragment() {
     private fun startGame() {
         resetGameState()
         isPlaying = true
-        updateHUD()
         startBackgroundAnimation()
         spawnLoop()
     }
@@ -153,9 +216,7 @@ class GameFragment : Fragment() {
         if (_binding == null) return
 
         isPlaying = false
-        score = 0
-        hp = 3
-        updateHUD()
+        viewModel.resetGame()
         binding.txtCurrentWord.text = "READY?"
         binding.gameContainer.removeAllViews()
 
@@ -195,7 +256,7 @@ class GameFragment : Fragment() {
     }
 
     private fun spawnLoop() {
-        if (!isPlaying || hp <= 0 || !isAdded || _binding == null) return
+        if (!isPlaying || (viewModel.hp.value ?: 0) <= 0 || !isAdded || _binding == null) return
 
         spawnGates()
         spawnRoadLines()
@@ -250,9 +311,9 @@ class GameFragment : Fragment() {
     }
 
     private fun spawnGates() {
-        if (!isPlaying || !isAdded || _binding == null || allWords.isEmpty()) return
+        if (!isPlaying || !isAdded || _binding == null || filteredWords.isEmpty()) return
 
-        val question = allWords.random()
+        val question = filteredWords.random()
         currentQuestion = question
         binding.txtCurrentWord.text = question.english
 
@@ -271,7 +332,6 @@ class GameFragment : Fragment() {
         gateView.findViewById<MaterialCardView>(R.id.cardLeft).setCardBackgroundColor(if (isCorrectLeft) 0x802196F3.toInt() else 0x80F44336.toInt())
         gateView.findViewById<MaterialCardView>(R.id.cardRight).setCardBackgroundColor(if (isCorrectLeft) 0x80F44336.toInt() else 0x802196F3.toInt())
 
-        // 원근감 제거: 상단 맨 위에서 정상 크기로 시작
         gateView.scaleX = 1.0f
         gateView.scaleY = 1.0f
         gateView.alpha = 1.0f
@@ -287,7 +347,6 @@ class GameFragment : Fragment() {
                 val progress = anim.animatedValue as Float
                 gateView.translationY = binding.gameRoot.height * progress
 
-                // 플레이어 근처에서 판정
                 if (!collisionChecked && progress > 0.82f && progress < 0.90f) {
                     collisionChecked = true
                     checkCollision(isCorrectLeft)
@@ -310,21 +369,33 @@ class GameFragment : Fragment() {
         val isPlayerLeft = playerX < (binding.gameRoot.width / 2f)
         val isCorrect = if (isPlayerLeft) isCorrectLeft else !isCorrectLeft
 
-        if (isCorrect) { score += 10 } 
+        if (isCorrect) { 
+            viewModel.addScore(10)
+        } 
         else {
-            hp -= 1
-            currentQuestion?.let { q ->
-                lifecycleScope.launch(Dispatchers.IO) {
-                    try {
-                        val db = WordDatabase.getDatabase(requireContext())
-                        q.wrongCount += 1
-                        db.wordDao().updateWord(q)
-                    } catch (e: Exception) {}
-                }
+            viewModel.decreaseHp()
+            triggerVibration()
+            currentQuestion?.let { viewModel.updateWrongCount(it) }
+        }
+    }
+
+    private fun triggerVibration() {
+        if (settingsManager.isVibrationEnabled) {
+            val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                val vibratorManager = requireContext().getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as VibratorManager
+                vibratorManager.defaultVibrator
+            } else {
+                @Suppress("DEPRECATION")
+                requireContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+            }
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+            } else {
+                @Suppress("DEPRECATION")
+                vibrator.vibrate(200)
             }
         }
-        updateHUD()
-        if (hp <= 0) gameOver()
     }
 
     private fun gameOver() {
@@ -335,6 +406,7 @@ class GameFragment : Fragment() {
         backgroundAnimator = null
         
         if (_binding != null) {
+            val score = viewModel.score.value ?: 0
             val prefs = requireContext().getSharedPreferences("WordQuestGame", Context.MODE_PRIVATE)
             val best = prefs.getInt("best_score", 0)
             if (score > best) prefs.edit().putInt("best_score", score).apply()
@@ -345,9 +417,8 @@ class GameFragment : Fragment() {
         }
     }
 
-    private fun updateHUD() {
+    private fun updateHearts(hp: Int) {
         if (_binding == null) return
-        binding.txtScore.text = "SCORE: $score"
         val hearts = listOf(binding.ivHeart1, binding.ivHeart2, binding.ivHeart3)
         hearts.forEachIndexed { i, iv ->
             if (i < hp) { iv.alpha = 1f; iv.scaleX = 1f; iv.scaleY = 1f }

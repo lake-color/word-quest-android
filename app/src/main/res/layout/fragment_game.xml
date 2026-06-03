@@ -134,7 +134,7 @@
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/layoutStart"
         style="@style/Widget.Material3.CardView.Elevated"
-        android:layout_width="300dp"
+        android:layout_width="320dp"
         android:layout_height="wrap_content"
         app:cardCornerRadius="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -146,7 +146,7 @@
             android:layout_height="wrap_content"
             android:gravity="center"
             android:orientation="vertical"
-            android:padding="32dp">
+            android:padding="24dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -154,18 +154,30 @@
                 android:textAppearance="?attr/textAppearanceHeadlineMedium"
                 android:textColor="?attr/colorPrimary"
                 android:textStyle="bold" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="정답 문을 통과하세요!"
-                android:textAppearance="?attr/textAppearanceBodyMedium"
-                android:alpha="0.7" />
+                android:layout_marginTop="4dp"
+                android:text="학습 범위를 선택하세요"
+                android:textAppearance="?attr/textAppearanceLabelLarge"
+                android:textColor="?attr/colorSecondary" />
+
+            <!-- Day 선택 그리드 (4행 5열) -->
+            <GridLayout
+                android:id="@+id/gridDaySelection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:columnCount="5"
+                android:alignmentMode="alignMargins"
+                android:columnOrderPreserved="false" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnStartGame"
                 android:layout_width="match_parent"
-                android:layout_height="60dp"
-                android:layout_marginTop="32dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="24dp"
                 android:text="게임 시작"
                 app:cornerRadius="16dp" />
         </LinearLayout>

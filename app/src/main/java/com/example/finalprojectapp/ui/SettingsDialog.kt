@@ -7,11 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import com.example.finalprojectapp.R
+import com.example.finalprojectapp.data.SettingsManager
 import com.example.finalprojectapp.databinding.SettingsDialogBinding
 
 class SettingsDialog : DialogFragment() {
     private var _binding: SettingsDialogBinding? = null
     private val binding get() = _binding!!
+    private lateinit var settingsManager: SettingsManager
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -24,37 +27,70 @@ class SettingsDialog : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        settingsManager = SettingsManager(requireContext())
         
-        // 다이얼로그 배경 투명 처리 (MaterialCardView의 둥근 모서리를 살리기 위함)
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
 
+        loadSettings()
         setupListeners()
     }
 
+    private fun loadSettings() {
+        binding.seekSound.value = settingsManager.masterVolume.toFloat()
+        binding.txtSoundValue.text = settingsManager.masterVolume.toString()
+
+        binding.seekBgm.value = settingsManager.bgmVolume.toFloat()
+        binding.txtBgmValue.text = settingsManager.bgmVolume.toString()
+
+        binding.seekSfx.value = settingsManager.sfxVolume.toFloat()
+        binding.txtSfxValue.text = settingsManager.sfxVolume.toString()
+
+        binding.switchVibration.isChecked = settingsManager.isVibrationEnabled
+
+        val checkedFpsId = when (settingsManager.fps) {
+            60 -> R.id.radioFps60
+            180 -> R.id.radioFps180
+            else -> R.id.radioFps120
+        }
+        binding.toggleGroupFps.check(checkedFpsId)
+    }
+
     private fun setupListeners() {
-        // 닫기 버튼
         binding.btnClose.setOnClickListener {
             dismiss()
         }
 
-        // Material 3 Slider 리스너 설정
         binding.seekSound.addOnChangeListener { _, value, _ ->
-            binding.txtSoundValue.text = value.toInt().toString()
+            val vol = value.toInt()
+            binding.txtSoundValue.text = vol.toString()
+            settingsManager.masterVolume = vol
         }
 
         binding.seekBgm.addOnChangeListener { _, value, _ ->
-            binding.txtBgmValue.text = value.toInt().toString()
+            val vol = value.toInt()
+            binding.txtBgmValue.text = vol.toString()
+            settingsManager.bgmVolume = vol
         }
 
         binding.seekSfx.addOnChangeListener { _, value, _ ->
-            binding.txtSfxValue.text = value.toInt().toString()
+            val vol = value.toInt()
+            binding.txtSfxValue.text = vol.toString()
+            settingsManager.sfxVolume = vol
         }
         
-        // FPS 토글 버튼 그룹 리스너 (필요 시 구현)
         binding.toggleGroupFps.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
-                // 선택된 FPS에 따른 로직 처리
+                val fps = when (checkedId) {
+                    R.id.radioFps60 -> 60
+                    R.id.radioFps180 -> 180
+                    else -> 120
+                }
+                settingsManager.fps = fps
             }
+        }
+
+        binding.switchVibration.setOnCheckedChangeListener { _, isChecked ->
+            settingsManager.isVibrationEnabled = isChecked
         }
     }
 
