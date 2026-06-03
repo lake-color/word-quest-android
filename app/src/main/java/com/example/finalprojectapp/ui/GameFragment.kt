@@ -101,7 +101,7 @@ class GameFragment : Fragment() {
         selectedDays.clear()
         selectedDays.add(1) 
 
-        val btnSize = dpToPx(50)
+        val btnSize = dpToPx(56) // 약간 크게
         val margin = dpToPx(4)
 
         for (day in 1..20) {
@@ -111,11 +111,13 @@ class GameFragment : Fragment() {
                 minimumWidth = 0
                 insetTop = 0
                 insetBottom = 0
+                cornerRadius = dpToPx(16)
                 setPadding(0, 0, 0, 0)
                 layoutParams = ViewGroup.MarginLayoutParams(btnSize, btnSize).apply {
                     setMargins(margin, margin, margin, margin)
                 }
-                textSize = 12f
+                textSize = 14f
+                // textStyle은 TextView 속성이므로 폰트 설정 등으로 대체 가능하나 여기선 생략 또는 다른 방식 사용
                 
                 if (day == 1) {
                     checkDayButton(this, true)
@@ -147,9 +149,13 @@ class GameFragment : Fragment() {
         if (isChecked) {
             btn.setBackgroundColor(requireContext().getColor(R.color.wood_brown))
             btn.setTextColor(Color.WHITE)
+            btn.strokeWidth = 0
+            btn.elevation = dpToPx(4).toFloat()
         } else {
             btn.setBackgroundColor(Color.TRANSPARENT)
             btn.setTextColor(requireContext().getColor(R.color.wood_brown))
+            btn.strokeWidth = dpToPx(1)
+            btn.elevation = 0f
         }
     }
 

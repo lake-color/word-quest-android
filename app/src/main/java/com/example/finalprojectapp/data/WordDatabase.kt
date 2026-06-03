@@ -33,7 +33,21 @@ abstract class WordDatabase : RoomDatabase() {
         private class DatabaseCallback(private val context: Context) : RoomDatabase.Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
+                seedDatabase()
+            }
+
+            override fun onOpen(db: SupportSQLiteDatabase) {
+                super.onOpen(db)
+                // 앱 실행 시마다 비어있는지 확인하여 단어 주입 (사용자 요청 반영)
+                seedDatabase()
+            }
+
+            private fun seedDatabase() {
                 CoroutineScope(Dispatchers.IO).launch {
+                    val dao = getDatabase(context).wordDao()
+                    val existingCount = dao.getAllWordsList().size
+                    if (existingCount >= 400) return@launch // 이미 충분한 단어가 있으면 중단
+
                     val samples = mutableListOf<Word>()
                     
                     // 20 Days * 20 Words = 400 Words

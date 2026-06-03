@@ -64,24 +64,31 @@
             android:textStyle="bold" />
     </com.google.android.material.card.MaterialCardView>
 
-    <!-- 플레이어 캐릭터 -->
+    <!-- 플레이어 캐릭터 (현대적인 차량 모양으로 개선) -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/playerCharacter"
-        android:layout_width="64dp"
-        android:layout_height="84dp"
+        android:layout_width="72dp"
+        android:layout_height="100dp"
         android:layout_marginBottom="120dp"
-        app:cardBackgroundColor="?attr/colorPrimary"
-        app:cardCornerRadius="16dp"
-        app:cardElevation="12dp"
+        app:cardBackgroundColor="@android:color/transparent"
+        app:cardElevation="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="16dp"
             android:src="@android:drawable/ic_menu_directions"
-            app:tint="?attr/colorOnPrimary" />
+            android:rotation="0"
+            app:tint="?attr/colorPrimary" />
+
+        <!-- 차량 디테일 표현을 위한 오버레이 (예시) -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/sl_game_player_car" />
+
     </com.google.android.material.card.MaterialCardView>
 
     <!-- HUD (Score & HP) -->
@@ -130,12 +137,13 @@
         </LinearLayout>
     </LinearLayout>
 
-    <!-- 0. 게임 시작 대기 오버레이 -->
+    <!-- 0. 게임 시작 대기 오버레이 (현대적인 스테이지 선택창으로 개선) -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/layoutStart"
         style="@style/Widget.Material3.CardView.Elevated"
-        android:layout_width="320dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
         app:cardCornerRadius="32dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -147,11 +155,19 @@
             android:gravity="center"
             android:orientation="vertical"
             android:padding="24dp">
+
+            <ImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:src="@android:drawable/ic_menu_compass"
+                app:tint="?attr/colorPrimary" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="WORD RUNNER"
-                android:textAppearance="?attr/textAppearanceHeadlineMedium"
+                android:layout_marginTop="12dp"
+                android:text="@string/battle_mission"
+                android:textAppearance="?attr/textAppearanceHeadlineSmall"
                 android:textColor="?attr/colorPrimary"
                 android:textStyle="bold" />
 
@@ -159,27 +175,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="4dp"
-                android:text="학습 범위를 선택하세요"
-                android:textAppearance="?attr/textAppearanceLabelLarge"
-                android:textColor="?attr/colorSecondary" />
+                android:text="@string/select_word_range"
+                android:textAppearance="?attr/textAppearanceBodyMedium"
+                android:alpha="0.7" />
 
-            <!-- Day 선택 그리드 (4행 5열) -->
+            <!-- Day 선택 컨테이너 (스크롤 가능하도록 개선 가능성 고려) -->
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp" />
+
             <GridLayout
                 android:id="@+id/gridDaySelection"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
                 android:columnCount="5"
-                android:alignmentMode="alignMargins"
-                android:columnOrderPreserved="false" />
+                android:useDefaultMargins="true"
+                android:alignmentMode="alignMargins" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnStartGame"
+                style="@style/Widget.Material3.Button.TonalButton"
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="64dp"
                 android:layout_marginTop="24dp"
-                android:text="게임 시작"
-                app:cornerRadius="16dp" />
+                android:text="@string/start_mission"
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                app:cornerRadius="20dp"
+                app:icon="@android:drawable/ic_media_play" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
