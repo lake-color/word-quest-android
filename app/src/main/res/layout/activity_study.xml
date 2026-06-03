@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?android:attr/windowBackground"
-    android:padding="24dp">
+    android:background="?android:attr/windowBackground">
 
-    <!-- Header: Modern Navigation -->
+    <!-- Header & Progress -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnBack"
         style="@style/Widget.Material3.Button.IconButton"
         android:layout_width="48dp"
         android:layout_height="48dp"
+        android:layout_margin="16dp"
         app:icon="@android:drawable/ic_menu_revert"
         app:iconTint="?attr/colorPrimary"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/default_stage_number"
-        android:textAppearance="?attr/textAppearanceTitleLarge"
+        android:textAppearance="?attr/textAppearanceTitleMedium"
         android:textColor="?attr/colorPrimary"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@id/btnBack"
@@ -30,121 +31,121 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/btnBack" />
 
-    <!-- Main Word Card: Material 3 Elevated Card -->
+    <com.google.android.material.progressindicator.LinearProgressIndicator
+        android:id="@+id/progressStudy"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@id/btnBack"
+        app:trackCornerRadius="4dp"
+        app:trackThickness="8dp" />
+
+    <TextView
+        android:id="@+id/txtProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="0/20"
+        android:textAppearance="?attr/textAppearanceLabelMedium"
+        android:textColor="?attr/colorOutline"
+        app:layout_constraintEnd_toEndOf="@id/progressStudy"
+        app:layout_constraintTop_toBottomOf="@id/progressStudy" />
+
+    <!-- Word Card (English) -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardWord"
         style="@style/Widget.Material3.CardView.Elevated"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        android:layout_marginVertical="32dp"
-        android:minHeight="320dp"
-        app:cardCornerRadius="32dp"
-        app:layout_constraintBottom_toTopOf="@+id/layoutButtons"
-        app:layout_constraintTop_toBottomOf="@id/txtStudyTitle">
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="32dp"
+        app:cardCornerRadius="24dp"
+        app:layout_constraintDimensionRatio="4:3"
+        app:layout_constraintTop_toBottomOf="@id/txtProgress"
+        app:layout_constraintBottom_toTopOf="@id/cardMean">
 
-        <LinearLayout
+        <View
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:padding="24dp">
-
-            <TextView
-                android:id="@+id/txtWord"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/default_english_meaning"
-                android:textAppearance="?attr/textAppearanceHeadlineLarge"
-                android:textColor="?attr/colorPrimary"
-                android:textSize="44sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/txtMean"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="@string/default_korean_meaning"
-                android:textAppearance="?attr/textAppearanceHeadlineSmall"
-                android:textColor="?attr/colorSecondary"
-                android:alpha="0.7" />
-
-        </LinearLayout>
-    </com.google.android.material.card.MaterialCardView>
-
-    <!-- Progress Section -->
-    <LinearLayout
-        android:id="@+id/layoutProgress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@id/btnStar">
+            android:layout_height="match_parent"
+            tools:ignore="MissingDefaultResource" />
 
         <TextView
-            android:id="@+id/txtProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="12dp"
-            android:text="0/0"
-            android:textAppearance="?attr/textAppearanceLabelLarge"
-            android:textColor="?attr/colorSecondary" />
+            android:id="@+id/txtWord"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="24dp"
+            android:text="English Word"
+            android:textAppearance="?attr/textAppearanceHeadlineLarge"
+            android:textColor="?attr/colorPrimary"
+            android:textSize="44sp"
+            android:textStyle="bold" />
+    </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.progressindicator.LinearProgressIndicator
-            android:id="@+id/progressStudy"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            app:trackCornerRadius="4dp"
-            app:trackThickness="8dp" />
-    </LinearLayout>
+    <!-- Meaning Card (Korean) - Hidden by default -->
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/cardMean"
+        style="@style/Widget.Material3.CardView.Elevated"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="32dp"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="24dp"
+        app:layout_constraintDimensionRatio="4:1.8"
+        app:layout_constraintTop_toBottomOf="@id/cardWord">
 
-    <!-- Review Star Button -->
+        <TextView
+            android:id="@+id/txtMean"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:padding="16dp"
+            android:text="@string/click_to_see_meaning"
+            android:textAppearance="?attr/textAppearanceHeadlineSmall"
+            android:textColor="?attr/colorSecondary"
+            android:alpha="0.8" />
+    </com.google.android.material.card.MaterialCardView>
+
+    <!-- Star Button with Animation -->
     <com.google.android.material.button.MaterialButton
         android:id="@+id/btnStar"
         style="@style/Widget.Material3.Button.IconButton"
-        android:layout_width="48dp"
-        android:layout_height="48dp"
-        android:layout_marginBottom="8dp"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginTop="24dp"
         app:icon="@android:drawable/btn_star_big_off"
-        app:iconSize="32dp"
+        app:iconSize="40dp"
         app:iconTint="?attr/colorTertiary"
-        app:layout_constraintBottom_toTopOf="@+id/layoutButtons"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toBottomOf="@id/cardMean"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <!-- Navigation Buttons -->
-    <LinearLayout
-        android:id="@+id/layoutButtons"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="24dp"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="parent">
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPrev"
+        style="@style/Widget.Material3.Button.TonalButton"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="40dp"
+        android:minWidth="100dp"
+        android:text="@string/prev"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnPrev"
-            style="@style/Widget.Material3.Button.TonalButton"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginEnd="8dp"
-            android:layout_weight="1"
-            android:text="@string/prev"
-            app:cornerRadius="20dp" />
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btnNext"
-            style="@style/Widget.Material3.Button"
-            android:layout_width="0dp"
-            android:layout_height="60dp"
-            android:layout_marginStart="8dp"
-            android:layout_weight="1"
-            android:text="@string/next"
-            app:cornerRadius="20dp" />
-    </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnNext"
+        style="@style/Widget.Material3.Button"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="40dp"
+        android:minWidth="100dp"
+        android:text="@string/next"
+        app:cornerRadius="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

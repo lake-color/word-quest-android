@@ -6,26 +6,25 @@
     android:layout_height="match_parent"
     android:background="?android:attr/windowBackground">
 
-    <!-- Top Bar: Material 3 Design -->
+    <!-- Top Bar: Modern & Slim -->
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@android:color/transparent"
-        app:elevation="0dp"
+        android:background="?attr/colorSurface"
+        app:elevation="4dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.appbar.MaterialToolbar
             android:id="@+id/top_bar_layout"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorSurface"
-            app:titleTextColor="?attr/colorPrimary">
+            android:layout_height="64dp"
+            app:contentInsetStart="20dp"
+            app:contentInsetEnd="8dp">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginEnd="16dp">
+                android:layout_height="match_parent">
 
                 <TextView
                     android:id="@+id/txtUserNickname"
@@ -45,6 +44,7 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     app:icon="@android:drawable/ic_menu_manage"
+                    app:iconSize="28dp"
                     app:iconTint="?attr/colorPrimary"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -65,37 +65,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/appBarLayout" />
 
-    <!-- Navigation Bar: Modern TabLayout -->
+    <!-- Navigation Bar: Elevated & Professional -->
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/bottom_tab_layout"
         android:layout_width="match_parent"
-        android:layout_height="68dp"
+        android:layout_height="72dp"
         android:background="?attr/colorSurface"
+        app:elevation="8dp"
         app:tabIndicatorGravity="top"
-        app:tabIndicatorHeight="3dp"
+        app:tabIndicatorHeight="4dp"
         app:tabIndicatorColor="?attr/colorPrimary"
-        app:tabTextColor="?attr/colorOnSurfaceVariant"
         app:tabSelectedTextColor="?attr/colorPrimary"
         app:tabIconTint="?attr/colorPrimary"
-        app:tabMode="fixed"
+        app:tabTextAppearance="@style/TextAppearance.Material3.LabelMedium"
         app:layout_constraintBottom_toBottomOf="parent">
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_nav_review"
+            android:icon="@android:drawable/ic_menu_edit"
             android:text="@string/nav_review" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_nav_learn"
+            android:icon="@android:drawable/ic_menu_mapmode"
             android:text="@string/nav_learn" />
 
         <com.google.android.material.tabs.TabItem
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_nav_game"
+            android:icon="@android:drawable/ic_media_play"
             android:text="@string/nav_game" />
     </com.google.android.material.tabs.TabLayout>
 

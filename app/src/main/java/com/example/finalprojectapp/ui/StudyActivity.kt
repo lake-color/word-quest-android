@@ -1,7 +1,10 @@
 package com.example.finalprojectapp.ui
 
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.os.Bundle
 import android.view.View
+import android.view.animation.OvershootInterpolator
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -45,16 +48,19 @@ class StudyActivity : AppCompatActivity() {
     }
 
     private fun setupListeners() {
-        binding.cardWord.setOnClickListener {
+        // 뜻 카드 클릭 시 토글
+        binding.cardMean.setOnClickListener {
             viewModel.toggleLanguage()
         }
 
         binding.btnPrev.setOnClickListener {
             viewModel.prevWord()
+            playCardAnimation()
         }
 
         binding.btnNext.setOnClickListener {
             viewModel.nextWord()
+            playCardAnimation()
         }
 
         binding.btnBack.setOnClickListener {
@@ -63,6 +69,29 @@ class StudyActivity : AppCompatActivity() {
 
         binding.btnStar.setOnClickListener {
             viewModel.toggleMemorized()
+            playStarAnimation()
+        }
+    }
+
+    private fun playCardAnimation() {
+        val animX = ObjectAnimator.ofFloat(binding.cardWord, "scaleX", 0.9f, 1.0f)
+        val animY = ObjectAnimator.ofFloat(binding.cardWord, "scaleY", 0.9f, 1.0f)
+        AnimatorSet().apply {
+            playTogether(animX, animY)
+            duration = 300
+            interpolator = OvershootInterpolator()
+            start()
+        }
+    }
+
+    private fun playStarAnimation() {
+        val animX = ObjectAnimator.ofFloat(binding.btnStar, "scaleX", 1.0f, 1.5f, 1.0f)
+        val animY = ObjectAnimator.ofFloat(binding.btnStar, "scaleY", 1.0f, 1.5f, 1.0f)
+        AnimatorSet().apply {
+            playTogether(animX, animY)
+            duration = 400
+            interpolator = OvershootInterpolator()
+            start()
         }
     }
 
@@ -72,9 +101,9 @@ class StudyActivity : AppCompatActivity() {
                 binding.progressStudy.max = wordList.size
                 updateUI()
             } else {
-                binding.txtWord.text = "No words found"
-                binding.layoutButtons.visibility = View.GONE
-                binding.layoutProgress.visibility = View.GONE
+                binding.txtWord.text = getString(R.string.no_words_found, 1) // fallback
+                binding.btnPrev.visibility = View.GONE
+                binding.btnNext.visibility = View.GONE
                 binding.btnStar.visibility = View.GONE
             }
         }
@@ -91,16 +120,29 @@ class StudyActivity : AppCompatActivity() {
     private fun updateUI() {
         val words = viewModel.words.value ?: return
         val index = viewModel.currentIndex.value ?: 0
-        val isEng = viewModel.isShowingEnglish.value ?: true
+        val isShowingMean = !(viewModel.isShowingEnglish.value ?: true)
 
         if (index in words.indices) {
             val word = words[index]
             binding.txtWord.text = word.english
-            binding.txtMean.text = word.korean
-            binding.txtMean.visibility = if (isEng) View.INVISIBLE else View.VISIBLE
+            
+            if (isShowingMean) {
+                binding.txtMean.text = word.korean
+                binding.txtMean.alpha = 1.0f
+                binding.cardMean.setCardBackgroundColor(getColor(R.color.wood_brown).let { 
+                    // M3 Tonal variant simulation
+                    it 
+                })
+                binding.txtMean.setTextColor(getColor(android.R.color.white))
+            } else {
+                binding.txtMean.text = getString(R.string.click_to_see_meaning)
+                binding.txtMean.alpha = 0.5f
+                binding.cardMean.setCardBackgroundColor(getColor(R.color.cream_background))
+                binding.txtMean.setTextColor(getColor(R.color.wood_brown))
+            }
             
             binding.txtProgress.text = getString(R.string.study_progress_format, index + 1, words.size)
-            binding.progressStudy.progress = index + 1
+            binding.progressStudy.setProgress(index + 1, true)
             
             updateStarIcon(word.isMemorized)
             
@@ -116,5 +158,10 @@ class StudyActivity : AppCompatActivity() {
             android.R.drawable.btn_star_big_off
         }
         binding.btnStar.setIconResource(iconRes)
+        binding.btnStar.iconTint = if (isMemorized) {
+            getColorStateList(R.color.wood_brown)
+        } else {
+            getColorStateList(R.color.leaf_green)
+        }
     }
 }

@@ -78,6 +78,10 @@ class GameFragment : Fragment() {
             if (allWords.isNotEmpty()) {
                 binding.layoutStart.isVisible = true
                 binding.btnStartGame.isEnabled = true
+                // 즉시 초기화 시도 (혹시 로딩이 늦었을 경우 대비)
+                if (binding.gridDaySelection.childCount == 0) {
+                    initDaySelectionGrid()
+                }
             } else {
                 binding.txtCurrentWord.text = "No words available."
                 binding.btnStartGame.isEnabled = false
@@ -439,8 +443,16 @@ class GameFragment : Fragment() {
         if (_binding == null) return
         val hearts = listOf(binding.ivHeart1, binding.ivHeart2, binding.ivHeart3)
         hearts.forEachIndexed { i, iv ->
-            if (i < hp) { iv.alpha = 1f; iv.scaleX = 1f; iv.scaleY = 1f }
-            else { iv.alpha = 0.3f; iv.scaleX = 0.8f; iv.scaleY = 0.8f }
+            if (i < hp) { 
+                iv.animate().alpha(1f).scaleX(1.2f).scaleY(1.2f).setDuration(300).withEndAction {
+                    iv.animate().scaleX(1f).scaleY(1f).setDuration(200).start()
+                }.start()
+                iv.setColorFilter(requireContext().getColor(R.color.error_red))
+            }
+            else { 
+                iv.animate().alpha(0.2f).scaleX(0.7f).scaleY(0.7f).setDuration(500).start()
+                iv.setColorFilter(Color.GRAY)
+            }
         }
     }
 
