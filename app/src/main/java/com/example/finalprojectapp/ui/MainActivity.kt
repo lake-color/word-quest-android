@@ -22,7 +22,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         soundManager = SoundManager.getInstance(this)
-        soundManager.playBgm("bgm_main")
+        val settings = com.example.finalprojectapp.data.SettingsManager(this)
+        val bgmName = if (settings.mainBgmIndex == 1) "bgm_main" else "bgm_main2"
+        soundManager.playBgm(bgmName)
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -36,14 +38,12 @@ class MainActivity : AppCompatActivity() {
     private fun initButtons() {
         // 시작 버튼: HomeActivity(메인 게임 화면)으로 이동
         binding.btnStart.setOnClickListener {
-            soundManager.playSfx("click")
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
         }
 
         // 설정 버튼: 다이얼로그 표시
         binding.btnSet.setOnClickListener {
-            soundManager.playSfx("click")
             val dialog = SettingsDialog()
             dialog.show(supportFragmentManager, "SettingsDialog")
         }

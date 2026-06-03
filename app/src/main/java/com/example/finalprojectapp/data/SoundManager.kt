@@ -4,13 +4,13 @@ import android.content.Context
 import android.media.AudioAttributes
 import android.media.MediaPlayer
 import android.media.SoundPool
-import com.example.finalprojectapp.R
 
 class SoundManager(private val context: Context) {
     private val settingsManager = SettingsManager(context)
     private var bgmPlayer: MediaPlayer? = null
     private var soundPool: SoundPool
     private val sounds = mutableMapOf<String, Int>()
+    private var currentBgmName: String? = null
 
     init {
         val audioAttributes = AudioAttributes.Builder()
@@ -23,10 +23,10 @@ class SoundManager(private val context: Context) {
             .setAudioAttributes(audioAttributes)
             .build()
 
-        // Load SFX (Resources will be added to res/raw)
-        loadSfx("correct", "sfx_correct")
-        loadSfx("wrong", "sfx_wrong")
-        loadSfx("click", "sfx_click")
+        // Load SFX: correct and wrong will use the same 'sfx_game' resource
+        loadSfx("correct", "sfx_game")
+        loadSfx("wrong", "sfx_game")
+        // click SFX removed as requested
     }
 
     private fun loadSfx(name: String, fileName: String) {
@@ -48,12 +48,19 @@ class SoundManager(private val context: Context) {
     }
 
     fun playBgm(fileName: String) {
+        // 이미 해당 곡이 재생 중이면 중복 실행하지 않음 (부드러운 유지)
+        if (currentBgmName == fileName && bgmPlayer?.isPlaying == true) return
+        
         val resId = context.resources.getIdentifier(fileName, "raw", context.packageName)
-        if (resId == 0) return
-
+        if (resId == 0) {
+            stopBgm()
+            return
+        }
+        
         stopBgm()
+        currentBgmName = fileName
         bgmPlayer = MediaPlayer.create(context, resId).apply {
-            isLooping = true
+            isLooping = true // 무한 반복 설정
             setVolume(calculateBgmVolume(), calculateBgmVolume())
             start()
         }
@@ -63,6 +70,7 @@ class SoundManager(private val context: Context) {
         bgmPlayer?.stop()
         bgmPlayer?.release()
         bgmPlayer = null
+        currentBgmName = null
     }
 
     fun playSfx(name: String) {
@@ -84,6 +92,7 @@ class SoundManager(private val context: Context) {
     }
 
     fun updateVolumes() {
-        bgmPlayer?.setVolume(calculateBgmVolume(), calculateBgmVolume())
+        val vol = calculateBgmVolume()
+        bgmPlayer?.setVolume(vol, vol)
     }
 }

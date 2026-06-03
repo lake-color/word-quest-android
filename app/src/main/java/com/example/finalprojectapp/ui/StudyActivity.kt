@@ -28,7 +28,7 @@ class StudyActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         soundManager = SoundManager.getInstance(this)
-        soundManager.playBgm("bgm_main")
+        soundManager.stopBgm() // 학습에 집중할 수 있도록 BGM 중지
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -55,29 +55,24 @@ class StudyActivity : AppCompatActivity() {
     private fun setupListeners() {
         // 뜻 카드 클릭 시 토글
         binding.cardMean.setOnClickListener {
-            soundManager.playSfx("click")
             viewModel.toggleLanguage()
         }
 
         binding.btnPrev.setOnClickListener {
-            soundManager.playSfx("click")
             viewModel.prevWord()
             playCardAnimation()
         }
 
         binding.btnNext.setOnClickListener {
-            soundManager.playSfx("click")
             viewModel.nextWord()
             playCardAnimation()
         }
 
         binding.btnBack.setOnClickListener {
-            soundManager.playSfx("click")
             finish()
         }
 
         binding.btnStar.setOnClickListener {
-            soundManager.playSfx("click")
             viewModel.toggleMemorized()
             playStarAnimation()
         }

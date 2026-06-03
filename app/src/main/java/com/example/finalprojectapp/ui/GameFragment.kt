@@ -229,7 +229,8 @@ class GameFragment : Fragment() {
         resetGameState()
         isPlaying = true
         binding.cardQuestion.isVisible = true
-        soundManager.playBgm("bgm_game")
+        val bgmName = if (settingsManager.gameBgmIndex == 1) "bgm_game" else "bgm_game2"
+        soundManager.playBgm(bgmName)
         startBackgroundAnimation()
         spawnLoop()
     }
@@ -243,7 +244,8 @@ class GameFragment : Fragment() {
         binding.cardQuestion.isVisible = false
         binding.gameContainer.removeAllViews()
 
-        soundManager.playBgm("bgm_main")
+        val bgmName = if (settingsManager.mainBgmIndex == 1) "bgm_main" else "bgm_main2"
+        soundManager.playBgm(bgmName)
 
         binding.road1.translationY = 0f
         binding.road2.translationY = 0f
@@ -432,6 +434,10 @@ class GameFragment : Fragment() {
         backgroundAnimator?.cancel()
         backgroundAnimator = null
         
+        // 게임 오버 시에도 메인 BGM으로 즉시 복구 (반복 재생됨)
+        val bgmName = if (settingsManager.mainBgmIndex == 1) "bgm_main" else "bgm_main2"
+        soundManager.playBgm(bgmName)
+
         if (_binding != null) {
             val score = viewModel.score.value ?: 0
             val prefs = requireContext().getSharedPreferences("WordQuestGame", Context.MODE_PRIVATE)

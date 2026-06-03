@@ -34,6 +34,14 @@ class HomeActivity : AppCompatActivity() {
         initNavigation()
     }
 
+    override fun onResume() {
+        super.onResume()
+        // 학습창 등에서 돌아왔을 때 설정된 메인 BGM 재생
+        val settings = com.example.finalprojectapp.data.SettingsManager(this)
+        val bgmName = if (settings.mainBgmIndex == 1) "bgm_main" else "bgm_main2"
+        soundManager.playBgm(bgmName)
+    }
+
     private fun setupWindowInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -69,7 +77,6 @@ class HomeActivity : AppCompatActivity() {
         })
 
         binding.btnHomeSettings.setOnClickListener {
-            soundManager.playSfx("click")
             SettingsDialog().show(supportFragmentManager, "SettingsDialog")
         }
 
@@ -82,7 +89,6 @@ class HomeActivity : AppCompatActivity() {
     private fun showFragment(fragment: Fragment) {
         if (activeFragment == fragment) return
         
-        soundManager.playSfx("click")
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out) // 부드러운 전환 애니메이션
             .hide(activeFragment)
