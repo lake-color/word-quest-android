@@ -21,8 +21,24 @@
     <color name="success_blue">#2979FF</color>
     <color name="error_red">#D32F2F</color>
 
-    <!-- Legacy / Compatibility (Mapped to Cool Tones) -->
-    <color name="wood_brown">#1A237E</color> <!-- Replaced with Navy -->
-    <color name="leaf_green">#0277BD</color> <!-- Replaced with Blue -->
+    <!-- Legacy / Compatibility Mappings -->
+    <color name="wood_brown">#1A237E</color>
+    <color name="light_wood">#534BAE</color>
+    <color name="dark_brown">#0D1240</color>
+
+    <color name="leaf_green">#0277BD</color>
+    <color name="light_green">#ECEFF1</color>
+    <color name="dark_green">#0D1240</color>
+
+    <color name="deep_orange">#FFD600</color>
+    <color name="light_orange">#FFF9C4</color>
+    <color name="dark_orange">#F57F17</color>
+
     <color name="cream_background">#F5F7FA</color>
+    <color name="soft_cream">#FFFFFF</color>
+    <color name="light_beige">#ECEFF1</color>
+
+    <color name="primary_text">#0D1240</color>
+    <color name="secondary_text">#1A237E</color>
+    <color name="outline">#212121</color>
 </resources>
