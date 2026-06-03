@@ -5,7 +5,7 @@
     <!-- 메인 네비게이션 / 프래그먼트 -->
     <string name="nav_start">시작</string>
     <string name="nav_learn">학습</string>
-    <string name="nav_review">단어장</string>
+    <string name="nav_review">복습</string>
     <string name="nav_game">게임</string>
 
     <!-- UI 라벨 -->
@@ -50,7 +50,24 @@
     <string name="select_word_range">학습할 단어 범위를 선택하세요</string>
     <string name="start_mission">게임 시작</string>
     <string name="day_label">DAY</string>
-    <string name="click_to_see_meaning">누르면 뜻이 나옵니다</string>
+    <string name="day_format">DAY %1$d</string>
+    <string name="day_words_format">Day %1$d 단어들</string>
+    <string name="unknown_answer">미확인</string>
+    <string name="click_to_see_meaning">뜻 표시</string>
+    <string name="loading_data">데이터를 불러오는 중입니다. 잠시만 기다려주세요.</string>
+    <string name="no_words_in_range">선택한 범위에 단어가 없습니다.</string>
+    <string name="restart">다시하기</string>
+    <string name="exit_game">그만두기</string>
+    <string name="date_format">yyyy년 MM월 dd일 E요일</string>
+    <string name="game_over">게임 오버</string>
+    <string name="audio_settings">오디오 설정</string>
+    <string name="bgm_selection">배경음악 선택</string>
+    <string name="main_bgm">메인 배경음악</string>
+    <string name="game_bgm">게임 배경음악</string>
+    <string name="track_1">트랙 1</string>
+    <string name="track_2">트랙 2</string>
+    <string name="track_3">트랙 3</string>
+    <string name="graphics_settings">그래픽 설정</string>
     <string name="no_words_available">학습 가능한 단어가 없습니다.</string>
     <string name="countdown_start">START!</string>
 </resources>

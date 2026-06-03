@@ -115,10 +115,11 @@
                 android:layout_height="wrap_content"
                 android:paddingHorizontal="16dp"
                 android:paddingVertical="8dp"
-                android:text="SCORE: 0"
+                android:text="@string/score_format"
                 android:textAppearance="?attr/textAppearanceTitleMedium"
                 android:textColor="?attr/colorPrimary"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:text="SCORE: 0" />
         </com.google.android.material.card.MaterialCardView>
 
         <LinearLayout
@@ -260,7 +261,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="GAME OVER"
+                android:text="@string/game_over"
                 android:textAppearance="?attr/textAppearanceHeadlineMedium"
                 android:textColor="@color/error_red"
                 android:textStyle="bold" />
@@ -269,21 +270,21 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
-                android:text="Score: 120"
-                android:textAppearance="?attr/textAppearanceTitleLarge" />
+                android:textAppearance="?attr/textAppearanceTitleLarge"
+                tools:text="Score: 120" />
             <TextView
                 android:id="@+id/txtBestScore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Best: 250"
                 android:alpha="0.6"
-                android:textAppearance="?attr/textAppearanceTitleMedium" />
+                android:textAppearance="?attr/textAppearanceTitleMedium"
+                tools:text="Best: 250" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnRestart"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="32dp"
-                android:text="다시하기"
+                android:text="@string/restart"
                 app:cornerRadius="16dp" />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnExit"
@@ -291,7 +292,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:layout_marginTop="12dp"
-                android:text="그만두기"
+                android:text="@string/exit_game"
                 app:cornerRadius="16dp" />
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>

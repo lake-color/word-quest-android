@@ -9,32 +9,19 @@ import com.example.finalprojectapp.data.Word
 import com.example.finalprojectapp.data.WordDatabase
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+
+import androidx.lifecycle.asLiveData
 
 class GameViewModel(application: Application) : AndroidViewModel(application) {
     private val db = WordDatabase.getDatabase(application)
     
-    private val _allWords = MutableLiveData<List<Word>>()
-    val allWords: LiveData<List<Word>> = _allWords
+    val allWords: LiveData<List<Word>> = db.wordDao().getAllWords().asLiveData()
 
     private val _score = MutableLiveData(0)
     val score: LiveData<Int> = _score
 
     private val _hp = MutableLiveData(3)
     val hp: LiveData<Int> = _hp
-
-    init {
-        loadAllWords()
-    }
-
-    private fun loadAllWords() {
-        viewModelScope.launch {
-            val words = withContext(Dispatchers.IO) {
-                db.wordDao().getAllWordsList()
-            }
-            _allWords.postValue(words)
-        }
-    }
 
     fun addScore(points: Int) {
         _score.value = (_score.value ?: 0) + points

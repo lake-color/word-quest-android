@@ -12,6 +12,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import com.example.finalprojectapp.R
+import com.example.finalprojectapp.data.SettingsManager
 import com.example.finalprojectapp.data.SoundManager
 import com.example.finalprojectapp.databinding.ActivityStudyBinding
 import com.example.finalprojectapp.ui.viewmodel.StudyViewModel
@@ -20,6 +21,7 @@ class StudyActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStudyBinding
     private lateinit var viewModel: StudyViewModel
     private lateinit var soundManager: SoundManager
+    private lateinit var settingsManager: SettingsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,6 +30,8 @@ class StudyActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         soundManager = SoundManager.getInstance(this)
+        settingsManager = SettingsManager(this)
+        settingsManager.applySettings(this)
         soundManager.stopBgm() // 학습에 집중할 수 있도록 BGM 중지
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->

@@ -107,6 +107,7 @@ class SettingsDialog : DialogFragment() {
                     else -> 120
                 }
                 settingsManager.fps = fps
+                settingsManager.applySettings(requireActivity())
             }
         }
 

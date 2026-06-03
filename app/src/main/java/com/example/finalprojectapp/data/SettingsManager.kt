@@ -3,6 +3,8 @@ package com.example.finalprojectapp.data
 import android.content.Context
 import android.content.SharedPreferences
 
+import android.os.Build
+
 class SettingsManager(context: Context) {
     private val prefs: SharedPreferences = context.getSharedPreferences("word_quest_settings", Context.MODE_PRIVATE)
 
@@ -35,7 +37,9 @@ class SettingsManager(context: Context) {
         set(value) = prefs.edit().putInt("game_bgm_index", value).apply()
 
     fun applySettings(activity: android.app.Activity) {
-        // FPS 설정에 따른 로직 (필요 시 확장)
-        // 실제 고주사율 지원 기기에서 Window의 FrameRate를 조절하는 등의 처리가 가능합니다.
+        // FPS 적용 (주사율 설정)
+        val layoutParams = activity.window.attributes
+        layoutParams.preferredRefreshRate = fps.toFloat()
+        activity.window.attributes = layoutParams
     }
 }

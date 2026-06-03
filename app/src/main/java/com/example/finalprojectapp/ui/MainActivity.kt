@@ -6,6 +6,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import com.example.finalprojectapp.data.SettingsManager
 import com.example.finalprojectapp.data.SoundManager
 import com.example.finalprojectapp.ui.HomeActivity
 import com.example.finalprojectapp.databinding.ActivityMainBinding
@@ -14,6 +15,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var soundManager: SoundManager
+    private lateinit var settingsManager: SettingsManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -22,6 +24,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         soundManager = SoundManager.getInstance(this)
+        settingsManager = SettingsManager(this)
+        settingsManager.applySettings(this)
         // 시작 화면에서는 BGM을 재생하지 않도록 수정
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->

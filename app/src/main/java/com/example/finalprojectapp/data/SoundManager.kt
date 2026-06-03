@@ -48,27 +48,34 @@ class SoundManager(private val context: Context) {
     }
 
     fun playBgm(fileName: String) {
-        if (currentBgmName == fileName && bgmPlayer?.isPlaying == true) return
+        if (currentBgmName == fileName && bgmPlayer != null) {
+            if (bgmPlayer?.isPlaying == false) bgmPlayer?.start()
+            return
+        }
         
         var resId = context.resources.getIdentifier(fileName, "raw", context.packageName)
         if (resId == 0) {
             val fallbackName = if (fileName.contains("game")) "bgm_game" else "bgm_main"
             resId = context.resources.getIdentifier(fallbackName, "raw", context.packageName)
-            if (resId == 0) {
-                stopBgm()
-                return
-            }
+        }
+        
+        if (resId == 0) {
+            stopBgm()
+            return
         }
         
         try {
             stopBgm()
             currentBgmName = fileName
             
+            // MediaPlayer.create는 리소스를 직접 열기 때문에 안정적이지만,
+            // 잦은 호출 시 오버헤드가 있음. currentBgmName 체크로 이를 최소화함.
             bgmPlayer = MediaPlayer.create(context, resId)?.apply {
                 isLooping = true
                 val vol = calculateBgmVolume()
                 setVolume(vol, vol)
-                setOnErrorListener { mp, _, _ ->
+                setOnErrorListener { mp, what, extra ->
+                    Log.e("SoundManager", "MediaPlayer Error: $what, $extra")
                     try { mp.reset() } catch (e: Exception) {}
                     false
                 }

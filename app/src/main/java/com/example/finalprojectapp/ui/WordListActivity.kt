@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.finalprojectapp.R
 import com.example.finalprojectapp.databinding.ActivityWordListBinding
 import com.example.finalprojectapp.ui.adapter.WordListAdapter
 import com.example.finalprojectapp.ui.viewmodel.WordListViewModel
@@ -41,7 +42,7 @@ class WordListActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this)[WordListViewModel::class.java]
 
         val day = intent.getIntExtra("DAY_NUM", 1)
-        binding.toolbar.title = "Day $day Words"
+        binding.toolbar.title = getString(R.string.day_words_format, day)
         binding.toolbar.setNavigationOnClickListener { finish() }
 
         setupRecyclerView()

@@ -17,7 +17,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import android.widget.FrameLayout
+import android.widget.GridLayout
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -75,16 +77,17 @@ class GameFragment : Fragment() {
     private fun observeViewModel() {
         viewModel.allWords.observe(viewLifecycleOwner) { words ->
             allWords = words
+            binding.btnStartGame.isEnabled = true
             if (allWords.isNotEmpty()) {
-                binding.layoutStart.isVisible = true
-                binding.btnStartGame.isEnabled = true
-                // 즉시 초기화 시도 (혹시 로딩이늦었을 경우 대비)
+                // 게임 중이 아닐 때만 시작 레이아웃을 보이게 함
+                if (!isPlaying && !binding.layoutGameOver.isVisible && !binding.layoutCountdown.isVisible) {
+                    binding.layoutStart.isVisible = true
+                }
                 if (binding.gridDaySelection.childCount == 0) {
                     initDaySelectionGrid()
                 }
             } else {
                 binding.txtCurrentWord.text = getString(R.string.no_words_available)
-                binding.btnStartGame.isEnabled = false
             }
         }
 
@@ -117,11 +120,15 @@ class GameFragment : Fragment() {
                 insetBottom = 0
                 cornerRadius = dpToPx(16)
                 setPadding(0, 0, 0, 0)
-                layoutParams = ViewGroup.MarginLayoutParams(btnSize, btnSize).apply {
-                    setMargins(margin, margin, margin, margin)
+                layoutParams = GridLayout.LayoutParams().apply {
+                    width = btnSize
+                    height = btnSize
+                    leftMargin = margin
+                    topMargin = margin
+                    rightMargin = margin
+                    bottomMargin = margin
                 }
                 textSize = 14f
-                // textStyle은 TextView 속성이므로 폰트 설정 등으로 대체 가능하나 여기선 생략 또는 다른 방식 사용
                 
                 if (day == 1) {
                     checkDayButton(this, true)
@@ -165,20 +172,29 @@ class GameFragment : Fragment() {
 
     private fun setupButtons() {
         binding.btnStartGame.setOnClickListener {
+            soundManager.playSfx("click")
             prepareFilteredWords()
-            if (filteredWords.isEmpty()) return@setOnClickListener
+            if (allWords.isEmpty()) {
+                Toast.makeText(requireContext(), getString(R.string.loading_data), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
+            if (filteredWords.isEmpty()) {
+                Toast.makeText(requireContext(), getString(R.string.no_words_in_range), Toast.LENGTH_SHORT).show()
+                return@setOnClickListener
+            }
             binding.layoutStart.isVisible = false
             startCountdown()
         }
         binding.btnRestart.setOnClickListener {
+            soundManager.playSfx("click")
             binding.layoutGameOver.isVisible = false
             startCountdown()
         }
         binding.btnExit.setOnClickListener {
+            soundManager.playSfx("click")
             binding.layoutGameOver.isVisible = false
             resetGameState()
             
-            // 메인 화면으로 돌아갈 때 메인 BGM 재생
             val bgmName = when (settingsManager.mainBgmIndex) {
                 1 -> "bgm_main"
                 2 -> "bgm_main2"
@@ -363,7 +379,7 @@ class GameFragment : Fragment() {
         binding.txtCurrentWord.text = question.english
 
         val wrongAnswer = allWords.filter { it.id != question.id }.let {
-            if (it.isNotEmpty()) it.random().korean else "???"
+            if (it.isNotEmpty()) it.random().korean else getString(R.string.unknown_answer)
         }
 
         val gateView = LayoutInflater.from(requireContext()).inflate(R.layout.item_gate, binding.gameContainer, false)
@@ -441,11 +457,13 @@ class GameFragment : Fragment() {
                 requireContext().getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             }
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                vibrator.vibrate(VibrationEffect.createOneShot(200, VibrationEffect.DEFAULT_AMPLITUDE))
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                vibrator.vibrate(VibrationEffect.createPredefined(VibrationEffect.EFFECT_CLICK))
+            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(50, 128))
             } else {
                 @Suppress("DEPRECATION")
-                vibrator.vibrate(200)
+                vibrator.vibrate(50)
             }
         }
     }

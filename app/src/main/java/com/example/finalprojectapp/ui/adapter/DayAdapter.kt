@@ -18,7 +18,7 @@ class DayAdapter(private val dayCount: Int) : RecyclerView.Adapter<DayAdapter.Da
 
     override fun onBindViewHolder(holder: DayViewHolder, position: Int) {
         val dayNum = position + 1
-        holder.binding.txtDayNum.text = "DAY $dayNum"
+        holder.binding.txtDayNum.text = holder.itemView.context.getString(com.example.finalprojectapp.R.string.day_format, dayNum)
 
         holder.binding.cardDay.setOnClickListener {
             val context = holder.itemView.context
