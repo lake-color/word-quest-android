@@ -12,18 +12,23 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.updatePadding
 import androidx.lifecycle.ViewModelProvider
 import com.example.finalprojectapp.R
+import com.example.finalprojectapp.data.SoundManager
 import com.example.finalprojectapp.databinding.ActivityStudyBinding
 import com.example.finalprojectapp.ui.viewmodel.StudyViewModel
 
 class StudyActivity : AppCompatActivity() {
     private lateinit var binding: ActivityStudyBinding
     private lateinit var viewModel: StudyViewModel
+    private lateinit var soundManager: SoundManager
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         binding = ActivityStudyBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        soundManager = SoundManager.getInstance(this)
+        soundManager.playBgm("bgm_main")
 
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -50,24 +55,29 @@ class StudyActivity : AppCompatActivity() {
     private fun setupListeners() {
         // 뜻 카드 클릭 시 토글
         binding.cardMean.setOnClickListener {
+            soundManager.playSfx("click")
             viewModel.toggleLanguage()
         }
 
         binding.btnPrev.setOnClickListener {
+            soundManager.playSfx("click")
             viewModel.prevWord()
             playCardAnimation()
         }
 
         binding.btnNext.setOnClickListener {
+            soundManager.playSfx("click")
             viewModel.nextWord()
             playCardAnimation()
         }
 
         binding.btnBack.setOnClickListener {
+            soundManager.playSfx("click")
             finish()
         }
 
         binding.btnStar.setOnClickListener {
+            soundManager.playSfx("click")
             viewModel.toggleMemorized()
             playStarAnimation()
         }

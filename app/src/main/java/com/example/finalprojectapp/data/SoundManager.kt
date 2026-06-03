@@ -23,11 +23,17 @@ class SoundManager(private val context: Context) {
             .setAudioAttributes(audioAttributes)
             .build()
 
-        // Load SFX
-        // Note: Raw resources should be added to res/raw folder
-        // sounds["correct"] = soundPool.load(context, R.raw.sfx_correct, 1)
-        // sounds["wrong"] = soundPool.load(context, R.raw.sfx_wrong, 1)
-        // sounds["click"] = soundPool.load(context, R.raw.sfx_click, 1)
+        // Load SFX (Resources will be added to res/raw)
+        loadSfx("correct", "sfx_correct")
+        loadSfx("wrong", "sfx_wrong")
+        loadSfx("click", "sfx_click")
+    }
+
+    private fun loadSfx(name: String, fileName: String) {
+        val resId = context.resources.getIdentifier(fileName, "raw", context.packageName)
+        if (resId != 0) {
+            sounds[name] = soundPool.load(context, resId, 1)
+        }
     }
 
     companion object {
@@ -41,7 +47,10 @@ class SoundManager(private val context: Context) {
         }
     }
 
-    fun playBgm(resId: Int) {
+    fun playBgm(fileName: String) {
+        val resId = context.resources.getIdentifier(fileName, "raw", context.packageName)
+        if (resId == 0) return
+
         stopBgm()
         bgmPlayer = MediaPlayer.create(context, resId).apply {
             isLooping = true

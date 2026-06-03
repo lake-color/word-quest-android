@@ -69,6 +69,7 @@ class HomeActivity : AppCompatActivity() {
         })
 
         binding.btnHomeSettings.setOnClickListener {
+            soundManager.playSfx("click")
             SettingsDialog().show(supportFragmentManager, "SettingsDialog")
         }
 
@@ -81,6 +82,7 @@ class HomeActivity : AppCompatActivity() {
     private fun showFragment(fragment: Fragment) {
         if (activeFragment == fragment) return
         
+        soundManager.playSfx("click")
         supportFragmentManager.beginTransaction()
             .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out) // 부드러운 전환 애니메이션
             .hide(activeFragment)

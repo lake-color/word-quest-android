@@ -60,32 +60,37 @@ class SettingsDialog : DialogFragment() {
 
     private fun setupListeners() {
         binding.btnClose.setOnClickListener {
+            soundManager.playSfx("click")
             dismiss()
         }
 
-        binding.seekSound.addOnChangeListener { _, value, _ ->
+        binding.seekSound.addOnChangeListener { _, value, fromUser ->
             val vol = value.toInt()
             binding.txtSoundValue.text = vol.toString()
             settingsManager.masterVolume = vol
             soundManager.updateVolumes()
+            if (fromUser) soundManager.playSfx("click")
         }
 
-        binding.seekBgm.addOnChangeListener { _, value, _ ->
+        binding.seekBgm.addOnChangeListener { _, value, fromUser ->
             val vol = value.toInt()
             binding.txtBgmValue.text = vol.toString()
             settingsManager.bgmVolume = vol
             soundManager.updateVolumes()
+            if (fromUser) soundManager.playSfx("click")
         }
 
-        binding.seekSfx.addOnChangeListener { _, value, _ ->
+        binding.seekSfx.addOnChangeListener { _, value, fromUser ->
             val vol = value.toInt()
             binding.txtSfxValue.text = vol.toString()
             settingsManager.sfxVolume = vol
             soundManager.updateVolumes()
+            if (fromUser) soundManager.playSfx("click")
         }
         
         binding.toggleGroupFps.addOnButtonCheckedListener { _, checkedId, isChecked ->
             if (isChecked) {
+                soundManager.playSfx("click")
                 val fps = when (checkedId) {
                     R.id.radioFps60 -> 60
                     R.id.radioFps180 -> 180
@@ -96,6 +101,7 @@ class SettingsDialog : DialogFragment() {
         }
 
         binding.switchVibration.setOnCheckedChangeListener { _, isChecked ->
+            soundManager.playSfx("click")
             settingsManager.isVibrationEnabled = isChecked
         }
     }

@@ -229,6 +229,7 @@ class GameFragment : Fragment() {
         resetGameState()
         isPlaying = true
         binding.cardQuestion.isVisible = true
+        soundManager.playBgm("bgm_game")
         startBackgroundAnimation()
         spawnLoop()
     }
@@ -241,6 +242,8 @@ class GameFragment : Fragment() {
         binding.txtCurrentWord.text = ""
         binding.cardQuestion.isVisible = false
         binding.gameContainer.removeAllViews()
+
+        soundManager.playBgm("bgm_main")
 
         binding.road1.translationY = 0f
         binding.road2.translationY = 0f

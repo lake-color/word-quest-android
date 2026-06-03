@@ -25,4 +25,9 @@ class SettingsManager(context: Context) {
     var isVibrationEnabled: Boolean
         get() = prefs.getBoolean("vibration_enabled", true)
         set(value) = prefs.edit().putBoolean("vibration_enabled", value).apply()
+
+    fun applySettings(activity: android.app.Activity) {
+        // FPS 설정에 따른 로직 (필요 시 확장)
+        // 실제 고주사율 지원 기기에서 Window의 FrameRate를 조절하는 등의 처리가 가능합니다.
+    }
 }
