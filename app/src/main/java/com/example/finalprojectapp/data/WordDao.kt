@@ -29,4 +29,7 @@ interface WordDao {
 
     @Update
     suspend fun updateWord(word: Word)
+
+    @Query("DELETE FROM word_table")
+    suspend fun deleteAllWords()
 }
