@@ -12,11 +12,20 @@ import com.example.finalprojectapp.data.SettingsManager
 import com.example.finalprojectapp.data.SoundManager
 import com.example.finalprojectapp.databinding.SettingsDialogBinding
 
+interface BgmChangeListener {
+    fun onBgmChanged(index: Int)
+}
+
 class SettingsDialog : DialogFragment() {
     private var _binding: SettingsDialogBinding? = null
     private val binding get() = _binding!!
     private lateinit var settingsManager: SettingsManager
     private lateinit var soundManager: SoundManager
+    private var bgmChangeListener: BgmChangeListener? = null
+
+    fun setBgmChangeListener(listener: BgmChangeListener) {
+        bgmChangeListener = listener
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -125,14 +134,7 @@ class SettingsDialog : DialogFragment() {
                     else -> 3
                 }
                 settingsManager.mainBgmIndex = index
-                if (activity is MainActivity || activity is HomeActivity || activity is StudyActivity) {
-                    val bgmName = when (index) {
-                        1 -> "bgm_main"
-                        2 -> "bgm_main2"
-                        else -> "bgm_main3"
-                    }
-                    soundManager.playBgm(bgmName)
-                }
+                bgmChangeListener?.onBgmChanged(index)
             }
         }
 

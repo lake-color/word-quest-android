@@ -11,7 +11,7 @@ import com.example.finalprojectapp.data.SoundManager
 import com.example.finalprojectapp.ui.HomeActivity
 import com.example.finalprojectapp.databinding.ActivityMainBinding
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), BgmChangeListener {
 
     private lateinit var binding: ActivityMainBinding
     private lateinit var soundManager: SoundManager
@@ -49,7 +49,17 @@ class MainActivity : AppCompatActivity() {
         binding.btnSet.setOnClickListener {
             soundManager.playSfx("click")
             val dialog = SettingsDialog()
+            dialog.setBgmChangeListener(this)
             dialog.show(supportFragmentManager, "SettingsDialog")
         }
+    }
+
+    override fun onBgmChanged(index: Int) {
+        val bgmName = when (index) {
+            1 -> "bgm_main"
+            2 -> "bgm_main2"
+            else -> "bgm_main3"
+        }
+        soundManager.playBgm(bgmName)
     }
 }

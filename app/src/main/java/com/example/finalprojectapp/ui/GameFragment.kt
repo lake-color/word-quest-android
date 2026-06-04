@@ -44,13 +44,14 @@ class GameFragment : Fragment() {
     private var allWords = listOf<Word>()
     private var filteredWords = listOf<Word>()
     private var currentQuestion: Word? = null
-    private var isPlaying = false
+    @Volatile private var isPlaying = false
 
     private val selectedDays = mutableSetOf<Int>()
     private lateinit var settingsManager: SettingsManager
     private lateinit var soundManager: SoundManager
 
     private val activeAnimators = mutableListOf<ValueAnimator>()
+    private val animatorsLock = Any()
     private var backgroundAnimator: ValueAnimator? = null
 
     override fun onCreateView(
@@ -274,8 +275,10 @@ class GameFragment : Fragment() {
         binding.road1.translationY = 0f
         binding.road2.translationY = 0f
 
-        activeAnimators.forEach { it.cancel() }
-        activeAnimators.clear()
+        synchronized(animatorsLock) {
+            activeAnimators.forEach { it.cancel() }
+            activeAnimators.clear()
+        }
 
         backgroundAnimator?.cancel()
         backgroundAnimator = null
@@ -419,13 +422,20 @@ class GameFragment : Fragment() {
                 }
             }
             addListener(object : Animator.AnimatorListener {
-                override fun onAnimationEnd(a: Animator) { if (_binding != null) binding.gameContainer.removeView(gateView); activeAnimators.remove(this as? ValueAnimator) }
+                override fun onAnimationEnd(a: Animator) {
+                    if (_binding != null) binding.gameContainer.removeView(gateView)
+                    synchronized(animatorsLock) {
+                        activeAnimators.remove(this as? ValueAnimator)
+                    }
+                }
                 override fun onAnimationStart(a: Animator) {}
                 override fun onAnimationRepeat(a: Animator) {}
                 override fun onAnimationCancel(a: Animator) {}
             })
         }
-        activeAnimators.add(animator)
+        synchronized(animatorsLock) {
+            activeAnimators.add(animator)
+        }
         animator.start()
     }
 
@@ -470,8 +480,10 @@ class GameFragment : Fragment() {
 
     private fun gameOver() {
         isPlaying = false
-        activeAnimators.forEach { it.cancel() }
-        activeAnimators.clear()
+        synchronized(animatorsLock) {
+            activeAnimators.forEach { it.cancel() }
+            activeAnimators.clear()
+        }
         backgroundAnimator?.cancel()
         backgroundAnimator = null
         
@@ -511,8 +523,10 @@ class GameFragment : Fragment() {
 
     override fun onDestroyView() {
         isPlaying = false
-        activeAnimators.forEach { it.cancel() }
-        activeAnimators.clear()
+        synchronized(animatorsLock) {
+            activeAnimators.forEach { it.cancel() }
+            activeAnimators.clear()
+        }
         backgroundAnimator?.cancel()
         backgroundAnimator = null
         _binding = null

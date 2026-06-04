@@ -6,8 +6,9 @@ import android.media.MediaPlayer
 import android.media.SoundPool
 import android.util.Log
 
-class SoundManager(private val context: Context) {
-    private val settingsManager = SettingsManager(context)
+class SoundManager(context: Context) {
+    private val appContext = context.applicationContext
+    private val settingsManager = SettingsManager(appContext)
     private var bgmPlayer: MediaPlayer? = null
     private var soundPool: SoundPool
     private val sounds = mutableMapOf<String, Int>()
@@ -30,9 +31,9 @@ class SoundManager(private val context: Context) {
     }
 
     private fun loadSfx(name: String, fileName: String) {
-        val resId = context.resources.getIdentifier(fileName, "raw", context.packageName)
+        val resId = appContext.resources.getIdentifier(fileName, "raw", appContext.packageName)
         if (resId != 0) {
-            sounds[name] = soundPool.load(context, resId, 1)
+            sounds[name] = soundPool.load(appContext, resId, 1)
         }
     }
 
@@ -52,25 +53,23 @@ class SoundManager(private val context: Context) {
             if (bgmPlayer?.isPlaying == false) bgmPlayer?.start()
             return
         }
-        
-        var resId = context.resources.getIdentifier(fileName, "raw", context.packageName)
+
+        var resId = appContext.resources.getIdentifier(fileName, "raw", appContext.packageName)
         if (resId == 0) {
             val fallbackName = if (fileName.contains("game")) "bgm_game" else "bgm_main"
-            resId = context.resources.getIdentifier(fallbackName, "raw", context.packageName)
+            resId = appContext.resources.getIdentifier(fallbackName, "raw", appContext.packageName)
         }
-        
+
         if (resId == 0) {
             stopBgm()
             return
         }
-        
+
         try {
             stopBgm()
             currentBgmName = fileName
-            
-            // MediaPlayer.create는 리소스를 직접 열기 때문에 안정적이지만,
-            // 잦은 호출 시 오버헤드가 있음. currentBgmName 체크로 이를 최소화함.
-            bgmPlayer = MediaPlayer.create(context, resId)?.apply {
+
+            bgmPlayer = MediaPlayer.create(appContext, resId)?.apply {
                 isLooping = true
                 val vol = calculateBgmVolume()
                 setVolume(vol, vol)
@@ -133,5 +132,14 @@ class SoundManager(private val context: Context) {
     fun updateVolumes() {
         val vol = calculateBgmVolume()
         bgmPlayer?.setVolume(vol, vol)
+    }
+
+    fun release() {
+        stopBgm()
+        try {
+            soundPool.release()
+        } catch (e: Exception) {
+            Log.e("SoundManager", "SoundPool release failed: ${e.message}")
+        }
     }
 }

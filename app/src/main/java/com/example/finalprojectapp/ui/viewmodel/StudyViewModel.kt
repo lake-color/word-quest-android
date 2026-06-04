@@ -58,10 +58,12 @@ class StudyViewModel(application: Application) : AndroidViewModel(application) {
         val index = _currentIndex.value ?: 0
         if (index in wordsList.indices) {
             val word = wordsList[index]
-            word.isMemorized = !word.isMemorized
+            val updatedWord = word.copy(isMemorized = !word.isMemorized)
             viewModelScope.launch(Dispatchers.IO) {
-                db.wordDao().updateWord(word)
-                _words.postValue(wordsList) // Notify observers
+                db.wordDao().updateWord(updatedWord)
+                val updatedList = wordsList.toMutableList()
+                updatedList[index] = updatedWord
+                _words.postValue(updatedList)
             }
         }
     }

@@ -41,8 +41,8 @@ abstract class WordDatabase : RoomDatabase() {
                 super.onOpen(db)
                 CoroutineScope(Dispatchers.IO).launch {
                     val dao = getDatabase(context).wordDao()
-                    // 데이터 개수가 정확히 400개가 아니면 (중복 주입 등 오류) 초기화 후 재주입
-                    if (dao.getAllWordsList().size != 400) {
+                    // 데이터가 완전히 비어있을 때만 초기화 (사용자 데이터 보호)
+                    if (dao.getAllWordsList().isEmpty()) {
                         seedDatabase()
                     }
                 }

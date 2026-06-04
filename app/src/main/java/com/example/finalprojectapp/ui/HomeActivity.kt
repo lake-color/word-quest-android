@@ -20,7 +20,7 @@ import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : AppCompatActivity(), BgmChangeListener {
     private lateinit var binding: ActivityHomeBinding
     private lateinit var soundManager: SoundManager
     private lateinit var settingsManager: SettingsManager
@@ -119,7 +119,9 @@ class HomeActivity : AppCompatActivity() {
 
         binding.btnHomeSettings.setOnClickListener {
             soundManager.playSfx("click")
-            SettingsDialog().show(supportFragmentManager, "SettingsDialog")
+            val dialog = SettingsDialog()
+            dialog.setBgmChangeListener(this)
+            dialog.show(supportFragmentManager, "SettingsDialog")
         }
 
         // 초기 탭 설정: Learn(Index 1)
@@ -130,6 +132,16 @@ class HomeActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        soundManager.release()
+    }
+
+    override fun onBgmChanged(index: Int) {
+        val bgmName = when (index) {
+            1 -> "bgm_main"
+            2 -> "bgm_main2"
+            else -> "bgm_main3"
+        }
+        soundManager.playBgm(bgmName)
     }
 
     private fun showFragment(fragment: Fragment) {

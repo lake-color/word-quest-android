@@ -38,8 +38,11 @@ class GameViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateWrongCount(word: Word) {
         viewModelScope.launch(Dispatchers.IO) {
-            word.wrongCount += 1
-            db.wordDao().updateWord(word)
+            val currentWord = db.wordDao().getWordById(word.id)
+            currentWord?.let {
+                it.wrongCount += 1
+                db.wordDao().updateWord(it)
+            }
         }
     }
 }
