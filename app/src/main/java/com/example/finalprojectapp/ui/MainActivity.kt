@@ -35,12 +35,8 @@ class MainActivity : AppCompatActivity(), BgmChangeListener {
         }
     }
 
-    private val learnFragment by lazy { 
-        supportFragmentManager.findFragmentByTag("learn") as? LearnFragment ?: LearnFragment() 
-    }
-    private val wordbookFragment by lazy { 
-        supportFragmentManager.findFragmentByTag("wordbook") as? WordbookFragment ?: WordbookFragment() 
-    }
+    private val learnFragment by lazy { NavListFragment.newInstance(true) }
+    private val wordbookFragment by lazy { NavListFragment.newInstance(false) }
     private val gameFragment by lazy { 
         supportFragmentManager.findFragmentByTag("game") as? GameFragment ?: GameFragment() 
     }

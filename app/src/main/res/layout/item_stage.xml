@@ -10,13 +10,9 @@
     <!-- 스테이지 노드 (순수하게 배치만 남김) -->
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/cardStage"
-        style="@style/Widget.Material3.CardView.Elevated"
+        style="@style/Widget.WordQuest.Card.Circle"
         android:layout_width="90dp"
         android:layout_height="90dp"
-        app:cardCornerRadius="45dp"
-        app:cardElevation="4dp"
-        app:strokeWidth="3dp"
-        app:strokeColor="?attr/colorPrimaryContainer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

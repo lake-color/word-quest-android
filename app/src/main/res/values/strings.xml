@@ -69,4 +69,6 @@
     <string name="graphics_settings">그래픽 설정</string>
     <string name="no_words_available">학습 가능한 단어가 없습니다.</string>
     <string name="countdown_start">START!</string>
+    <string name="reset_wrong_count">오답 기록 초기화</string>
+    <string name="reset_complete">오답 기록이 모두 초기화되었습니다.</string>
 </resources>

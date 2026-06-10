@@ -37,9 +37,20 @@
 
     <!-- Modern Card Style -->
     <style name="Widget.WordQuest.Card" parent="Widget.Material3.CardView.Elevated">
-        <item name="cardCornerRadius">24dp</item>
-        <item name="cardElevation">4dp</item>
-        <item name="cardBackgroundColor">@color/white</item>
+        <item name="cardCornerRadius">20dp</item>
+        <item name="cardElevation">6dp</item>
+        <item name="android:layout_marginLeft">12dp</item>
+        <item name="android:layout_marginRight">12dp</item>
+        <item name="android:layout_marginTop">8dp</item>
+        <item name="android:layout_marginBottom">8dp</item>
+    </style>
+
+    <!-- Circular Node Style -->
+    <style name="Widget.WordQuest.Card.Circle">
+        <item name="cardCornerRadius">45dp</item>
+        <item name="strokeWidth">3dp</item>
+        <item name="strokeColor">?attr/colorPrimaryContainer</item>
+        <item name="android:layout_margin">0dp</item>
     </style>
 
     <!-- Modern Button Style -->
