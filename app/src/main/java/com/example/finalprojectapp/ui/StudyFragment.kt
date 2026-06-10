@@ -3,87 +3,91 @@ package com.example.finalprojectapp.ui
 import android.animation.AnimatorSet
 import android.animation.ObjectAnimator
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.view.animation.OvershootInterpolator
-import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
-import androidx.core.view.updatePadding
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.finalprojectapp.R
 import com.example.finalprojectapp.data.SettingsManager
 import com.example.finalprojectapp.data.SoundManager
-import com.example.finalprojectapp.databinding.ActivityStudyBinding
-import com.example.finalprojectapp.ui.viewmodel.StudyViewModel
+import com.example.finalprojectapp.databinding.FragmentStudyBinding
+import com.example.finalprojectapp.ui.viewmodel.MainViewModel
 
-class StudyActivity : AppCompatActivity() {
-    private lateinit var binding: ActivityStudyBinding
-    private lateinit var viewModel: StudyViewModel
+class StudyFragment : Fragment() {
+    private var _binding: FragmentStudyBinding? = null
+    private val binding get() = _binding!!
+    
+    private lateinit var viewModel: MainViewModel
     private lateinit var soundManager: SoundManager
     private lateinit var settingsManager: SettingsManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
-        binding = ActivityStudyBinding.inflate(layoutInflater)
-        setContentView(binding.root)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        _binding = FragmentStudyBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        soundManager = SoundManager.getInstance(this)
-        settingsManager = SettingsManager(this)
-        settingsManager.applySettings(this)
-        soundManager.stopBgm() // 학습에 집중할 수 있도록 BGM 중지
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        
+        soundManager = SoundManager.getInstance(requireContext())
+        settingsManager = SettingsManager(requireContext())
+        settingsManager.applySettings(requireActivity())
+        soundManager.stopBgm()
 
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.updatePadding(
-                left = systemBars.left,
-                top = systemBars.top,
-                right = systemBars.right,
-                bottom = systemBars.bottom
-            )
-            insets
-        }
+        viewModel = ViewModelProvider(requireActivity())[MainViewModel::class.java]
 
-        viewModel = ViewModelProvider(this)[StudyViewModel::class.java]
-
-        val stageNum = intent.getIntExtra("STAGE_NUM", 1)
+        val stageNum = arguments?.getInt("STAGE_NUM") ?: 1
         binding.txtStudyTitle.text = getString(R.string.stage_format, stageNum)
 
         setupListeners()
         observeViewModel()
         
-        viewModel.loadWords(stageNum)
+        viewModel.loadWordsByDay(stageNum)
     }
 
     private fun setupListeners() {
-        // 뜻 카드 클릭 시 토글
         binding.cardMean.setOnClickListener {
             soundManager.playSfx("click")
-            viewModel.toggleLanguage()
+            val current = viewModel.isShowingEnglish.value ?: true
+            viewModel.isShowingEnglish.value = !current
         }
 
         binding.btnPrev.setOnClickListener {
             soundManager.playSfx("click")
-            viewModel.prevWord()
-            playCardAnimation()
+            val index = viewModel.currentIndex.value ?: 0
+            if (index > 0) {
+                viewModel.currentIndex.value = index - 1
+                viewModel.isShowingEnglish.value = true
+                playCardAnimation()
+            }
         }
 
         binding.btnNext.setOnClickListener {
             soundManager.playSfx("click")
-            viewModel.nextWord()
-            playCardAnimation()
+            val index = viewModel.currentIndex.value ?: 0
+            val size = viewModel.currentWords.value?.size ?: 0
+            if (index < size - 1) {
+                viewModel.currentIndex.value = index + 1
+                viewModel.isShowingEnglish.value = true
+                playCardAnimation()
+            }
         }
 
         binding.btnBack.setOnClickListener {
             soundManager.playSfx("click")
-            finish()
+            parentFragmentManager.popBackStack()
         }
 
         binding.btnStar.setOnClickListener {
             soundManager.playSfx("click")
-            viewModel.toggleMemorized()
-            playStarAnimation()
+            val words = viewModel.currentWords.value ?: return@setOnClickListener
+            val index = viewModel.currentIndex.value ?: 0
+            if (index in words.indices) {
+                viewModel.toggleMemorized(words[index])
+                playStarAnimation()
+            }
         }
     }
 
@@ -110,29 +114,24 @@ class StudyActivity : AppCompatActivity() {
     }
 
     private fun observeViewModel() {
-        viewModel.words.observe(this) { wordList ->
+        viewModel.currentWords.observe(viewLifecycleOwner) { wordList ->
             if (wordList.isNotEmpty()) {
                 binding.progressStudy.max = wordList.size
                 updateUI()
             } else {
-                binding.txtWord.text = getString(R.string.no_words_found, 1) // fallback
+                binding.txtWord.text = getString(R.string.no_words_found, 1)
                 binding.btnPrev.visibility = View.GONE
                 binding.btnNext.visibility = View.GONE
                 binding.btnStar.visibility = View.GONE
             }
         }
 
-        viewModel.currentIndex.observe(this) {
-            updateUI()
-        }
-
-        viewModel.isShowingEnglish.observe(this) {
-            updateUI()
-        }
+        viewModel.currentIndex.observe(viewLifecycleOwner) { updateUI() }
+        viewModel.isShowingEnglish.observe(viewLifecycleOwner) { updateUI() }
     }
 
     private fun updateUI() {
-        val words = viewModel.words.value ?: return
+        val words = viewModel.currentWords.value ?: return
         val index = viewModel.currentIndex.value ?: 0
         val isShowingMean = !(viewModel.isShowingEnglish.value ?: true)
 
@@ -143,16 +142,13 @@ class StudyActivity : AppCompatActivity() {
             if (isShowingMean) {
                 binding.txtMean.text = word.korean
                 binding.txtMean.alpha = 1.0f
-                binding.cardMean.setCardBackgroundColor(getColor(R.color.wood_brown).let { 
-                    // M3 Tonal variant simulation
-                    it 
-                })
-                binding.txtMean.setTextColor(getColor(android.R.color.white))
+                binding.cardMean.setCardBackgroundColor(requireContext().getColor(R.color.wood_brown))
+                binding.txtMean.setTextColor(requireContext().getColor(android.R.color.white))
             } else {
                 binding.txtMean.text = getString(R.string.click_to_see_meaning)
                 binding.txtMean.alpha = 0.5f
-                binding.cardMean.setCardBackgroundColor(getColor(R.color.cream_background))
-                binding.txtMean.setTextColor(getColor(R.color.wood_brown))
+                binding.cardMean.setCardBackgroundColor(requireContext().getColor(R.color.cream_background))
+                binding.txtMean.setTextColor(requireContext().getColor(R.color.wood_brown))
             }
             
             binding.txtProgress.text = getString(R.string.study_progress_format, index + 1, words.size)
@@ -166,13 +162,13 @@ class StudyActivity : AppCompatActivity() {
     }
 
     private fun updateStarIcon(isMemorized: Boolean) {
-        val iconRes = if (isMemorized) {
-            R.drawable.ic_star_filled
-        } else {
-            R.drawable.ic_star_hollow
-        }
+        val iconRes = if (isMemorized) R.drawable.ic_star_filled else R.drawable.ic_star_hollow
         binding.btnStar.setIconResource(iconRes)
-        // Tint 제거 (드로어블 자체 색상 사용)
         binding.btnStar.iconTint = null
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

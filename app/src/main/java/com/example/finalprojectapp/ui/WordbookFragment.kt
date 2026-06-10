@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.finalprojectapp.databinding.FragmentWordbookBinding
-import com.example.finalprojectapp.ui.adapter.DayAdapter
+import com.example.finalprojectapp.ui.adapter.StageDayAdapter
 
 class WordbookFragment : Fragment() {
     private var _binding: FragmentWordbookBinding? = null
@@ -28,7 +28,18 @@ class WordbookFragment : Fragment() {
 
     private fun setupRecyclerView() {
         binding.rvWordbook.layoutManager = LinearLayoutManager(context)
-        binding.rvWordbook.adapter = DayAdapter(20)
+        // 통합 어댑터 사용 (모드: false = Day)
+        binding.rvWordbook.adapter = StageDayAdapter(20, false) { num ->
+            // WordListFragment로 이동
+            val fragment = WordListFragment().apply {
+                arguments = Bundle().apply { putInt("DAY_NUM", num) }
+            }
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                .replace(com.example.finalprojectapp.R.id.home_container, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
     }
 
     override fun onDestroyView() {

@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.finalprojectapp.ui.adapter.StageAdapter
+import com.example.finalprojectapp.R
 import com.example.finalprojectapp.databinding.FragmentLearnBinding
+import com.example.finalprojectapp.ui.adapter.StageDayAdapter
 
 class LearnFragment : Fragment() {
     private var _binding: FragmentLearnBinding? = null
@@ -26,11 +27,21 @@ class LearnFragment : Fragment() {
     }
 
     private fun initStageMap() {
-        // 일단 20개의 스테이지를 생성
-        val adapter = StageAdapter(20)
+        // 통합 어댑터 사용 (모드: true = Stage)
+        val adapter = StageDayAdapter(20, true) { num ->
+            // StudyFragment로 이동
+            val fragment = StudyFragment().apply {
+                arguments = Bundle().apply { putInt("STAGE_NUM", num) }
+            }
+            parentFragmentManager.beginTransaction()
+                .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out, android.R.anim.fade_in, android.R.anim.fade_out)
+                .replace(R.id.home_container, fragment)
+                .addToBackStack(null)
+                .commit()
+        }
         binding.rvStageMap.apply {
             layoutManager = LinearLayoutManager(context).apply {
-                reverseLayout = true // 아래에서 위로 올라가는 느낌 (선택 사항)
+                reverseLayout = true
                 stackFromEnd = true
             }
             this.adapter = adapter

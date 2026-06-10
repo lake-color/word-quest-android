@@ -14,15 +14,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.FinalProjectApp">
         <activity
-            android:name=".ui.HomeActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.StudyActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.WordListActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.MainActivity"
             android:exported="true">
             <intent-filter>

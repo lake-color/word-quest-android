@@ -29,7 +29,7 @@ import com.example.finalprojectapp.data.SettingsManager
 import com.example.finalprojectapp.data.SoundManager
 import com.example.finalprojectapp.data.Word
 import com.example.finalprojectapp.databinding.FragmentGameBinding
-import com.example.finalprojectapp.ui.viewmodel.GameViewModel
+import com.example.finalprojectapp.ui.viewmodel.MainViewModel
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.card.MaterialCardView
 import kotlinx.coroutines.delay
@@ -40,7 +40,7 @@ class GameFragment : Fragment() {
     private var _binding: FragmentGameBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var viewModel: GameViewModel
+    private lateinit var viewModel: MainViewModel
     private var allWords = listOf<Word>()
     private var filteredWords = listOf<Word>()
     private var currentQuestion: Word? = null
@@ -65,7 +65,7 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[GameViewModel::class.java]
+        viewModel = ViewModelProvider(this)[MainViewModel::class.java]
         settingsManager = SettingsManager(requireContext())
         soundManager = SoundManager.getInstance(requireContext())
         
