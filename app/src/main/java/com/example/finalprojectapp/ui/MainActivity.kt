@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity(), BgmChangeListener {
                 binding.appBarLayout.visibility = View.GONE
                 binding.bottomTabLayout.visibility = View.GONE
             }
-            is LearnFragment, is WordbookFragment, is GameFragment -> {
+            is NavListFragment, is GameFragment -> {
                 binding.appBarLayout.visibility = View.VISIBLE
                 binding.bottomTabLayout.visibility = View.VISIBLE
             }
