@@ -276,6 +276,23 @@
                 android:text="@string/vibration"
                 android:textAppearance="?attr/textAppearanceBodyLarge" />
 
+            <!-- Reset Section -->
+            <com.google.android.material.divider.MaterialDivider
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="16dp" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btnResetWrongCount"
+                style="@style/Widget.Material3.Button.TextButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="16dp"
+                android:text="오답 기록 초기화"
+                android:textColor="@color/error_red"
+                app:icon="@android:drawable/ic_menu_delete"
+                app:iconTint="@color/error_red" />
+
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btnClose"
                 style="@style/Widget.Material3.Button"

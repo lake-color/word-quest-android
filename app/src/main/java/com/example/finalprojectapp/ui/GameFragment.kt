@@ -418,7 +418,7 @@ class GameFragment : Fragment() {
 
                 if (!collisionChecked && progress > 0.82f && progress < 0.90f) {
                     collisionChecked = true
-                    checkCollision(isCorrectLeft)
+                    checkCollision(isCorrectLeft, question)
                 }
             }
             addListener(object : Animator.AnimatorListener {
@@ -439,7 +439,7 @@ class GameFragment : Fragment() {
         animator.start()
     }
 
-    private fun checkCollision(isCorrectLeft: Boolean) {
+    private fun checkCollision(isCorrectLeft: Boolean, question: Word) {
         if (_binding == null) return
         val playerX = binding.playerCharacter.x + (binding.playerCharacter.width / 2f)
         val isPlayerLeft = playerX < (binding.gameRoot.width / 2f)
@@ -453,7 +453,7 @@ class GameFragment : Fragment() {
             viewModel.decreaseHp()
             soundManager.playSfx("wrong")
             triggerVibration()
-            currentQuestion?.let { viewModel.updateWrongCount(it) }
+            viewModel.updateWrongCount(question)
         }
     }
 

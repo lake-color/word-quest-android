@@ -34,10 +34,23 @@
             android:id="@+id/txtKorean"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="16dp"
             android:text="Meaning"
             android:textSize="16sp"
             android:textColor="?attr/colorSecondary" />
+
+        <TextView
+            android:id="@+id/txtWrongCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="12dp"
+            android:background="@drawable/bg_wrong_count"
+            android:text="3"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:visibility="gone"
+            tools:visibility="visible" />
 
         <ImageButton
             android:id="@+id/btnStar"
