@@ -1,11 +1,11 @@
 package com.example.finalprojectapp.ui
 
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.graphics.drawable.toDrawable
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.lifecycleScope
 import com.example.finalprojectapp.R
@@ -45,7 +45,7 @@ class SettingsDialog : DialogFragment() {
         settingsManager = SettingsManager(requireContext())
         soundManager = SoundManager.getInstance(requireContext())
         
-        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
+        dialog?.window?.setBackgroundDrawable(Color.TRANSPARENT.toDrawable())
 
         loadSettings()
         setupListeners()
@@ -53,13 +53,13 @@ class SettingsDialog : DialogFragment() {
 
     private fun loadSettings() {
         binding.seekSound.value = settingsManager.masterVolume.toFloat()
-        binding.txtSoundValue.text = settingsManager.masterVolume.toString()
+        binding.txtSoundValue.text = getString(R.string.number_format, settingsManager.masterVolume)
 
         binding.seekBgm.value = settingsManager.bgmVolume.toFloat()
-        binding.txtBgmValue.text = settingsManager.bgmVolume.toString()
+        binding.txtBgmValue.text = getString(R.string.number_format, settingsManager.bgmVolume)
 
         binding.seekSfx.value = settingsManager.sfxVolume.toFloat()
-        binding.txtSfxValue.text = settingsManager.sfxVolume.toString()
+        binding.txtSfxValue.text = getString(R.string.number_format, settingsManager.sfxVolume)
 
         binding.switchVibration.isChecked = settingsManager.isVibrationEnabled
 
@@ -89,7 +89,7 @@ class SettingsDialog : DialogFragment() {
 
         binding.seekSound.addOnChangeListener { _, value, fromUser ->
             val vol = value.toInt()
-            binding.txtSoundValue.text = vol.toString()
+            binding.txtSoundValue.text = getString(R.string.number_format, vol)
             settingsManager.masterVolume = vol
             soundManager.updateVolumes()
             if (fromUser) soundManager.playSfx("click")
@@ -97,7 +97,7 @@ class SettingsDialog : DialogFragment() {
 
         binding.seekBgm.addOnChangeListener { _, value, fromUser ->
             val vol = value.toInt()
-            binding.txtBgmValue.text = vol.toString()
+            binding.txtBgmValue.text = getString(R.string.number_format, vol)
             settingsManager.bgmVolume = vol
             soundManager.updateVolumes()
             if (fromUser) soundManager.playSfx("click")
@@ -105,7 +105,7 @@ class SettingsDialog : DialogFragment() {
 
         binding.seekSfx.addOnChangeListener { _, value, fromUser ->
             val vol = value.toInt()
-            binding.txtSfxValue.text = vol.toString()
+            binding.txtSfxValue.text = getString(R.string.number_format, vol)
             settingsManager.sfxVolume = vol
             soundManager.updateVolumes()
             if (fromUser) soundManager.playSfx("click")

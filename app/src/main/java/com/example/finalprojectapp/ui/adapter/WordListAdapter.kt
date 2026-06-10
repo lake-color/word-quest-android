@@ -19,7 +19,7 @@ class WordListAdapter(private val onStarClick: (Word) -> Unit) : ListAdapter<Wor
             // 오답 횟수 표시
             if (word.wrongCount > 0) {
                 binding.txtWrongCount.visibility = android.view.View.VISIBLE
-                binding.txtWrongCount.text = "X ${word.wrongCount}"
+                binding.txtWrongCount.text = binding.root.context.getString(R.string.wrong_count_x_format, word.wrongCount)
             } else {
                 binding.txtWrongCount.visibility = android.view.View.GONE
             }

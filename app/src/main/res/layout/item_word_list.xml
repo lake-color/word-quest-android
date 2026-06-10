@@ -41,12 +41,12 @@
             android:background="@drawable/bg_wrong_count"
             android:paddingHorizontal="10dp"
             android:paddingVertical="4dp"
-            android:text="X 0"
             android:textColor="@android:color/white"
             android:textSize="13sp"
             android:textStyle="bold"
             android:elevation="2dp"
             android:visibility="gone"
+            tools:text="X 3"
             tools:visibility="visible" />
 
         <ImageButton

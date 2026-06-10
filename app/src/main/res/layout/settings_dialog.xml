@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.Material3.CardView.Elevated"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -67,8 +68,8 @@
                     android:layout_width="24dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="5"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    tools:text="5" />
             </LinearLayout>
 
             <!-- BGM Volume -->
@@ -99,8 +100,8 @@
                     android:layout_width="24dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="7"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    tools:text="7" />
             </LinearLayout>
 
             <!-- SFX Volume -->
@@ -131,8 +132,8 @@
                     android:layout_width="24dp"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="8dp"
-                    android:text="7"
-                    android:gravity="center" />
+                    android:gravity="center"
+                    tools:text="7" />
             </LinearLayout>
 
             <TextView
