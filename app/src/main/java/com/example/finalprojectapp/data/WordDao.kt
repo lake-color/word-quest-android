@@ -33,6 +33,12 @@ interface WordDao {
     @Update
     suspend fun updateWord(word: Word)
 
+    @Query("UPDATE word_table SET wrongCount = wrongCount + 1 WHERE id = :id")
+    suspend fun incrementWrongCount(id: Int)
+
+    @Query("UPDATE word_table SET wrongCount = 0")
+    suspend fun resetAllWrongCounts()
+
     @Query("DELETE FROM word_table")
     suspend fun deleteAllWords()
 }

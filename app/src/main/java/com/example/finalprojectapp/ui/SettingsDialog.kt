@@ -7,10 +7,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import com.example.finalprojectapp.R
 import com.example.finalprojectapp.data.SettingsManager
 import com.example.finalprojectapp.data.SoundManager
 import com.example.finalprojectapp.databinding.SettingsDialogBinding
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 interface BgmChangeListener {
     fun onBgmChanged(index: Int)
@@ -143,6 +147,16 @@ class SettingsDialog : DialogFragment() {
                 soundManager.playSfx("click")
                 val index = if (checkedId == R.id.btnGameBgm1) 1 else 2
                 settingsManager.gameBgmIndex = index
+            }
+        }
+
+        binding.btnResetWrongCount.setOnClickListener {
+            soundManager.playSfx("click")
+            lifecycleScope.launch {
+                withContext(Dispatchers.IO) {
+                    com.example.finalprojectapp.data.WordDatabase.getDatabase(requireContext()).wordDao().resetAllWrongCounts()
+                }
+                android.widget.Toast.makeText(requireContext(), getString(R.string.reset_complete), android.widget.Toast.LENGTH_SHORT).show()
             }
         }
     }

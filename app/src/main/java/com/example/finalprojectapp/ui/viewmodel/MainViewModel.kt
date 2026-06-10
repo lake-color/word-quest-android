@@ -54,11 +54,8 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
     fun updateWrongCount(word: Word) {
         viewModelScope.launch(Dispatchers.IO) {
-            val current = dao.getWordById(word.id)
-            current?.let {
-                it.wrongCount += 1
-                dao.updateWord(it)
-            }
+            // DB 수준에서 직접 1 증가 (원자적 연산)
+            dao.incrementWrongCount(word.id)
         }
     }
 }
