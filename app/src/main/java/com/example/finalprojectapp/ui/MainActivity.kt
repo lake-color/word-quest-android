@@ -139,8 +139,8 @@ class MainActivity : AppCompatActivity(), BgmChangeListener {
         val transaction = supportFragmentManager.beginTransaction()
             .setCustomAnimations(android.R.anim.fade_in, android.R.anim.fade_out)
         
-        // 기존 탭 프래그먼트들을 모두 hide
-        listOf("learn", "wordbook", "game").forEach { t ->
+        // 메인 탭 프래그먼트들과 시작 화면을 모두 숨김
+        listOf("learn", "wordbook", "game", "start").forEach { t ->
             supportFragmentManager.findFragmentByTag(t)?.let { transaction.hide(it) }
         }
 

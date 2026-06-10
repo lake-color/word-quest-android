@@ -16,6 +16,14 @@ class WordListAdapter(private val onStarClick: (Word) -> Unit) : ListAdapter<Wor
             binding.txtEnglish.text = word.english
             binding.txtKorean.text = word.korean
             
+            // 오답 횟수 표시
+            if (word.wrongCount > 0) {
+                binding.txtWrongCount.visibility = android.view.View.VISIBLE
+                binding.txtWrongCount.text = word.wrongCount.toString()
+            } else {
+                binding.txtWrongCount.visibility = android.view.View.GONE
+            }
+
             val starIcon = if (word.isMemorized) {
                 R.drawable.ic_star_filled
             } else {
